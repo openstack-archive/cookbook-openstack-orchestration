@@ -1,0 +1,862 @@
+<%= node["openstack"]["orchestration"]["custom_template_banner"] %>
+
+[DEFAULT]
+#
+# Options defined in heat.common.config
+#
+
+sql_connection=<%= @sql_connection %>
+
+# The default user for new instances (string value)
+#instance_user=ec2-user
+
+# Driver to use for controlling instances (string value)
+#instance_driver=heat.engine.nova
+
+# Engine identifier for multi-engine distributed lock.  If
+# this is set to "generate_uuid", a UUID will be generated.
+# (string value)
+#engine_id=generate_uuid
+
+# List of directories to search for Plugins (list value)
+#plugin_dirs=/usr/lib64/heat,/usr/lib/heat
+
+# The directory to search for environment files (string value)
+#environment_dir=/etc/heat/environment.d
+
+# Select deferred auth method, stored password or trusts
+# (string value)
+#deferred_auth_method=password
+
+# Subset of trustor roles to be delegated to heat (list value)
+#trusts_delegated_roles=heat_stack_owner
+
+# Maximum resources allowed per top-level stack. (integer
+# value)
+#max_resources_per_stack=1000
+
+# Maximum number of stacks any one tenant may have active at
+# one time. (integer value)
+#max_stacks_per_tenant=100
+
+# Controls how many events will be pruned whenever a  stack's
+# events exceed max_events_per_stack. Set this lower to keep
+# more events at the expense of more frequent purges. (integer
+# value)
+#event_purge_batch_size=10
+
+# Maximum events that will be available per stack. Older
+# events will be deleted when this is reached. Set to 0 for
+# unlimited events per stack. (integer value)
+#max_events_per_stack=1000
+
+# Name of the engine node. This can be an opaque identifier.It
+# is not necessarily a hostname, FQDN, or IP address. (string
+# value)
+#host=heat
+
+# seconds between running periodic tasks (integer value)
+#periodic_interval=60
+
+# URL of the Heat metadata server (string value)
+heat_metadata_server_url=http://<%= @heat_api_cfn_endpoint.host %>:<%= @heat_api_cfn_endpoint.port %>
+
+# URL of the Heat waitcondition server (string value)
+heat_waitcondition_server_url=http://<%= @heat_api_cfn_endpoint.host %>:<%= @heat_api_cfn_endpoint.port %><%= @heat_api_cfn_endpoint.path %>/waitcondition
+
+# URL of the Heat cloudwatch server (string value)
+heat_watch_server_url=http://<%= @heat_api_cloudwatch_endpoint.host %>:<%= @heat_api_cloudwatch_endpoint.port %>
+
+# Instance connection to cfn/cw API via https (string value)
+#instance_connection_is_secure=0
+
+# Instance connection to cfn/cw API validate certs if ssl
+# (string value)
+#instance_connection_https_validate_certificates=1
+
+# Keystone role for heat template-defined users (string value)
+#heat_stack_user_role=heat_stack_user
+
+# Maximum raw byte size of any template. (integer value)
+#max_template_size=524288
+
+# Maximum depth allowed when using nested stacks. (integer
+# value)
+#max_nested_stack_depth=3
+
+
+#
+# Options defined in heat.common.crypt
+#
+
+# Encryption key used for authentication info in database
+# (string value)
+#auth_encryption_key=notgood but just long enough i think
+
+
+#
+# Options defined in heat.common.wsgi
+#
+
+# Maximum raw byte size of JSON request body. Should be larger
+# than max_template_size. (integer value)
+#max_json_body_size=1048576
+
+
+#
+# Options defined in heat.db.api
+#
+
+# The backend to use for db (string value)
+#db_backend=sqlalchemy
+
+
+#
+# Options defined in heat.engine.clients
+#
+
+# Fully qualified class name to use as a client backend.
+# (string value)
+#cloud_backend=heat.engine.clients.OpenStackClients
+
+
+#
+# Options defined in heat.openstack.common.db.sqlalchemy.session
+#
+
+# the filename to use with sqlite (string value)
+#sqlite_db=heat.sqlite
+
+# If true, use synchronous mode for sqlite (boolean value)
+#sqlite_synchronous=true
+
+
+#
+# Options defined in heat.openstack.common.eventlet_backdoor
+#
+
+# Enable eventlet backdoor.  Acceptable values are 0, <port>,
+# and <start>:<end>, where 0 results in listening on a random
+# tcp port number; <port> results in listening on the
+# specified port number (and not enabling backdoor if that
+# port is in use); and <start>:<end> results in listening on
+# the smallest unused port number within the specified range
+# of port numbers.  The chosen port is displayed in the
+# service's log file. (string value)
+#backdoor_port=<None>
+
+
+#
+# Options defined in heat.openstack.common.lockutils
+#
+
+# Whether to disable inter-process locks (boolean value)
+#disable_process_locking=false
+
+# Directory to use for lock files. (string value)
+#lock_path=<None>
+
+
+#
+# Options defined in heat.openstack.common.log
+#
+
+# Print debugging output (set logging level to DEBUG instead
+# of default WARNING level). (boolean value)
+debug=<%= node["openstack"]["orchestration"]["debug"] %>
+
+# Print more verbose output (set logging level to INFO instead
+# of default WARNING level). (boolean value)
+verbose=<%= node["openstack"]["orchestration"]["verbose"] %>
+
+# Log output to standard error (boolean value)
+#use_stderr=true
+
+# format string to use for log messages with context (string
+# value)
+#logging_context_format_string=%(asctime)s.%(msecs)03d %(process)d %(levelname)s %(name)s [%(request_id)s %(user)s %(tenant)s] %(instance)s%(message)s
+
+# format string to use for log messages without context
+# (string value)
+#logging_default_format_string=%(asctime)s.%(msecs)03d %(process)d %(levelname)s %(name)s [-] %(instance)s%(message)s
+
+# data to append to log format when level is DEBUG (string
+# value)
+#logging_debug_format_suffix=%(funcName)s %(pathname)s:%(lineno)d
+
+# prefix each line of exception output with this format
+# (string value)
+#logging_exception_prefix=%(asctime)s.%(msecs)03d %(process)d TRACE %(name)s %(instance)s
+
+# list of logger=LEVEL pairs (list value)
+#default_log_levels=amqplib=WARN,sqlalchemy=WARN,boto=WARN,suds=INFO,keystone=INFO,eventlet.wsgi.server=WARN
+
+# publish error events (boolean value)
+#publish_errors=false
+
+# make deprecations fatal (boolean value)
+#fatal_deprecations=false
+
+# If an instance is passed with the log message, format it
+# like this (string value)
+#instance_format="[instance: %(uuid)s] "
+
+# If an instance UUID is passed with the log message, format
+# it like this (string value)
+#instance_uuid_format="[instance: %(uuid)s] "
+
+# (Optional) In addition to the system's default language log,
+# creates an additional log in the given language if such
+# language is present in the operating system. This option is
+# only enabled if the 'log-file' option is used, and the
+# additional log will be created in the same directory of the
+# main log, inside a directory named after the locale. This is
+# an OSEE-only property. (string value)
+#log_additional_locale=<None>
+
+# If this option is specified, the logging configuration file
+# specified is used and overrides any other logging options
+# specified. Please see the Python logging module
+# documentation for details on logging configuration files.
+# (string value)
+<% if node["openstack"]["orchestration"]["syslog"]["use"] %>
+log_config = /etc/openstack/logging.conf
+<% end %>
+
+# DEPRECATED. A logging.Formatter log message format string
+# which may use any of the available logging.LogRecord
+# attributes. This option is deprecated.  Please use
+# logging_context_format_string and
+# logging_default_format_string instead. (string value)
+#log_format=<None>
+
+# Format string for %%(asctime)s in log records. Default:
+# %(default)s (string value)
+#log_date_format=%Y-%m-%d %H:%M:%S
+
+# (Optional) Name of log file to output to. If no default is
+# set, logging will go to stdout. (string value)
+#log_file=<None>
+
+# (Optional) The base directory used for relative --log-file
+# paths (string value)
+#log_dir=<None>
+
+# Use syslog for logging. (boolean value)
+#use_syslog=false
+
+# syslog facility to receive log lines (string value)
+#syslog_log_facility=LOG_USER
+
+
+#
+# Options defined in heat.openstack.common.notifier.api
+#
+
+# Driver or drivers to handle sending notifications (multi
+# valued)
+#notification_driver=
+
+# Default notification level for outgoing notifications
+# (string value)
+#default_notification_level=INFO
+
+# Default publisher_id for outgoing notifications (string
+# value)
+#default_publisher_id=<None>
+
+
+#
+# Options defined in heat.openstack.common.notifier.list_notifier
+#
+
+# List of drivers to send notifications (multi valued)
+#list_notifier_drivers=heat.openstack.common.notifier.no_op_notifier
+
+
+#
+# Options defined in heat.openstack.common.notifier.rpc_notifier
+#
+
+# AMQP topic used for openstack notifications (list value)
+#notification_topics=notifications
+
+
+#
+# Options defined in heat.openstack.common.policy
+#
+
+# JSON file containing policy (string value)
+#policy_file=policy.json
+
+# Rule enforced when requested rule is not found (string
+# value)
+#policy_default_rule=default
+
+
+#
+# Options defined in heat.openstack.common.rpc
+#
+
+# The messaging module to use, defaults to kombu. (string
+# value)
+#rpc_backend=
+
+# Size of RPC thread pool (integer value)
+rpc_thread_pool_size=<%= node["openstack"]["orchestration"]["rpc_thread_pool_size"] %>
+
+# Size of RPC connection pool (integer value)
+rpc_conn_pool_size=<%= node["openstack"]["orchestration"]["rpc_conn_pool_size"] %>
+
+# Seconds to wait for a response from call or multicall
+# (integer value)
+rpc_response_timeout=<%= node["openstack"]["orchestration"]["rpc_response_timeout"] %>
+
+# Seconds to wait before a cast expires (TTL). Only supported
+# by impl_zmq. (integer value)
+#rpc_cast_timeout=30
+
+# Modules of exceptions that are permitted to be recreatedupon
+# receiving exception data from an rpc call. (list value)
+#allowed_rpc_exception_modules=heat.openstack.common.exception,heat.common.exception,nova.exception,cinder.exception,exceptions
+
+# If passed, use a fake RabbitMQ provider (boolean value)
+#fake_rabbit=false
+
+# AMQP exchange to connect to if using RabbitMQ or Qpid
+# (string value)
+#control_exchange=openstack
+
+
+#
+# Options defined in heat.openstack.common.rpc.amqp
+#
+
+# Use durable queues in amqp. (boolean value)
+#amqp_durable_queues=false
+
+# Auto-delete queues in amqp. (boolean value)
+#amqp_auto_delete=false
+
+
+#
+# Options defined in heat.openstack.common.rpc.impl_kombu
+#
+
+# SSL version to use (valid only if SSL enabled). valid values
+# are TLSv1, SSLv23 and SSLv3. SSLv2 may be available on some
+# distributions (string value)
+#kombu_ssl_version=
+
+# SSL key file (valid only if SSL enabled) (string value)
+#kombu_ssl_keyfile=
+
+# SSL cert file (valid only if SSL enabled) (string value)
+#kombu_ssl_certfile=
+
+# SSL certification authority file (valid only if SSL enabled)
+# (string value)
+#kombu_ssl_ca_certs=
+<% if node["openstack"]["orchestration"]["mq"]["service_type"] == "rabbitmq"  %>
+<% if node["openstack"]["orchestration"]["rabbit"]["ha"] -%>
+rabbit_hosts=<%= @rabbit_hosts %>
+#### (ListOpt) RabbitMQ HA cluster host:port pairs
+
+# rabbit_durable_queues=false
+#### (BoolOpt) use durable queues in RabbitMQ
+
+rabbit_ha_queues=True
+#### (BoolOpt) use H/A queues in RabbitMQ (x-ha-policy: all).You need to
+####           wipe RabbitMQ database when changing this option.
+<% else -%>
+rabbit_host=<%= node["openstack"]["orchestration"]["rabbit"]["host"] %>
+#### (StrOpt) The RabbitMQ broker address where a single node is used
+
+rabbit_port=<%= node["openstack"]["orchestration"]["rabbit"]["port"] %>
+#### (IntOpt) The RabbitMQ broker port where a single node is used
+<% end -%>
+
+# connect over SSL for RabbitMQ (boolean value)
+#rabbit_use_ssl=false
+
+rabbit_userid=<%= node["openstack"]["orchestration"]["rabbit"]["username"] %>
+#### (StrOpt) the RabbitMQ userid
+
+rabbit_password=<%= @rabbit_password %>
+#### (StrOpt) the RabbitMQ password
+
+rabbit_virtual_host=<%= node["openstack"]["orchestration"]["rabbit"]["vhost"] %>
+#### (StrOpt) the RabbitMQ virtual host
+
+# how frequently to retry connecting with RabbitMQ (integer
+# value)
+#rabbit_retry_interval=1
+
+# how long to backoff for between retries when connecting to
+# RabbitMQ (integer value)
+#rabbit_retry_backoff=2
+
+# maximum retries with trying to connect to RabbitMQ (the
+# default of 0 implies an infinite retry count) (integer
+# value)
+#rabbit_max_retries=0
+
+# use H/A queues in RabbitMQ (x-ha-policy: all).You need to
+# wipe RabbitMQ database when changing this option. (boolean
+# value)
+#rabbit_ha_queues=false
+<% end -%>
+
+#
+# Options defined in heat.openstack.common.rpc.impl_qpid
+#
+<% if node["openstack"]["orchestration"]["mq"]["service_type"] == "qpid"  %>
+
+rpc_backend=heat.openstack.common.rpc.impl_qpid
+
+# Qpid broker hostname (string value)
+qpid_hostname=<%= node["openstack"]["orchestration"]["mq"]["qpid"]["host"] %>
+
+# Qpid broker port (integer value)
+qpid_port=<%= node["openstack"]["orchestration"]["mq"]["qpid"]["port"] %>
+
+# Qpid HA cluster host:port pairs (list value)
+#qpid_hosts=$qpid_hostname:$qpid_port
+
+# Username for qpid connection (string value)
+qpid_username=<%= node["openstack"]["orchestration"]["mq"]["qpid"]["username"] %>
+
+# Password for qpid connection (string value)
+qpid_password=<%= node["openstack"]["orchestration"]["mq"]["qpid"]["password"] %>
+
+# Space separated list of SASL mechanisms to use for auth
+# (string value)
+qpid_sasl_mechanisms=<%= node["openstack"]["orchestration"]["mq"]["qpid"]["sasl_mechanisms"] %>
+
+# Seconds between connection keepalive heartbeats (integer
+# value)
+qpid_heartbeat=<%= node["openstack"]["orchestration"]["mq"]["qpid"]["heartbeat"] %>
+
+# Transport to use, either 'tcp' or 'ssl' (string value)
+qpid_protocol=<%= node["openstack"]["orchestration"]["mq"]["qpid"]["protocol"] %>
+
+# Disable Nagle algorithm (boolean value)
+qpid_tcp_nodelay=<%= node["openstack"]["orchestration"]["mq"]["qpid"]["tcp_nodelay"] %>
+
+# The qpid topology version to use.  Version 1 is what was
+# originally used by impl_qpid.  Version 2 includes some
+# backwards-incompatible changes that allow broker federation
+# to work.  Users should update to version 2 when they are
+# able to take everything down, as it requires a clean break.
+# (integer value)
+#qpid_topology_version=1
+
+qpid_reconnect_timeout=<%= node["openstack"]["orchestration"]["mq"]["qpid"]["reconnect_timeout"] %>
+qpid_reconnect_limit=<%= node["openstack"]["orchestration"]["mq"]["qpid"]["reconnect_limit"] %>
+qpid_reconnect_interval_min=<%= node["openstack"]["orchestration"]["mq"]["qpid"]["reconnect_interval_min"] %>
+qpid_reconnect_interval_max=<%= node["openstack"]["orchestration"]["mq"]["qpid"]["reconnect_interval_max"] %>
+qpid_reconnect_interval=<%= node["openstack"]["orchestration"]["mq"]["qpid"]["reconnect_interval"] %>
+<% end -%>
+
+#
+# Options defined in heat.openstack.common.rpc.impl_zmq
+#
+
+# ZeroMQ bind address. Should be a wildcard (*), an ethernet
+# interface, or IP. The "host" option should point or resolve
+# to this address. (string value)
+#rpc_zmq_bind_address=*
+
+# MatchMaker driver (string value)
+#rpc_zmq_matchmaker=heat.openstack.common.rpc.matchmaker.MatchMakerLocalhost
+
+# ZeroMQ receiver listening port (integer value)
+#rpc_zmq_port=9501
+
+# Number of ZeroMQ contexts, defaults to 1 (integer value)
+#rpc_zmq_contexts=1
+
+# Maximum number of ingress messages to locally buffer per
+# topic. Default is unlimited. (integer value)
+#rpc_zmq_topic_backlog=<None>
+
+# Directory for holding IPC sockets (string value)
+#rpc_zmq_ipc_dir=/var/run/openstack
+
+# Name of this node. Must be a valid hostname, FQDN, or IP
+# address. Must match "host" option, if running Nova. (string
+# value)
+#rpc_zmq_host=heat
+
+
+#
+# Options defined in heat.openstack.common.rpc.matchmaker
+#
+
+# Heartbeat frequency (integer value)
+#matchmaker_heartbeat_freq=300
+
+# Heartbeat time-to-live. (integer value)
+#matchmaker_heartbeat_ttl=600
+
+
+[ssl]
+
+#
+# Options defined in heat.openstack.common.sslutils
+#
+
+# CA certificate file to use to verify connecting clients
+# (string value)
+#ca_file=<None>
+
+# Certificate file to use when starting the server securely
+# (string value)
+#cert_file=<None>
+
+# Private key file to use when starting the server securely
+# (string value)
+#key_file=<None>
+
+
+[database]
+
+#
+# Options defined in heat.openstack.common.db.api
+#
+
+# The backend to use for db (string value)
+#backend=sqlalchemy
+
+# Enable the experimental use of thread pooling for all DB API
+# calls (boolean value)
+#use_tpool=false
+
+
+#
+# Options defined in heat.openstack.common.db.sqlalchemy.session
+#
+
+# The SQLAlchemy connection string used to connect to the
+# database (string value)
+#connection=sqlite:////heat/openstack/common/db/$sqlite_db
+
+# The SQLAlchemy connection string used to connect to the
+# slave database (string value)
+#slave_connection=
+
+# timeout before idle sql connections are reaped (integer
+# value)
+#idle_timeout=3600
+
+# Minimum number of SQL connections to keep open in a pool
+# (integer value)
+#min_pool_size=1
+
+# Maximum number of SQL connections to keep open in a pool
+# (integer value)
+#max_pool_size=<None>
+
+# maximum db connection retries during startup. (setting -1
+# implies an infinite retry count) (integer value)
+#max_retries=10
+
+# interval between retries of opening a sql connection
+# (integer value)
+#retry_interval=10
+
+# If set, use this value for max_overflow with sqlalchemy
+# (integer value)
+#max_overflow=<None>
+
+# Verbosity of SQL debugging information. 0=None,
+# 100=Everything (integer value)
+#connection_debug=0
+
+# Add python stack traces to SQL as comment strings (boolean
+# value)
+#connection_trace=false
+
+# If set, use this value for pool_timeout with sqlalchemy
+# (integer value)
+#pool_timeout=<None>
+
+
+[paste_deploy]
+
+#
+# Options defined in heat.common.config
+#
+
+# The flavor to use (string value)
+#flavor=<None>
+
+# The API paste config file to use (string value)
+#api_paste_config=api-paste.ini
+
+
+[rpc_notifier2]
+
+#
+# Options defined in heat.openstack.common.notifier.rpc_notifier2
+#
+
+# AMQP topic(s) used for openstack notifications (list value)
+#topics=notifications
+
+
+[ec2authtoken]
+
+#
+# Options defined in heat.api.aws.ec2token
+#
+
+# Authentication Endpoint URI (string value)
+#auth_uri=<None>
+
+# Allow orchestration of multiple clouds (boolean value)
+#multi_cloud=false
+
+# Allowed keystone endpoints for auth_uri when multi_cloud is
+# enabled. At least one endpoint needs to be specified. (list
+# value)
+#allowed_auth_uris=
+
+
+[heat_api_cloudwatch]
+#
+# Options defined in heat.common.wsgi
+#
+
+# Address to bind the server.  Useful when selecting a
+# particular network interface. (string value)
+bind_host=<%= @heat_api_cloudwatch_endpoint.host %>
+
+# The port on which the server will listen. (integer value)
+bind_port=<%= @heat_api_cloudwatch_endpoint.port %>
+
+# Number of backlog requests to configure the socket with
+# (integer value)
+#backlog=4096
+
+# Location of the SSL Certificate File to use for SSL mode
+# (string value)
+#cert_file=<None>
+
+# Location of the SSL Key File to use for enabling SSL mode
+# (string value)
+#key_file=<None>
+
+# Number of workers for Heat service (integer value)
+#workers=0
+
+
+[heat_api]
+#
+# Options defined in heat.common.wsgi
+#
+
+# Address to bind the server.  Useful when selecting a
+# particular network interface. (string value)
+bind_host=<%= @heat_api_endpoint.host %>
+
+# The port on which the server will listen. (integer value)
+bind_port=<%= @heat_api_endpoint.port %>
+
+# Number of backlog requests to configure the socket with
+# (integer value)
+#backlog=4096
+
+# Location of the SSL Certificate File to use for SSL mode
+# (string value)
+#cert_file=<None>
+
+# Location of the SSL Key File to use for enabling SSL mode
+# (string value)
+#key_file=<None>
+
+# Number of workers for Heat service (integer value)
+#workers=0
+
+
+[heat_api_cfn]
+#
+# Options defined in heat.common.wsgi
+#
+
+# Address to bind the server.  Useful when selecting a
+# particular network interface. (string value)
+bind_host=<%= @heat_api_cfn_endpoint.host %>
+
+# The port on which the server will listen. (integer value)
+bind_port=<%= @heat_api_cfn_endpoint.port %>
+
+# Number of backlog requests to configure the socket with
+# (integer value)
+#backlog=4096
+
+# Location of the SSL Certificate File to use for SSL mode
+# (string value)
+#cert_file=<None>
+
+# Location of the SSL Key File to use for enabling SSL mode
+# (string value)
+#key_file=<None>
+
+# Number of workers for Heat service (integer value)
+#workers=0
+
+
+[keystone_authtoken]
+#
+# Options defined in keystoneclient.middleware.auth_token
+#
+
+# Prefix to prepend at the beginning of the path (string
+# value)
+#auth_admin_prefix=
+
+# Host providing the admin Identity API endpoint (string
+# value)
+auth_host=<%= @identity_admin_endpoint.host %>
+
+# Port of the admin Identity API endpoint (integer value)
+auth_port=<%= @identity_admin_endpoint.port %>
+
+# Protocol of the admin Identity API endpoint(http or https)
+# (string value)
+auth_protocol=<%= @identity_admin_endpoint.scheme %>
+
+# Complete public Identity API endpoint (string value)
+auth_uri=<%= @auth_uri %>
+
+# API version of the admin Identity API endpoint (string
+# value)
+auth_version=<%= node["openstack"]["orchestration"]["api"]["auth"]["version"] %>
+
+# Do not handle authorization requests within the middleware,
+# but delegate the authorization decision to downstream WSGI
+# components (boolean value)
+#delay_auth_decision=false
+
+# Request timeout value for communicating with Identity API
+# server. (boolean value)
+#http_connect_timeout=<None>
+
+# How many times are we trying to reconnect when communicating
+# with Identity API Server. (integer value)
+#http_request_max_retries=3
+
+# Allows to pass in the name of a fake http_handler callback
+# function used instead of httplib.HTTPConnection or
+# httplib.HTTPSConnection. Useful for unit testing where
+# network is not available. (string value)
+#http_handler=<None>
+
+# Single shared secret with the Keystone configuration used
+# for bootstrapping a Keystone installation, or otherwise
+# bypassing the normal authentication process. (string value)
+#admin_token=<None>
+
+# Keystone account username (string value)
+admin_user=<%= node["openstack"]["orchestration"]["service_user"] %>
+
+# Keystone account password (string value)
+admin_password=<%= @service_pass %>
+
+# Keystone service account tenant name to validate user tokens
+# (string value)
+admin_tenant_name=<%= node["openstack"]["orchestration"]["service_tenant_name"] %>
+
+# Env key for the swift cache (string value)
+#cache=<None>
+
+# Required if Keystone server requires client certificate
+# (string value)
+#certfile=<None>
+
+# Required if Keystone server requires client certificate
+# (string value)
+#keyfile=<None>
+
+# A PEM encoded Certificate Authority to use when verifying
+# HTTPs connections. Defaults to system CAs. (string value)
+#cafile=<None>
+
+# Verify HTTPS connections. (boolean value)
+#insecure=false
+
+# Directory used to cache files related to PKI tokens (string
+# value)
+signing_dir=<%= node["openstack"]["orchestration"]["api"]["auth"]["cache_dir"] %>
+
+# If defined, the memcache server(s) to use for caching (list
+# value)
+#memcached_servers=<None>
+
+# In order to prevent excessive requests and validations, the
+# middleware uses an in-memory cache for the tokens the
+# Keystone API returns. This is only valid if memcache_servers
+# is defined. Set to -1 to disable caching completely.
+# (integer value)
+#token_cache_time=300
+
+# Value only used for unit testing (integer value)
+#revocation_cache_time=1
+
+# (optional) if defined, indicate whether token data should be
+# authenticated or authenticated and encrypted. Acceptable
+# values are MAC or ENCRYPT.  If MAC, token data is
+# authenticated (with HMAC) in the cache. If ENCRYPT, token
+# data is encrypted and authenticated in the cache. If the
+# value is not one of these options or empty, auth_token will
+# raise an exception on initialization. (string value)
+#memcache_security_strategy=<None>
+
+# (optional, mandatory if memcache_security_strategy is
+# defined) this string is used for key derivation. (string
+# value)
+#memcache_secret_key=<None>
+
+
+[auth_password]
+
+#
+# Options defined in heat.common.config
+#
+
+# Allow orchestration of multiple clouds (boolean value)
+#multi_cloud=false
+
+# Allowed keystone endpoints for auth_uri when multi_cloud is
+# enabled. At least one endpoint needs to be specified. (list
+# value)
+#allowed_auth_uris=
+
+
+[matchmaker_ring]
+
+#
+# Options defined in heat.openstack.common.rpc.matchmaker_ring
+#
+
+# Matchmaker ring file (JSON) (string value)
+#ringfile=/etc/oslo/matchmaker_ring.json
+
+
+[matchmaker_redis]
+
+#
+# Options defined in heat.openstack.common.rpc.matchmaker_redis
+#
+
+# Host to locate redis (string value)
+#host=127.0.0.1
+
+# Use this port to connect to redis host. (integer value)
+#port=6379
+
+# Password for Redis server. (optional) (string value)
+#password=<None>
+
+
