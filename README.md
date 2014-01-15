@@ -8,7 +8,7 @@ http://heat.openstack.org/
 Requirements
 ============
 
-Chef 0.10.0 or higher required (for Chef environment use).
+Chef 11 or higher required (for Chef environment use).
 
 Cookbooks
 ---------
@@ -99,23 +99,16 @@ TODO: move rabbit parameters under openstack["orchestration"]["mq"]
 
 Testing
 =====
-This cookbook uses [bundler](http://gembundler.com/), [berkshelf](http://berkshelf.com/), and [strainer](https://github.com/customink/strainer) to isolate dependencies and run tests.
 
-Tests are defined in Strainerfile.
-
-To run tests:
-
-    $ bundle install # install gem dependencies
-    $ bundle exec berks install # install cookbook dependencies
-    $ bundle exec strainer test # run tests
+Please refer to the [TESTING.md](TESTING.md) for instructions for testing the cookbook.
 
 License and Author
 ==================
 
 |                      |                                                    |
 |:---------------------|:---------------------------------------------------|
-| **Author**           |  Zhao Fang Han (<hanzhf@cn.ibm.com>) |
-|                      |                                                    |              |
+| **Author**           |  Zhao Fang Han (<hanzhf@cn.ibm.com>)               |
+|                      |                                                    |
 | **Copyright**        |  Copyright (c) 2013, IBM Corp.                     |
 
 Licensed under the Apache License, Version 2.0 (the "License");
