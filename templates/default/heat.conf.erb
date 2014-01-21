@@ -357,8 +357,8 @@ rpc_response_timeout=<%= node["openstack"]["orchestration"]["rpc_response_timeou
 # SSL certification authority file (valid only if SSL enabled)
 # (string value)
 #kombu_ssl_ca_certs=
-<% if node["openstack"]["orchestration"]["mq"]["service_type"] == "rabbitmq"  %>
-<% if node["openstack"]["orchestration"]["rabbit"]["ha"] -%>
+<% if node["openstack"]["mq"]["orchestration"]["service_type"] == "rabbitmq"  %>
+<% if node["openstack"]["mq"]["orchestration"]["rabbit"]["ha"] -%>
 rabbit_hosts=<%= @rabbit_hosts %>
 #### (ListOpt) RabbitMQ HA cluster host:port pairs
 
@@ -369,23 +369,23 @@ rabbit_ha_queues=True
 #### (BoolOpt) use H/A queues in RabbitMQ (x-ha-policy: all).You need to
 ####           wipe RabbitMQ database when changing this option.
 <% else -%>
-rabbit_host=<%= node["openstack"]["orchestration"]["rabbit"]["host"] %>
+rabbit_host=<%= node["openstack"]["mq"]["orchestration"]["rabbit"]["host"] %>
 #### (StrOpt) The RabbitMQ broker address where a single node is used
 
-rabbit_port=<%= node["openstack"]["orchestration"]["rabbit"]["port"] %>
+rabbit_port=<%= node["openstack"]["mq"]["orchestration"]["rabbit"]["port"] %>
 #### (IntOpt) The RabbitMQ broker port where a single node is used
 <% end -%>
 
 # connect over SSL for RabbitMQ (boolean value)
-#rabbit_use_ssl=false
+rabbit_use_ssl=<%= node["openstack"]["mq"]["orchestration"]["rabbit"]["use_ssl"] %>
 
-rabbit_userid=<%= node["openstack"]["orchestration"]["rabbit"]["username"] %>
+rabbit_userid=<%= node["openstack"]["mq"]["orchestration"]["rabbit"]["userid"] %>
 #### (StrOpt) the RabbitMQ userid
 
 rabbit_password=<%= @rabbit_password %>
 #### (StrOpt) the RabbitMQ password
 
-rabbit_virtual_host=<%= node["openstack"]["orchestration"]["rabbit"]["vhost"] %>
+rabbit_virtual_host=<%= node["openstack"]["mq"]["orchestration"]["rabbit"]["vhost"] %>
 #### (StrOpt) the RabbitMQ virtual host
 
 # how frequently to retry connecting with RabbitMQ (integer
@@ -410,38 +410,38 @@ rabbit_virtual_host=<%= node["openstack"]["orchestration"]["rabbit"]["vhost"] %>
 #
 # Options defined in heat.openstack.common.rpc.impl_qpid
 #
-<% if node["openstack"]["orchestration"]["mq"]["service_type"] == "qpid"  %>
+<% if node["openstack"]["mq"]["orchestration"]["service_type"] == "qpid"  %>
 
 rpc_backend=heat.openstack.common.rpc.impl_qpid
 
 # Qpid broker hostname (string value)
-qpid_hostname=<%= node["openstack"]["orchestration"]["mq"]["qpid"]["host"] %>
+qpid_hostname=<%= node["openstack"]["mq"]["orchestration"]["qpid"]["host"] %>
 
 # Qpid broker port (integer value)
-qpid_port=<%= node["openstack"]["orchestration"]["mq"]["qpid"]["port"] %>
+qpid_port=<%= node["openstack"]["mq"]["orchestration"]["qpid"]["port"] %>
 
 # Qpid HA cluster host:port pairs (list value)
 #qpid_hosts=$qpid_hostname:$qpid_port
 
 # Username for qpid connection (string value)
-qpid_username=<%= node["openstack"]["orchestration"]["mq"]["qpid"]["username"] %>
+qpid_username=<%= node["openstack"]["mq"]["orchestration"]["qpid"]["username"] %>
 
 # Password for qpid connection (string value)
-qpid_password=<%= node["openstack"]["orchestration"]["mq"]["qpid"]["password"] %>
+qpid_password=<%= node["openstack"]["mq"]["orchestration"]["qpid"]["password"] %>
 
 # Space separated list of SASL mechanisms to use for auth
 # (string value)
-qpid_sasl_mechanisms=<%= node["openstack"]["orchestration"]["mq"]["qpid"]["sasl_mechanisms"] %>
+qpid_sasl_mechanisms=<%= node["openstack"]["mq"]["orchestration"]["qpid"]["sasl_mechanisms"] %>
 
 # Seconds between connection keepalive heartbeats (integer
 # value)
-qpid_heartbeat=<%= node["openstack"]["orchestration"]["mq"]["qpid"]["heartbeat"] %>
+qpid_heartbeat=<%= node["openstack"]["mq"]["orchestration"]["qpid"]["heartbeat"] %>
 
 # Transport to use, either 'tcp' or 'ssl' (string value)
-qpid_protocol=<%= node["openstack"]["orchestration"]["mq"]["qpid"]["protocol"] %>
+qpid_protocol=<%= node["openstack"]["mq"]["orchestration"]["qpid"]["protocol"] %>
 
 # Disable Nagle algorithm (boolean value)
-qpid_tcp_nodelay=<%= node["openstack"]["orchestration"]["mq"]["qpid"]["tcp_nodelay"] %>
+qpid_tcp_nodelay=<%= node["openstack"]["mq"]["orchestration"]["qpid"]["tcp_nodelay"] %>
 
 # The qpid topology version to use.  Version 1 is what was
 # originally used by impl_qpid.  Version 2 includes some
@@ -451,11 +451,11 @@ qpid_tcp_nodelay=<%= node["openstack"]["orchestration"]["mq"]["qpid"]["tcp_nodel
 # (integer value)
 #qpid_topology_version=1
 
-qpid_reconnect_timeout=<%= node["openstack"]["orchestration"]["mq"]["qpid"]["reconnect_timeout"] %>
-qpid_reconnect_limit=<%= node["openstack"]["orchestration"]["mq"]["qpid"]["reconnect_limit"] %>
-qpid_reconnect_interval_min=<%= node["openstack"]["orchestration"]["mq"]["qpid"]["reconnect_interval_min"] %>
-qpid_reconnect_interval_max=<%= node["openstack"]["orchestration"]["mq"]["qpid"]["reconnect_interval_max"] %>
-qpid_reconnect_interval=<%= node["openstack"]["orchestration"]["mq"]["qpid"]["reconnect_interval"] %>
+qpid_reconnect_timeout=<%= node["openstack"]["mq"]["orchestration"]["qpid"]["reconnect_timeout"] %>
+qpid_reconnect_limit=<%= node["openstack"]["mq"]["orchestration"]["qpid"]["reconnect_limit"] %>
+qpid_reconnect_interval_min=<%= node["openstack"]["mq"]["orchestration"]["qpid"]["reconnect_interval_min"] %>
+qpid_reconnect_interval_max=<%= node["openstack"]["mq"]["orchestration"]["qpid"]["reconnect_interval_max"] %>
+qpid_reconnect_interval=<%= node["openstack"]["mq"]["orchestration"]["qpid"]["reconnect_interval"] %>
 <% end -%>
 
 #

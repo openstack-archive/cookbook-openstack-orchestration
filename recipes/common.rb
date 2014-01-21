@@ -39,14 +39,14 @@ platform_options["heat_common_packages"].each do |pkg|
   end
 end
 
-db_type = node['openstack']['db']['orchestration']['db_type']
+db_type = node['openstack']['db']['orchestration']['service_type']
 platform_options["#{db_type}_python_packages"].each do |pkg|
   package pkg do
     action :upgrade
   end
 end
 
-db_user = node["openstack"]["orchestration"]["db"]["username"]
+db_user = node["openstack"]["db"]["orchestration"]["username"]
 db_pass = db_password "heat"
 sql_connection = db_uri("orchestration", db_user, db_pass)
 
@@ -70,11 +70,11 @@ if node["openstack"]["orchestration"]["api"]["auth"]["version"] != "v2.0"
   auth_uri = auth_uri.gsub('/v2.0', '')
 end
 
-if node["openstack"]["orchestration"]["mq"]["service_type"] == "rabbitmq"
-  if node["openstack"]["orchestration"]["rabbit"]["ha"]
+if node["openstack"]["mq"]["orchestration"]["service_type"] == "rabbitmq"
+  if node["openstack"]["mq"]["orchestration"]["rabbit"]["ha"]
     rabbit_hosts = rabbit_servers
   end
-  rabbit_pass = user_password node["openstack"]["orchestration"]["rabbit"]["username"]
+  rabbit_pass = user_password node["openstack"]["mq"]["orchestration"]["rabbit"]["userid"]
 end
 
 directory "/etc/heat" do

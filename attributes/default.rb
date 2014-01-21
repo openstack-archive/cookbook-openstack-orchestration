@@ -36,36 +36,6 @@ default['openstack']['orchestration']['region'] = 'RegionOne'
 # that Heat uses
 default['openstack']['orchestration']['rabbit_server_chef_role'] = 'os-ops-messaging'
 
-default['openstack']['orchestration']['db']['username'] = 'heat'
-
-# This user's password is stored in an encrypted databag
-# and accessed with openstack-common cookbook library's
-# user_password routine.  You are expected to create
-# the user, pass, vhost in a wrapper rabbitmq cookbook.
-default['openstack']['orchestration']['rabbit']['ha'] = false
-default['openstack']['orchestration']['rabbit']['username'] = 'guest'
-default['openstack']['orchestration']['rabbit']['vhost'] = '/'
-default['openstack']['orchestration']['rabbit']['port'] = 5672
-default['openstack']['orchestration']['rabbit']['host'] = '127.0.0.1'
-
-# MQ options
-default['openstack']['orchestration']['mq']['service_type'] = node['openstack']['mq']['service_type']
-default['openstack']['orchestration']['mq']['qpid']['host'] = '127.0.0.1'
-default['openstack']['orchestration']['mq']['qpid']['port'] = '5672'
-default['openstack']['orchestration']['mq']['qpid']['qpid_hosts'] = ['127.0.0.1:5672']
-
-default['openstack']['orchestration']['mq']['qpid']['username'] = ''
-default['openstack']['orchestration']['mq']['qpid']['password'] = ''
-default['openstack']['orchestration']['mq']['qpid']['sasl_mechanisms'] = ''
-default['openstack']['orchestration']['mq']['qpid']['reconnect_timeout'] = 0
-default['openstack']['orchestration']['mq']['qpid']['reconnect_limit'] = 0
-default['openstack']['orchestration']['mq']['qpid']['reconnect_interval_min'] = 0
-default['openstack']['orchestration']['mq']['qpid']['reconnect_interval_max'] = 0
-default['openstack']['orchestration']['mq']['qpid']['reconnect_interval'] = 0
-default['openstack']['orchestration']['mq']['qpid']['heartbeat'] = 60
-default['openstack']['orchestration']['mq']['qpid']['protocol'] = 'tcp'
-default['openstack']['orchestration']['mq']['qpid']['tcp_nodelay'] = true
-
 default['openstack']['orchestration']['service_tenant_name'] = 'service'
 default['openstack']['orchestration']['service_user'] = 'heat'
 default['openstack']['orchestration']['service_role'] = 'admin'

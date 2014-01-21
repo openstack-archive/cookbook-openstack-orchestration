@@ -22,7 +22,7 @@ describe "openstack-orchestration::common" do
   it "installs postgresql python packages if explicitly told" do
     chef_run = ::ChefSpec::Runner.new ::REDHAT_OPTS
     node = chef_run.node
-    node.set["openstack"]["db"]["orchestration"]["db_type"] = "postgresql"
+    node.set["openstack"]["db"]["orchestration"]["service_type"] = "postgresql"
     chef_run.converge "openstack-orchestration::common"
 
     expect(chef_run).to upgrade_package "python-psycopg2"
