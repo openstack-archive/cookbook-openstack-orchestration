@@ -48,7 +48,7 @@ platform_options["#{db_type}_python_packages"].each do |pkg|
 end
 
 db_user = node['openstack']['db']['orchestration']['username']
-db_pass = db_password 'heat'
+db_pass = get_password 'db', 'heat'
 sql_connection = db_uri('orchestration', db_user, db_pass)
 
 identity_endpoint = endpoint 'identity-api'
@@ -57,7 +57,7 @@ heat_api_endpoint = endpoint 'orchestration-api'
 heat_api_cfn_endpoint = endpoint 'orchestration-api-cfn'
 heat_api_cloudwatch_endpoint = endpoint 'orchestration-api-cloudwatch'
 
-service_pass = service_password 'openstack-orchestration'
+service_pass = get_password 'service', 'openstack-orchestration'
 
 # TODO(jaypipes): Move this logic and stuff into the openstack-common
 # library cookbook.
@@ -75,7 +75,7 @@ if node['openstack']['mq']['orchestration']['service_type'] == 'rabbitmq'
   if node['openstack']['mq']['orchestration']['rabbit']['ha']
     rabbit_hosts = rabbit_servers
   end
-  rabbit_pass = user_password node['openstack']['mq']['orchestration']['rabbit']['userid']
+  rabbit_pass = get_password 'user', node['openstack']['mq']['orchestration']['rabbit']['userid']
 end
 
 directory '/etc/heat' do

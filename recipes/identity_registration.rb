@@ -32,7 +32,7 @@ auth_url = ::URI.decode identity_admin_endpoint.to_s
 heat_endpoint = endpoint 'orchestration-api'
 heat_cfn_endpoint = endpoint 'orchestration-api-cfn'
 
-service_pass = service_password 'openstack-orchestration'
+service_pass = get_password 'service', 'openstack-orchestration'
 service_tenant_name = node['openstack']['orchestration']['service_tenant_name']
 service_user = node['openstack']['orchestration']['service_user']
 service_role = node['openstack']['orchestration']['service_role']

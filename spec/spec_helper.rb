@@ -20,15 +20,18 @@ def orchestration_stubs # rubocop:disable MethodLength
   ::Chef::Recipe.any_instance.stub(:secret)
     .with('secrets', 'openstack_identity_bootstrap_token')
     .and_return 'bootstrap-token'
-  ::Chef::Recipe.any_instance.stub(:db_password).and_return ''
-  ::Chef::Recipe.any_instance.stub(:user_password).and_return ''
-  ::Chef::Recipe.any_instance.stub(:user_password)
-    .with('guest')
+
+  ::Chef::Recipe.any_instance.stub(:get_password)
+    .with('db', 'heat')
+    .and_return 'heat'
+  ::Chef::Recipe.any_instance.stub(:get_password)
+    .with('user', 'guest')
     .and_return 'rabbit-pass'
-  ::Chef::Recipe.any_instance.stub(:user_password)
-    .with('admin-user')
+  ::Chef::Recipe.any_instance.stub(:get_password)
+    .with('user', 'admin-user')
     .and_return 'admin-pass'
-  ::Chef::Recipe.any_instance.stub(:service_password).with('openstack-orchestration')
+  ::Chef::Recipe.any_instance.stub(:get_password)
+    .with('service', 'openstack-orchestration')
     .and_return 'heat-pass'
   ::Chef::Application.stub(:fatal!)
 end
