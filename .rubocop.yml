@@ -7,7 +7,6 @@ AllCops:
     - providers/**
     - recipes/**
     - resources/**
-  Excludes:
     - spec/**
 
 Encoding:
