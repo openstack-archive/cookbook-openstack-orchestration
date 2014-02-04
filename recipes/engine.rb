@@ -1,3 +1,4 @@
+# encoding: UTF-8
 #
 # Cookbook Name:: openstack-orchestration
 # Recipe:: engine
@@ -17,21 +18,21 @@
 # limitations under the License.
 #
 
-include_recipe "openstack-orchestration::common"
+include_recipe 'openstack-orchestration::common'
 
-platform_options = node["openstack"]["orchestration"]["platform"]
+platform_options = node['openstack']['orchestration']['platform']
 
-platform_options["heat_engine_packages"].each do |pkg|
+platform_options['heat_engine_packages'].each do |pkg|
   package pkg do
-    options platform_options["package_overrides"]
+    options platform_options['package_overrides']
 
     action :upgrade
   end
 end
 
-service "heat_engine" do
-  service_name platform_options["heat_engine_service"]
-  supports :status => true, :restart => true
+service 'heat_engine' do
+  service_name platform_options['heat_engine_service']
+  supports status: true, restart: true
   action :enable
-  subscribes :restart, "template[/etc/heat/heat.conf]"
+  subscribes :restart, 'template[/etc/heat/heat.conf]'
 end

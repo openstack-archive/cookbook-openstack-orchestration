@@ -3,14 +3,20 @@ AllCops:
     - metadata.rb
     - Gemfile
     - attributes/**
-  Excludes:
+    - libraries/**
+    - providers/**
     - recipes/**
+    - resources/**
+  Excludes:
     - spec/**
 
-# ignore long lines
+Encoding:
+  Exclude:
+    - metadata.rb
+    - Gemfile
+
 LineLength:
   Enabled: false
 
-# Allow small arrays before forcing  %w or %W
 WordArray:
   MinSize: 3

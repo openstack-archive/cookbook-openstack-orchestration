@@ -1,3 +1,4 @@
+# encoding: UTF-8
 #
 # Cookbook Name:: openstack-orchestration
 # Recipe:: api
@@ -17,38 +18,38 @@
 # limitations under the License.
 #
 
-include_recipe "openstack-orchestration::common"
+include_recipe 'openstack-orchestration::common'
 
-platform_options = node["openstack"]["orchestration"]["platform"]
+platform_options = node['openstack']['orchestration']['platform']
 
-platform_options["heat_api_packages"].each do |pkg|
+platform_options['heat_api_packages'].each do |pkg|
   package pkg do
-    options platform_options["package_overrides"]
+    options platform_options['package_overrides']
 
     action :upgrade
   end
 end
 
-service "heat-api" do
-  service_name platform_options["heat_api_service"]
-  supports :status => true, :restart => true
+service 'heat-api' do
+  service_name platform_options['heat_api_service']
+  supports status: true, restart: true
 
   action :enable
-  subscribes :restart, "template[/etc/heat/heat.conf]"
+  subscribes :restart, 'template[/etc/heat/heat.conf]'
 end
 
-template "/etc/heat/api-paste.ini" do
-  source "api-paste.ini.erb"
-  group  node["openstack"]["orchestration"]["group"]
-  owner  node["openstack"]["orchestration"]["user"]
+template '/etc/heat/api-paste.ini' do
+  source 'api-paste.ini.erb'
+  group  node['openstack']['orchestration']['group']
+  owner  node['openstack']['orchestration']['user']
   mode   00644
-  notifies :restart, "service[heat-api]", :immediately
+  notifies :restart, 'service[heat-api]', :immediately
 end
 
-template "/etc/heat/policy.json" do
-  source "policy.json.erb"
-  group  node["openstack"]["orchestration"]["group"]
-  owner  node["openstack"]["orchestration"]["user"]
+template '/etc/heat/policy.json' do
+  source 'policy.json.erb'
+  group  node['openstack']['orchestration']['group']
+  owner  node['openstack']['orchestration']['user']
   mode   00644
-  notifies :restart, "service[heat-api]", :immediately
+  notifies :restart, 'service[heat-api]', :immediately
 end
