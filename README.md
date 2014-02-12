@@ -21,10 +21,6 @@ The following cookbooks are dependencies:
 Usage
 =====
 
-common
-------
-- Installs the heat packages and setup configuration for Heat.
-
 api
 ------
 - Configure and start heat-api service
@@ -37,11 +33,19 @@ api-cloudwatch
 ------
 - Configure and start heat-api-cloudwatch service
 
+client
+----
+- Install the heat client packages
+
+common
+------
+- Installs the heat packages and setup configuration for Heat.
+
 engine
 ------
 - Setup the heat database and start heat-engine service
 
-keystone-registration
+identity_registration
 ---------------------
 - Registers the Heat API endpoint, heat service and user
 
