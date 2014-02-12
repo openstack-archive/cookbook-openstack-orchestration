@@ -52,17 +52,6 @@ openstack_identity_register 'Register Heat Orchestration Service' do
   action :create_service
 end
 
-# Register Heat API Cloudformation Service
-openstack_identity_register 'Register Heat Cloudformation Service' do
-  auth_uri auth_url
-  bootstrap_token token
-  service_name 'heat-cfn'
-  service_type 'cloudformation'
-  service_description 'Heat Cloudformation Service'
-
-  action :create_service
-end
-
 # Register Heat API Endpoint
 openstack_identity_register 'Register Heat Orchestration Endpoint' do
   auth_uri auth_url
@@ -76,17 +65,31 @@ openstack_identity_register 'Register Heat Orchestration Endpoint' do
   action :create_endpoint
 end
 
-# Register Heat API CloudFormation Endpoint
-openstack_identity_register 'Register Heat Cloudformation Endpoint' do
-  auth_uri auth_url
-  bootstrap_token token
-  service_type 'cloudformation'
-  endpoint_region region
-  endpoint_adminurl heat_cfn_endpoint.to_s
-  endpoint_internalurl heat_cfn_endpoint.to_s
-  endpoint_publicurl heat_cfn_endpoint.to_s
+if node.run_list.include?('openstack-orchestration::api-cfn')
 
-  action :create_endpoint
+  # Register Heat API Cloudformation Service
+  openstack_identity_register 'Register Heat Cloudformation Service' do
+    auth_uri auth_url
+    bootstrap_token token
+    service_name 'heat-cfn'
+    service_type 'cloudformation'
+    service_description 'Heat Cloudformation Service'
+
+    action :create_service
+  end
+
+  # Register Heat API CloudFormation Endpoint
+  openstack_identity_register 'Register Heat Cloudformation Endpoint' do
+    auth_uri auth_url
+    bootstrap_token token
+    service_type 'cloudformation'
+    endpoint_region region
+    endpoint_adminurl heat_cfn_endpoint.to_s
+    endpoint_internalurl heat_cfn_endpoint.to_s
+    endpoint_publicurl heat_cfn_endpoint.to_s
+
+    action :create_endpoint
+  end
 end
 
 # Register Service Tenant

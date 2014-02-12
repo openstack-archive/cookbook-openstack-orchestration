@@ -29,25 +29,34 @@ describe 'openstack-orchestration::identity_registration' do
     pending 'TODO: implement'
   end
 
-  it 'Register Heat Cloudformation Service' do
-    resource = @chef_run.find_resource(
-      'openstack-identity_register',
-      'Register Heat Cloudformation Service'
-    ).to_hash
+  describe 'openstack-orchestration::identity_registration-cfn' do
+    before do
+      orchestration_stubs
+      @chef_run = ::ChefSpec::Runner.new ::REDHAT_OPTS
+      @chef_run.converge 'openstack-orchestration::identity_registration',
+                         'openstack-orchestration::api-cfn'
+    end
 
-    expect(resource).to include(
-      auth_uri: 'http://127.0.0.1:35357/v2.0',
-      bootstrap_token: 'bootstrap-token',
-      service_name: 'heat-cfn',
-      service_type: 'cloudformation',
-      service_description: 'Heat Cloudformation Service',
-      action: [:create_service]
-    )
-  end
+    it 'Register Heat Cloudformation Service' do
+      resource = @chef_run.find_resource(
+        'openstack-identity_register',
+        'Register Heat Cloudformation Service'
+      ).to_hash
 
-  # Pending on https://review.openstack.org/#/c/59088/
-  it 'Register Heat Cloudformation Endpoint' do
-    pending 'TODO: implement'
+      expect(resource).to include(
+        auth_uri: 'http://127.0.0.1:35357/v2.0',
+        bootstrap_token: 'bootstrap-token',
+        service_name: 'heat-cfn',
+        service_type: 'cloudformation',
+        service_description: 'Heat Cloudformation Service',
+        action: [:create_service]
+      )
+    end
+
+    # Pending on https://review.openstack.org/#/c/59088/
+    it 'Register Heat Cloudformation Endpoint' do
+      pending 'TODO: implement'
+    end
   end
 
   it 'registers service user' do
