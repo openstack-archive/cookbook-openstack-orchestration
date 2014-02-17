@@ -76,6 +76,7 @@ when 'fedora', 'redhat', 'centos' # :pragma-foodcritic: ~FC024 - won't fix this
   default['openstack']['orchestration']['platform'] = {
     'mysql_python_packages' => ['MySQL-python'],
     'postgresql_python_packages' => ['python-psycopg2'],
+    'db2_python_packages' => ['db2-odbc', 'python-ibm-db', 'python-ibm-db-sa'],
     'heat_common_packages' => ['openstack-heat'],
     'heat_api_packages' => ['python-heatclient'],
     'heat_api_service' => 'openstack-heat-api',
