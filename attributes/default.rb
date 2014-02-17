@@ -30,7 +30,7 @@ default['openstack']['orchestration']['debug'] = 'False'
 default['openstack']['orchestration']['identity_service_chef_role'] = 'os-identity'
 
 # Gets set in the Heat Endpoint when registering with Keystone
-default['openstack']['orchestration']['region'] = 'RegionOne'
+default['openstack']['orchestration']['region'] = node['openstack']['region']
 
 # The name of the Chef role that knows about the message queue server
 # that Heat uses
