@@ -2,5 +2,8 @@
 
 This file is used to list changes made in each version of cookbook-openstack-orchestration
 
+## 8.1.0
+* Add client recipe
+
 ## 8.0.0:
 * Initial release of cookbook-openstack-orchestration.
