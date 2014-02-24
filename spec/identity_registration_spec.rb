@@ -24,9 +24,22 @@ describe 'openstack-orchestration::identity_registration' do
     )
   end
 
-  # Pending on https://review.openstack.org/#/c/59088/
   it 'Register Heat Orchestration Endpoint' do
-    pending 'TODO: implement'
+    resource = @chef_run.find_resource(
+      'openstack-identity_register',
+      'Register Heat Orchestration Endpoint'
+    ).to_hash
+
+    expect(resource).to include(
+      auth_uri: 'http://127.0.0.1:35357/v2.0',
+      bootstrap_token: 'bootstrap-token',
+      service_type: 'orchestration',
+      endpoint_region: 'RegionOne',
+      endpoint_adminurl: 'http://127.0.0.1:8004/v1/%(tenant_id)s',
+      endpoint_internalurl: 'http://127.0.0.1:8004/v1/%(tenant_id)s',
+      endpoint_publicurl: 'http://127.0.0.1:8004/v1/%(tenant_id)s',
+      action: [:create_endpoint]
+    )
   end
 
   describe 'openstack-orchestration::identity_registration-cfn' do
@@ -55,7 +68,21 @@ describe 'openstack-orchestration::identity_registration' do
 
     # Pending on https://review.openstack.org/#/c/59088/
     it 'Register Heat Cloudformation Endpoint' do
-      pending 'TODO: implement'
+      resource = @chef_run.find_resource(
+        'openstack-identity_register',
+        'Register Heat Cloudformation Endpoint'
+      ).to_hash
+
+      expect(resource).to include(
+        auth_uri: 'http://127.0.0.1:35357/v2.0',
+        bootstrap_token: 'bootstrap-token',
+        service_type: 'cloudformation',
+        endpoint_region: 'RegionOne',
+        endpoint_adminurl: 'http://127.0.0.1:8000/v1',
+        endpoint_internalurl: 'http://127.0.0.1:8000/v1',
+        endpoint_publicurl: 'http://127.0.0.1:8000/v1',
+        action: [:create_endpoint]
+      )
     end
   end
 
