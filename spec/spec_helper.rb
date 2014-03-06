@@ -31,7 +31,7 @@ def orchestration_stubs # rubocop:disable MethodLength
     .and_return 'heat'
   ::Chef::Recipe.any_instance.stub(:get_password)
     .with('user', 'guest')
-    .and_return 'rabbit-pass'
+    .and_return 'mq-pass'
   ::Chef::Recipe.any_instance.stub(:get_password)
     .with('user', 'admin-user')
     .and_return 'admin-pass'

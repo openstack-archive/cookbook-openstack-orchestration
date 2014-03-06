@@ -357,7 +357,7 @@ rpc_response_timeout=<%= node["openstack"]["orchestration"]["rpc_response_timeou
 # SSL certification authority file (valid only if SSL enabled)
 # (string value)
 #kombu_ssl_ca_certs=
-<% if node["openstack"]["mq"]["orchestration"]["service_type"] == "rabbitmq"  %>
+<% if @mq_service_type == "rabbitmq"  %>
 <% if node["openstack"]["mq"]["orchestration"]["rabbit"]["ha"] -%>
 rabbit_hosts=<%= @rabbit_hosts %>
 #### (ListOpt) RabbitMQ HA cluster host:port pairs
@@ -382,7 +382,7 @@ rabbit_use_ssl=<%= node["openstack"]["mq"]["orchestration"]["rabbit"]["use_ssl"]
 rabbit_userid=<%= node["openstack"]["mq"]["orchestration"]["rabbit"]["userid"] %>
 #### (StrOpt) the RabbitMQ userid
 
-rabbit_password=<%= @rabbit_password %>
+rabbit_password=<%= @mq_password %>
 #### (StrOpt) the RabbitMQ password
 
 rabbit_virtual_host=<%= node["openstack"]["mq"]["orchestration"]["rabbit"]["vhost"] %>
@@ -410,7 +410,7 @@ rabbit_virtual_host=<%= node["openstack"]["mq"]["orchestration"]["rabbit"]["vhos
 #
 # Options defined in heat.openstack.common.rpc.impl_qpid
 #
-<% if node["openstack"]["mq"]["orchestration"]["service_type"] == "qpid"  %>
+<% if @mq_service_type == "qpid"  %>
 
 rpc_backend=heat.openstack.common.rpc.impl_qpid
 
@@ -427,7 +427,7 @@ qpid_port=<%= node["openstack"]["mq"]["orchestration"]["qpid"]["port"] %>
 qpid_username=<%= node["openstack"]["mq"]["orchestration"]["qpid"]["username"] %>
 
 # Password for qpid connection (string value)
-qpid_password=<%= node["openstack"]["mq"]["orchestration"]["qpid"]["password"] %>
+qpid_password=<%= @mq_password %>
 
 # Space separated list of SASL mechanisms to use for auth
 # (string value)

@@ -71,11 +71,15 @@ if node['openstack']['orchestration']['api']['auth']['version'] != 'v2.0'
   auth_uri = auth_uri.gsub('/v2.0', '')
 end
 
-if node['openstack']['mq']['orchestration']['service_type'] == 'rabbitmq'
+mq_service_type = node['openstack']['mq']['orchestration']['service_type']
+
+if mq_service_type == 'rabbitmq'
   if node['openstack']['mq']['orchestration']['rabbit']['ha']
     rabbit_hosts = rabbit_servers
   end
-  rabbit_pass = get_password 'user', node['openstack']['mq']['orchestration']['rabbit']['userid']
+  mq_password = get_password 'user', node['openstack']['mq']['orchestration']['rabbit']['userid']
+elsif mq_service_type == 'qpid'
+  mq_password = get_password 'user', node['openstack']['mq']['orchestration']['qpid']['username']
 end
 
 directory '/etc/heat' do
@@ -104,7 +108,8 @@ template '/etc/heat/heat.conf' do
   owner  node['openstack']['orchestration']['user']
   mode   00644
   variables(
-    rabbit_password: rabbit_pass,
+    mq_service_type: mq_service_type,
+    mq_password: mq_password,
     rabbit_hosts: rabbit_hosts,
     auth_uri: auth_uri,
     identity_admin_endpoint: identity_admin_endpoint,
