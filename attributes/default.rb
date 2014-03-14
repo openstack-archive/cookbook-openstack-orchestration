@@ -40,7 +40,7 @@ default['openstack']['orchestration']['service_tenant_name'] = 'service'
 default['openstack']['orchestration']['service_user'] = 'heat'
 default['openstack']['orchestration']['service_role'] = 'admin'
 
-default['openstack']['orchestration']['api']['auth']['version'] = 'v2.0'
+default['openstack']['orchestration']['api']['auth']['version'] = node['openstack']['api']['auth']['version']
 
 # If set, heat API service will bind to the address on this interface,
 # otherwise it will bind to the API endpoint's host.

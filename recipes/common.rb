@@ -59,17 +59,7 @@ heat_api_cloudwatch_endpoint = endpoint 'orchestration-api-cloudwatch'
 
 service_pass = get_password 'service', 'openstack-orchestration'
 
-# TODO(jaypipes): Move this logic and stuff into the openstack-common
-# library cookbook.
-auth_uri = identity_endpoint.to_s
-if node['openstack']['orchestration']['api']['auth']['version'] != 'v2.0'
-  # The auth_uri should contain /v2.0 in most cases, but if the
-  # auth_version is v3.0, we leave it off. This is only necessary
-  # for environments that need to support V3 non-default-domain
-  # tokens, which is really the only reason to set version to
-  # something other than v2.0 (the default)
-  auth_uri = auth_uri.gsub('/v2.0', '')
-end
+auth_uri = auth_uri_transform identity_endpoint.to_s, node['openstack']['orchestration']['api']['auth']['version']
 
 mq_service_type = node['openstack']['mq']['orchestration']['service_type']
 

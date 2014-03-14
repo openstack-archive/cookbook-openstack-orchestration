@@ -75,6 +75,7 @@ Attributes for the Heat service are in the ['openstack']['orchestration'] namesp
 * `openstack['orchestration']['rpc_conn_pool_size']` - size of RPC connection pool
 * `openstack['orchestration']['rpc_response_timeout']` - seconds to wait for a response from call or multicall
 * `openstack['orchestration']['platform']` - hash of platform specific package/service names and options
+* `openstack['orchestration']['api']['auth']['version']` - Select v2.0 or v3.0. Default v2.0. The auth API version used to interact with identity service.
 
 MQ attributes
 -------------
