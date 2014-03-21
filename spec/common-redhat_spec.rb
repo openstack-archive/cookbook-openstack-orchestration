@@ -28,7 +28,6 @@ describe 'openstack-orchestration::common' do
 
     expect(chef_run).to upgrade_package 'python-psycopg2'
     expect(chef_run).not_to upgrade_package 'MySQL-python'
-    expect(chef_run).not_to upgrade_package 'db2-odbc'
     expect(chef_run).not_to upgrade_package 'python-ibm-db'
     expect(chef_run).not_to upgrade_package 'python-ibm-db-sa'
   end
@@ -38,7 +37,6 @@ describe 'openstack-orchestration::common' do
     node = chef_run.node
     node.set['openstack']['db']['orchestration']['service_type'] = 'db2'
     chef_run.converge 'openstack-orchestration::common'
-    expect(chef_run).to upgrade_package 'db2-odbc'
     expect(chef_run).to upgrade_package 'python-ibm-db'
     expect(chef_run).to upgrade_package 'python-ibm-db-sa'
     expect(chef_run).not_to upgrade_package 'python-psycopg2'

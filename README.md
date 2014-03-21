@@ -113,8 +113,9 @@ License and Author
 |                      |                                                    |
 |:---------------------|:---------------------------------------------------|
 | **Author**           |  Zhao Fang Han (<hanzhf@cn.ibm.com>)               |
+| **Author**           |  Chen Zhiwei (<zhiwchen@cn.ibm.com>)               |
 |                      |                                                    |
-| **Copyright**        |  Copyright (c) 2013, IBM Corp.                     |
+| **Copyright**        |  Copyright (c) 2013-2014, IBM Corp.                |
 
 Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.
