@@ -1,6 +1,8 @@
 # CHANGELOG for cookbook-openstack-orchestration
 
 This file is used to list changes made in each version of cookbook-openstack-orchestration
+## 9.0.0
+* Upgrade to Icehouse
 
 ## 8.1.1
 ### Bug
