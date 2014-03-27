@@ -1,2 +1,7 @@
 .bundle/
 .cookbooks/
+.kitchen/
+.vagrant/
+.coverage/
+*.swp
+Vagrantfile
