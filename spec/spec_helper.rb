@@ -1,6 +1,9 @@
 # encoding: UTF-8
 require 'chefspec'
 require 'chefspec/berkshelf'
+
+ChefSpec::Coverage.start! { add_filter 'openstack-orchestration' }
+
 require 'chef/application'
 
 ::LOG_LEVEL = :fatal
@@ -104,9 +107,3 @@ def expect_creates_policy_json(service, user, group, action = :restart) # ruboco
     end
   end
 end
-
-# README(galstrom21): This will remove any coverage warnings from
-#   dependent cookbooks
-ChefSpec::Coverage.filters << '*/openstack-orchestration'
-
-at_exit { ChefSpec::Coverage.report! }
