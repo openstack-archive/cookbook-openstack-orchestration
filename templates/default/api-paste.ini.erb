@@ -2,7 +2,7 @@
 
 # heat-api pipeline
 [pipeline:heat-api]
-pipeline = faultwrap versionnegotiation authurl authtoken context apiv1app
+pipeline = faultwrap ssl versionnegotiation authurl authtoken context apiv1app
 
 # heat-api pipeline for standalone heat
 # ie. uses alternative auth backend that authenticates users against keystone
@@ -13,7 +13,7 @@ pipeline = faultwrap versionnegotiation authurl authtoken context apiv1app
 #   flavor = standalone
 #
 [pipeline:heat-api-standalone]
-pipeline = faultwrap versionnegotiation authpassword context apiv1app
+pipeline = faultwrap ssl versionnegotiation authurl authpassword context apiv1app
 
 # heat-api pipeline for custom cloud backends
 # i.e. in heat.conf:
@@ -74,6 +74,10 @@ paste.filter_factory = heat.common.context:ContextMiddleware_filter_factory
 
 [filter:ec2authtoken]
 paste.filter_factory = heat.api.aws.ec2token:EC2Token_filter_factory
+
+[filter:ssl]
+paste.filter_factory = heat.common.wsgi:filter_factory
+heat.filter_factory = heat.api.openstack:sslmiddleware_filter
 
 # Middleware to set auth_url header appropriately
 [filter:authurl]
