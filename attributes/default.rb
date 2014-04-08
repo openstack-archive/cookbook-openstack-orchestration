@@ -69,8 +69,8 @@ default['openstack']['orchestration']['rpc_conn_pool_size'] = 30
 default['openstack']['orchestration']['rpc_response_timeout'] = 60
 
 # platform-specific settings
-case platform
-when 'fedora', 'redhat', 'centos' # :pragma-foodcritic: ~FC024 - won't fix this
+case platform_family
+when 'fedora', 'rhel' # :pragma-foodcritic: ~FC024 - won't fix this
   default['openstack']['orchestration']['user'] = 'heat'
   default['openstack']['orchestration']['group'] = 'heat'
   default['openstack']['orchestration']['platform'] = {
@@ -90,7 +90,7 @@ when 'fedora', 'redhat', 'centos' # :pragma-foodcritic: ~FC024 - won't fix this
     'heat_api_process_name' => 'heat-api',
     'package_overrides' => ''
   }
-when 'ubuntu'
+when 'debian'
   default['openstack']['orchestration']['user'] = 'heat'
   default['openstack']['orchestration']['group'] = 'heat'
   default['openstack']['orchestration']['platform'] = {
