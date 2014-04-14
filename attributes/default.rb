@@ -68,6 +68,13 @@ default['openstack']['orchestration']['rpc_thread_pool_size'] = 64
 default['openstack']['orchestration']['rpc_conn_pool_size'] = 30
 default['openstack']['orchestration']['rpc_response_timeout'] = 60
 
+# Notification definitions
+default['openstack']['orchestration']['notification_driver'] = 'heat.openstack.common.notifier.rpc_notifier'
+default['openstack']['orchestration']['default_notification_level'] = 'INFO'
+default['openstack']['orchestration']['default_publisher_id'] = ''
+default['openstack']['orchestration']['list_notifier_drivers'] = 'heat.openstack.common.notifier.no_op_notifier'
+default['openstack']['orchestration']['notification_topics'] = 'notifications'
+
 # platform-specific settings
 case platform_family
 when 'fedora', 'rhel' # :pragma-foodcritic: ~FC024 - won't fix this

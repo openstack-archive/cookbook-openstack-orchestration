@@ -312,15 +312,15 @@ log_config = /etc/openstack/logging.conf
 
 # Driver or drivers to handle sending notifications (multi
 # valued)
-#notification_driver=
+notification_driver = <%= node['openstack']['orchestration']['notification_driver'] %>
 
 # Default notification level for outgoing notifications
 # (string value)
-#default_notification_level=INFO
+default_notification_level = <%= node['openstack']['orchestration']['default_notification_level'] %>
 
 # Default publisher_id for outgoing notifications (string
 # value)
-#default_publisher_id=<None>
+default_publisher_id = <%= node['openstack']['orchestration']['default_publisher_id'] %>
 
 
 #
@@ -328,15 +328,14 @@ log_config = /etc/openstack/logging.conf
 #
 
 # List of drivers to send notifications (multi valued)
-#list_notifier_drivers=heat.openstack.common.notifier.no_op_notifier
-
+list_notifier_drivers = <%= node['openstack']['orchestration']['list_notifier_drivers'] %>
 
 #
 # Options defined in heat.openstack.common.notifier.rpc_notifier
 #
 
 # AMQP topic used for OpenStack notifications (list value)
-#notification_topics=notifications
+notification_topics = <%= node['openstack']['orchestration']['notification_topics'] %>
 
 
 #

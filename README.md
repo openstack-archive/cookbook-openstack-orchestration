@@ -77,6 +77,14 @@ Attributes for the Heat service are in the ['openstack']['orchestration'] namesp
 * `openstack['orchestration']['platform']` - hash of platform specific package/service names and options
 * `openstack['orchestration']['api']['auth']['version']` - Select v2.0 or v3.0. Default v2.0. The auth API version used to interact with identity service.
 
+Notification definitions
+------------------------
+* `openstack['orchestration']['notification_driver']` - driver
+* `openstack['orchestration']['default_notification_level']` - level
+* `openstack['orchestration']['default_publisher_id']` - publisher id
+* `openstack['orchestration']['list_notifier_drivers']` - list of drivers
+* `openstack['orchestration']['notification_topics']` - notifications topics
+
 MQ attributes
 -------------
 * `openstack["orchestration"]["mq"]["service_type"]` - Select qpid or rabbitmq. default rabbitmq
