@@ -21,8 +21,6 @@ describe 'openstack-orchestration::api-cfn' do
 
     expect_creates_api_paste 'service[heat-api-cfn]'
 
-    expect_creates_policy_json 'service[heat-api-cfn]', 'heat', 'heat'
-
     it 'starts heat api-cfn on boot' do
       expect(@chef_run).to enable_service('openstack-heat-api-cfn')
     end

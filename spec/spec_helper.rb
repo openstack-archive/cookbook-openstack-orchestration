@@ -86,24 +86,3 @@ def expect_creates_api_paste(service, action = :restart) # rubocop:disable Metho
     end
   end
 end
-
-def expect_creates_policy_json(service, user, group, action = :restart) # rubocop:disable MethodLength
-  describe 'policy.json' do
-    before do
-      @template = @chef_run.template '/etc/heat/policy.json'
-    end
-
-    it 'has proper owner' do
-      expect(@template.owner).to eq(user)
-      expect(@template.group).to eq(group)
-    end
-
-    it 'has proper modes' do
-      expect(sprintf('%o', @template.mode)).to eq '644'
-    end
-
-    it 'notifies service restart' do
-      expect(@template).to notify(service).to(action)
-    end
-  end
-end

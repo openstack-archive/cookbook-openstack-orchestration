@@ -21,8 +21,6 @@ describe 'openstack-orchestration::api' do
 
     expect_creates_api_paste 'service[heat-api]'
 
-    expect_creates_policy_json 'service[heat-api]', 'heat', 'heat'
-
     it 'starts heat api on boot' do
       expect(@chef_run).to enable_service('openstack-heat-api')
     end

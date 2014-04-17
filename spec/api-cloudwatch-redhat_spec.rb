@@ -21,8 +21,6 @@ describe 'openstack-orchestration::api-cloudwatch' do
 
     expect_creates_api_paste 'service[heat-api-cloudwatch]'
 
-    expect_creates_policy_json 'service[heat-api-cloudwatch]', 'heat', 'heat'
-
     it 'starts heat api-cloudwatch on boot' do
       expect(@chef_run).to enable_service('openstack-heat-api-cloudwatch')
     end
