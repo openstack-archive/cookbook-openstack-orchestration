@@ -1,6 +1,10 @@
 # CHANGELOG for cookbook-openstack-orchestration
 
 This file is used to list changes made in each version of cookbook-openstack-orchestration
+
+## 9.1.1
+* Revert bug 1279577 Create api-cfn identity registrations bug 1309123
+
 ## 9.1.0
 * Add notification attributes
 
