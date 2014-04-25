@@ -110,6 +110,22 @@ TODO: move rabbit parameters under openstack["orchestration"]["mq"]
 * `openstack["orchestration"]["mq"]["qpid"]["protocol"]` - Protocol to use. Default tcp.
 * `openstack["orchestration"]["mq"]["qpid"]["tcp_nodelay"]` - Disable the Nagle algorithm. default disabled.
 
+The following attributes are defined in attributes/default.rb of the common cookbook, but are documented here due to their relevance:
+
+* `openstack['endpoints']['orchestration-api-bind']['host']` - The IP address to bind the service to
+* `openstack['endpoints']['orchestration-api-bind']['port']` - The port to bind the service to
+* `openstack['endpoints']['orchestration-api-bind']['bind_interface']` - The interface name to bind the service to
+
+* `openstack['endpoints']['orchestration-api-cfn-bind']['host']` - The IP address to bind the service to
+* `openstack['endpoints']['orchestration-api-cfn-bind']['port']` - The port to bind the service to
+* `openstack['endpoints']['orchestration-api-cfn-bind']['bind_interface']` - The interface name to bind the-cfn service to
+
+* `openstack['endpoints']['orchestration-api-cloudwatch-bind']['host']` - The IP address to bind the service to
+* `openstack['endpoints']['orchestration-api-cloudwatch-bind']['port']` - The port to bind the service to
+* `openstack['endpoints']['orchestration-api-cloudwatch-bind']['bind_interface']` - The interface name to bind the-cloudwatch service to
+
+If the value of the 'bind_interface' attribute is non-nil, then the service will be bound to the first IP address on that interface. If the value of the 'bind_interface' attribute is nil, then the service will be bound to the IP address specifie>
+
 Testing
 =====
 
