@@ -1,6 +1,8 @@
 # CHANGELOG for cookbook-openstack-orchestration
 
 This file is used to list changes made in each version of cookbook-openstack-orchestration
+## 8.1.2
+* Use attributes from *-bind namespace for deriving local IP/port to bind to
 
 ## 8.1.1
 ### Bug
