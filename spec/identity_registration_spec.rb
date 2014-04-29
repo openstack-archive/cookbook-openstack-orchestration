@@ -46,8 +46,10 @@ describe 'openstack-orchestration::identity_registration' do
     before do
       orchestration_stubs
       @chef_run = ::ChefSpec::Runner.new ::REDHAT_OPTS
-      @chef_run.converge 'openstack-orchestration::identity_registration',
-                         'openstack-orchestration::api-cfn'
+      @chef_run.converge 'openstack-orchestration::identity_registration'
+# TODO: (MRV) Revert this change until a better solution can be found
+# Bug: #1309123   reverts 1279577
+#                         'openstack-orchestration::api-cfn'
     end
 
     it 'Register Heat Cloudformation Service' do
