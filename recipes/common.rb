@@ -26,11 +26,12 @@ if node['openstack']['orchestration']['syslog']['use']
   include_recipe 'openstack-common::logging'
 end
 
-package 'python-keystone' do
+platform_options = node['openstack']['orchestration']['platform']
+
+package 'python-keystoneclient' do
+  options platform_options['package_overrides']
   action :upgrade
 end
-
-platform_options = node['openstack']['orchestration']['platform']
 
 platform_options['heat_common_packages'].each do |pkg|
   package pkg do

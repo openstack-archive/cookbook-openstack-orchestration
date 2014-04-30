@@ -8,9 +8,7 @@ describe 'openstack-orchestration::common' do
     @chef_run.converge 'openstack-orchestration::common'
   end
 
-  it 'installs python-keystone' do
-    expect(@chef_run).to upgrade_package 'python-keystone'
-  end
+  expect_installs_python_keystoneclient
 
   it 'installs the openstack-heat package' do
     expect(@chef_run).to upgrade_package 'openstack-heat'

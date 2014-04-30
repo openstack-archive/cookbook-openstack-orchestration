@@ -12,8 +12,8 @@ describe 'openstack-orchestration::api-cfn' do
     end
 
     expect_runs_openstack_orchestration_common_recipe
-
     expect_runs_openstack_common_logging_recipe
+    expect_installs_python_keystoneclient
 
     it 'installs heat client packages' do
       expect(@chef_run).to upgrade_package 'python-heatclient'

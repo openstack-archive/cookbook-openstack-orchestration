@@ -1,6 +1,9 @@
 # CHANGELOG for cookbook-openstack-orchestration
 
 This file is used to list changes made in each version of cookbook-openstack-orchestration
+## 9.1.3
+* Fix package reference, need keystone client not keystone
+
 ## 9.1.2
 * Fix endpoint ref in heat conf
 

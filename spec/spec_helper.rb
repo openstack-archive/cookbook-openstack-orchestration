@@ -50,9 +50,9 @@ def expect_runs_openstack_orchestration_common_recipe
   end
 end
 
-def expect_installs_python_keystone
-  it 'installs python-keystone' do
-    expect(@chef_run).to upgrade_package 'python-keystone'
+def expect_installs_python_keystoneclient
+  it 'installs python-keystoneclient' do
+    expect(@chef_run).to upgrade_package 'python-keystoneclient'
   end
 end
 

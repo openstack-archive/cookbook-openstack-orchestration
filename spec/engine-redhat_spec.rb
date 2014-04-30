@@ -10,6 +10,7 @@ describe 'openstack-orchestration::engine' do
     end
 
     expect_runs_openstack_orchestration_common_recipe
+    expect_installs_python_keystoneclient
 
     it 'does not run logging recipe' do
       expect(@chef_run).not_to include_recipe 'openstack-common::logging'
