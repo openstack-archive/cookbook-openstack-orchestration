@@ -1,6 +1,9 @@
 # CHANGELOG for cookbook-openstack-orchestration
 
 This file is used to list changes made in each version of cookbook-openstack-orchestration
+## 9.1.4
+* Fix ability to configure separate endpoint and bind addresses
+
 ## 9.1.3
 * Fix package reference, need keystone client not keystone
 
