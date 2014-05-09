@@ -121,6 +121,6 @@ describe 'openstack-orchestration::common' do
 
   it 'runs db migrations' do
     cmd = 'heat-manage db_sync'
-    expect(@chef_run).to run_execute(cmd)
+    expect(@chef_run).to run_execute(cmd).with(user: 'heat', group: 'heat')
   end
 end

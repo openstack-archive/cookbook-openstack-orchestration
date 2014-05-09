@@ -120,6 +120,8 @@ template '/etc/heat/environment.d/default.yaml' do
 end
 
 execute 'heat-manage db_sync' do
+  user node['openstack']['orchestration']['user']
+  group node['openstack']['orchestration']['group']
   command 'heat-manage db_sync'
   action :run
 end
