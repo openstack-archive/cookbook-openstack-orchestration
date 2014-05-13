@@ -90,7 +90,7 @@ describe 'openstack-orchestration::common' do
     # TODO: (MRV) Add rest of conf items
     [
       %r{^heat_metadata_server_url=http://127.0.0.1:8000$},
-      %r{^heat_waitcondition_server_url=http://127.0.0.1:8000/waitcondition$},
+      %r{^heat_waitcondition_server_url=http://127.0.0.1:8000/v1/waitcondition$},
       %r{^heat_watch_server_url=http://127.0.0.1:8003$}
     ].each do |content|
       it "has a #{content.source[1...-1]} line" do
