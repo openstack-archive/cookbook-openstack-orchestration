@@ -91,7 +91,8 @@ describe 'openstack-orchestration::common' do
     [
       %r{^heat_metadata_server_url=http://127.0.0.1:8000$},
       %r{^heat_waitcondition_server_url=http://127.0.0.1:8000/v1/waitcondition$},
-      %r{^heat_watch_server_url=http://127.0.0.1:8003$}
+      %r{^heat_watch_server_url=http://127.0.0.1:8003$},
+      %r{^signing_dir=/var/cache/heat$}
     ].each do |content|
       it "has a #{content.source[1...-1]} line" do
         expect(@chef_run).to render_file(@template.name).with_content(content)
