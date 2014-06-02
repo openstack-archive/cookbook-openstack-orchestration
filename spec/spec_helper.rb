@@ -9,7 +9,7 @@ require 'chef/application'
 ::LOG_LEVEL = :fatal
 ::REDHAT_OPTS = {
   platform: 'redhat',
-  version: '6.3',
+  version: '6.5',
   log_level: ::LOG_LEVEL
 }
 ::UBUNTU_OPTS = {
@@ -18,71 +18,228 @@ require 'chef/application'
   log_level: ::LOG_LEVEL
 }
 
-# TDODO(chrislaco) factor these into shared_context/examples
-def orchestration_stubs # rubocop:disable MethodLength
-  ::Chef::Recipe.any_instance.stub(:rabbit_servers)
-    .and_return '1.1.1.1:5672,2.2.2.2:5672'
-  ::Chef::Recipe.any_instance.stub(:address_for)
-    .with('lo')
-    .and_return '127.0.1.1'
-  ::Chef::Recipe.any_instance.stub(:get_secret)
-    .with('openstack_identity_bootstrap_token')
-    .and_return 'bootstrap-token'
+shared_context 'orchestration_stubs' do
+  before do
+    ::Chef::Recipe.any_instance.stub(:rabbit_servers)
+      .and_return '1.1.1.1:5672,2.2.2.2:5672'
+    ::Chef::Recipe.any_instance.stub(:address_for)
+      .with('lo')
+      .and_return '127.0.1.1'
+    ::Chef::Recipe.any_instance.stub(:get_secret)
+      .with('openstack_identity_bootstrap_token')
+      .and_return 'bootstrap-token'
 
-  ::Chef::Recipe.any_instance.stub(:get_password)
-    .with('db', 'heat')
-    .and_return 'heat'
-  ::Chef::Recipe.any_instance.stub(:get_password)
-    .with('user', 'guest')
-    .and_return 'mq-pass'
-  ::Chef::Recipe.any_instance.stub(:get_password)
-    .with('user', 'admin-user')
-    .and_return 'admin-pass'
-  ::Chef::Recipe.any_instance.stub(:get_password)
-    .with('service', 'openstack-orchestration')
-    .and_return 'heat-pass'
-  ::Chef::Application.stub(:fatal!)
+    ::Chef::Recipe.any_instance.stub(:get_password)
+      .with('db', 'heat')
+      .and_return 'heat'
+    ::Chef::Recipe.any_instance.stub(:get_password)
+      .with('user', 'guest')
+      .and_return 'mq-pass'
+    ::Chef::Recipe.any_instance.stub(:get_password)
+      .with('user', 'admin-user')
+      .and_return 'admin-pass'
+    ::Chef::Recipe.any_instance.stub(:get_password)
+      .with('service', 'openstack-orchestration')
+      .and_return 'heat-pass'
+    ::Chef::Application.stub(:fatal!)
+  end
 end
 
-def expect_runs_openstack_orchestration_common_recipe
+shared_examples 'expect runs openstack orchestration common recipe' do
   it 'runs orchestration common recipe' do
-    expect(@chef_run).to include_recipe 'openstack-orchestration::common'
+    expect(chef_run).to include_recipe 'openstack-orchestration::common'
   end
 end
 
-def expect_installs_python_keystoneclient
+shared_examples 'expect installs python keystoneclient' do
   it 'installs python-keystoneclient' do
-    expect(@chef_run).to upgrade_package 'python-keystoneclient'
+    expect(chef_run).to upgrade_package 'python-keystoneclient'
   end
 end
 
-def expect_runs_openstack_common_logging_recipe
+shared_examples 'expect runs openstack common logging recipe' do
   it 'runs logging recipe if node attributes say to' do
-    expect(@chef_run).to include_recipe 'openstack-common::logging'
+    expect(chef_run).to include_recipe 'openstack-common::logging'
   end
 end
 
 def expect_creates_api_paste(service, action = :restart) # rubocop:disable MethodLength
   describe 'api-paste.ini' do
-    before do
-      @template = @chef_run.template '/etc/heat/api-paste.ini'
-    end
+    let(:template) { chef_run.template('/etc/heat/api-paste.ini') }
 
-    it 'has proper owner' do
-      expect(@template.owner).to eq('heat')
-      expect(@template.group).to eq('heat')
-    end
-
-    it 'has proper modes' do
-      expect(sprintf('%o', @template.mode)).to eq '644'
-    end
-
-    it 'template contents' do
-      pending 'TODO: implement'
+    it 'creates the heat.conf file' do
+      expect(chef_run).to create_template(template.name).with(
+        owner: 'heat',
+        group: 'heat',
+        mode: 0644
+      )
     end
 
     it 'notifies heat-api restart' do
-      expect(@template).to notify(service).to(action)
+      expect(template).to notify(service).to(action)
+    end
+  end
+end
+
+shared_examples 'expect installs common heat package' do
+  it 'installs the openstack-heat package' do
+    expect(chef_run).to upgrade_package 'openstack-heat'
+  end
+end
+
+shared_examples 'expect installs mysql package' do
+  it 'installs mysql python packages by default' do
+    expect(chef_run).to upgrade_package 'MySQL-python'
+  end
+end
+
+shared_examples 'expect runs db migrations' do
+  it 'runs db migrations' do
+    expect(chef_run).to run_execute('heat-manage db_sync').with(user: 'heat', group: 'heat')
+  end
+end
+
+shared_examples 'expects to create heat directories' do
+  it 'creates /etc/heat' do
+    expect(chef_run).to create_directory('/etc/heat').with(
+          owner: 'heat',
+          group: 'heat',
+          mode: 0700
+        )
+  end
+
+  it 'creates /etc/heat/environment.d' do
+    expect(chef_run).to create_directory('/etc/heat/environment.d').with(
+          owner: 'heat',
+          group: 'heat',
+          mode: 0700
+        )
+  end
+
+  it 'creates /var/cache/heat' do
+    expect(chef_run).to create_directory('/var/cache/heat').with(
+          owner: 'heat',
+          group: 'heat',
+          mode: 0700
+        )
+  end
+end
+
+shared_examples 'expects to create heat conf' do
+  describe 'heat.conf' do
+    let(:file) { chef_run.template('/etc/heat/heat.conf') }
+
+    it 'creates the heat.conf file' do
+      expect(chef_run).to create_template(file.name).with(
+        owner: 'heat',
+        group: 'heat',
+        mode: 0644
+      )
+    end
+
+    describe 'default values' do
+      it 'has default conf values' do
+        [
+          %r{^sql_connection=mysql://heat:heat@127.0.0.1:3306/heat\?charset=utf8$},
+          %r{^heat_metadata_server_url=http://127.0.0.1:8000$},
+          %r{^heat_waitcondition_server_url=http://127.0.0.1:8000/v1/waitcondition$},
+          %r{^heat_watch_server_url=http://127.0.0.1:8003$},
+          %r{^signing_dir=/var/cache/heat$},
+          /^debug=False$/,
+          /^verbose=False$/,
+          /^notification_driver = heat.openstack.common.notifier.rpc_notifier$/,
+          /^default_notification_level = INFO$/,
+          /^default_publisher_id = $/,
+          /^list_notifier_drivers = heat.openstack.common.notifier.no_op_notifier$/,
+          /^notification_topics = notifications$/,
+          /^rpc_thread_pool_size=64$/,
+          /^rpc_conn_pool_size=30$/,
+          /^rpc_response_timeout=60$/,
+          /^amqp_durable_queues=false$/,
+          /^amqp_auto_delete=false$/,
+          /^rabbit_host=127.0.0.1$/,
+          /^rabbit_port=5672$/,
+          /^rabbit_use_ssl=false$/,
+          /^rabbit_userid=guest$/,
+          /^rabbit_password=mq-pass$/,
+          /^rabbit_virtual_host=\/$/,
+          /^bind_host=127.0.0.1$/,
+          /^bind_port=8004$/,
+          /^auth_host=127.0.0.1$/,
+          /^auth_port=35357$/,
+          /^auth_protocol=http$/,
+          %r{^auth_uri=http://127.0.0.1:5000/v2.0$},
+          /^auth_version=v2.0$/,
+          /^admin_user=heat$/,
+          /^admin_password=heat-pass$/,
+          /^admin_tenant_name=service$/,
+          %r{^signing_dir=/var/cache/heat$},
+          /^region_name_for_services=RegionOne$/
+        ].each do |line|
+          expect(chef_run).to render_file(file.name).with_content(line)
+        end
+      end
+    end
+
+    describe 'has qpid values' do
+      it 'has default qpid_* values' do
+        node.set['openstack']['mq']['orchestration']['service_type'] = 'qpid'
+
+        [
+          /^qpid_hostname=127.0.0.1$/,
+          /^qpid_port=5672$/,
+          /^qpid_username=guest$/,
+          /^qpid_password=mq-pass$/,
+          /^qpid_sasl_mechanisms=$/,
+          /^qpid_heartbeat=60$/,
+          /^qpid_protocol=tcp$/,
+          /^qpid_tcp_nodelay=true$/,
+          /^qpid_reconnect_timeout=0$/,
+          /^qpid_reconnect_limit=0$/,
+          /^qpid_reconnect_interval_min=0$/,
+          /^qpid_reconnect_interval_max=0$/,
+          /^qpid_reconnect_interval=0$/,
+          /^qpid_topology_version=1$/
+        ].each do |line|
+          expect(chef_run).to render_file(file.name).with_content(line)
+        end
+      end
+    end
+  end
+end
+
+shared_examples 'expects to create heat default.yaml' do
+  describe 'default.yaml' do
+    let(:file) { chef_run.template('/etc/heat/environment.d/default.yaml') }
+
+    it 'creates the default.yaml file' do
+      expect(chef_run).to create_template(file.name).with(
+        owner: 'heat',
+        group: 'heat',
+        mode: 0644
+      )
+    end
+  end
+end
+
+shared_examples 'logging' do
+  context 'with logging enabled' do
+    before do
+      node.set['openstack']['orchestration']['syslog']['use'] = true
+    end
+
+    it 'runs logging recipe if node attributes say to' do
+      expect(chef_run).to include_recipe 'openstack-common::logging'
+    end
+  end
+
+  context 'with logging disabled' do
+    before do
+      node.set['openstack']['orchestration']['syslog']['use'] = false
+    end
+
+    it "doesn't run logging recipe" do
+      expect(chef_run).not_to include_recipe 'openstack-common::logging'
     end
   end
 end
