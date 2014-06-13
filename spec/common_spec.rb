@@ -98,6 +98,27 @@ describe 'openstack-orchestration::common' do
         expect(@chef_run).to render_file(@template.name).with_content(content)
       end
     end
+
+    it 'has default RPC/AMQP options set' do
+      [/^rpc_thread_pool_size=64$/,
+       /^rpc_conn_pool_size=30$/,
+       /^rpc_response_timeout=60$/,
+       /^amqp_durable_queues=false$/,
+       /^amqp_auto_delete=false$/].each do |line|
+        expect(@chef_run).to render_file(@template.name).with_content(line)
+      end
+    end
+
+    it 'has default qpid topology version' do
+      chef_run = ::ChefSpec::Runner.new ::UBUNTU_OPTS
+      node = chef_run.node
+      node.set['openstack']['mq']['orchestration']['service_type'] = 'qpid'
+      chef_run.converge 'openstack-orchestration::common'
+
+      expect(chef_run).to render_file(@template.name).with_content(
+        /^qpid_topology_version=1$/)
+    end
+
   end
 
   describe 'default.yaml' do

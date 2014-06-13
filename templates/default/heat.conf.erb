@@ -390,10 +390,10 @@ rpc_response_timeout=<%= node["openstack"]["orchestration"]["rpc_response_timeou
 
 # Use durable queues in amqp. (boolean value)
 # Deprecated group/name - [DEFAULT]/rabbit_durable_queues
-#amqp_durable_queues=false
+amqp_durable_queues=<%= node['openstack']['mq']['orchestration']['durable_queues'] %>
 
 # Auto-delete queues in amqp. (boolean value)
-#amqp_auto_delete=false
+amqp_auto_delete=<%= node['openstack']['mq']['orchestration']['auto_delete'] %>
 
 
 #
@@ -503,7 +503,7 @@ qpid_tcp_nodelay=<%= node["openstack"]["mq"]["orchestration"]["qpid"]["tcp_nodel
 # to work.  Users should update to version 2 when they are
 # able to take everything down, as it requires a clean break.
 # (integer value)
-#qpid_topology_version=1
+qpid_topology_version=<%= node['openstack']['mq']['orchestration']['qpid']['topology_version'] %>
 
 qpid_reconnect_timeout=<%= node["openstack"]["mq"]["orchestration"]["qpid"]["reconnect_timeout"] %>
 qpid_reconnect_limit=<%= node["openstack"]["mq"]["orchestration"]["qpid"]["reconnect_limit"] %>
