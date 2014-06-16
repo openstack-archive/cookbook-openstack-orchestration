@@ -109,6 +109,15 @@ describe 'openstack-orchestration::common' do
       end
     end
 
+    it 'has default region name for services' do
+      node = @chef_run.node
+      node.set['openstack']['orchestration']['region'] = 'RegionOne'
+      @chef_run.converge 'openstack-orchestration::common'
+
+      expect(@chef_run).to render_file(@template.name).with_content(
+        /^region_name_for_services=RegionOne$/)
+    end
+
     it 'has default qpid topology version' do
       chef_run = ::ChefSpec::Runner.new ::UBUNTU_OPTS
       node = chef_run.node

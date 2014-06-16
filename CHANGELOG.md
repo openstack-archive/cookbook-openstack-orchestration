@@ -1,6 +1,9 @@
 # CHANGELOG for cookbook-openstack-orchestration
 
 This file is used to list changes made in each version of cookbook-openstack-orchestration
+## 9.1.6
+* Allow region_name_for_services to be overridden
+
 ## 9.1.5
 * Fix to properly set signing_dir
 

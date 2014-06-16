@@ -104,7 +104,7 @@ heat_watch_server_url=http://<%= @heat_api_cloudwatch_endpoint.host %>:<%= @heat
 
 # Default region name used to get services endpoints. (string
 # value)
-#region_name_for_services=<None>
+region_name_for_services=<%= node['openstack']['orchestration']['region'] %>
 
 # Keystone role for heat template-defined users. (string
 # value)
