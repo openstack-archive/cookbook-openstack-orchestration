@@ -34,6 +34,8 @@ platform_options['heat_api_cloudwatch_packages'].each do |pkg|
   end
 end
 
+package "heat-api-cloudwatch"
+
 service 'heat-api-cloudwatch' do
   service_name platform_options['heat_api_cloudwatch_service']
   supports status: true, restart: true
