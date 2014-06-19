@@ -2,7 +2,7 @@
 
 # heat-api pipeline
 [pipeline:heat-api]
-pipeline = faultwrap versionnegotiation authurl authtoken context apiv1app
+pipeline = faultwrap versionnegotiation authtoken context apiv1app
 
 # heat-api pipeline for standalone heat
 # ie. uses alternative auth backend that authenticates users against keystone
@@ -74,10 +74,6 @@ paste.filter_factory = heat.common.context:ContextMiddleware_filter_factory
 
 [filter:ec2authtoken]
 paste.filter_factory = heat.api.aws.ec2token:EC2Token_filter_factory
-
-# Middleware to set auth_url header appropriately
-[filter:authurl]
-paste.filter_factory = heat.common.auth_url:filter_factory
 
 # Auth middleware that validates token against keystone
 [filter:authtoken]
