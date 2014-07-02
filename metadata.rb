@@ -4,7 +4,7 @@ maintainer        'IBM, Inc.'
 license           'Apache 2.0'
 description       'Installs and configures the Heat Service'
 long_description  IO.read(File.join(File.dirname(__FILE__), 'README.md'))
-version           '9.1.6'
+version           '9.2'
 recipe            'openstack-orchestration::api', 'Start and configure the Heat API service'
 recipe            'openstack-orchestration::api-cfn', 'Start and configure the Heat API CloudFormation service'
 recipe            'openstack-orchestration::api-cloudwatch', 'Start and configure the Heat API CloudWatch service'
@@ -17,5 +17,5 @@ recipe            'openstack-orchestration::identity_registration', 'Registers H
   supports os
 end
 
-depends           'openstack-common', '~> 9.4'
+depends           'openstack-common', '~> 9.5'
 depends           'openstack-identity', '~> 9.0'

@@ -4,6 +4,7 @@
 # Recipe:: engine
 #
 # Copyright 2013, IBM Corp.
+# Copyright 2014, SUSE Linux, GmbH.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -42,7 +43,7 @@ platform_options['heat_common_packages'].each do |pkg|
 end
 
 db_type = node['openstack']['db']['orchestration']['service_type']
-platform_options["#{db_type}_python_packages"].each do |pkg|
+node['openstack']['db']['python_packages'][db_type].each do |pkg|
   package pkg do
     action :upgrade
   end

@@ -81,9 +81,6 @@ when 'fedora', 'rhel' # :pragma-foodcritic: ~FC024 - won't fix this
   default['openstack']['orchestration']['user'] = 'heat'
   default['openstack']['orchestration']['group'] = 'heat'
   default['openstack']['orchestration']['platform'] = {
-    'mysql_python_packages' => ['MySQL-python'],
-    'postgresql_python_packages' => ['python-psycopg2'],
-    'db2_python_packages' => ['python-ibm-db', 'python-ibm-db-sa'],
     'heat_common_packages' => ['openstack-heat'],
     'heat_client_packages' => ['python-heatclient'],
     'heat_api_packages' => ['python-heatclient'],
@@ -101,8 +98,6 @@ when 'debian'
   default['openstack']['orchestration']['user'] = 'heat'
   default['openstack']['orchestration']['group'] = 'heat'
   default['openstack']['orchestration']['platform'] = {
-    'mysql_python_packages' => ['python-mysqldb'],
-    'postgresql_python_packages' => ['python-psycopg2'],
     'heat_common_packages' => ['heat-common'],
     'heat_client_packages' => ['python-heatclient'],
     'heat_api_packages' => ['heat-api', 'python-heatclient'],
