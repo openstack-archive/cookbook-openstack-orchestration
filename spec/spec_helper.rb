@@ -1,4 +1,5 @@
 # encoding: UTF-8
+require 'rspec/expectations'
 require 'chefspec'
 require 'chefspec/berkshelf'
 require 'chef/application'
@@ -71,7 +72,7 @@ def expect_creates_api_paste(service, action = :restart) # rubocop:disable Metho
     end
 
     it 'has proper modes' do
-      expect(sprintf('%o', @template.mode)).to eq '644'
+      expect(format('%o', @template.mode)).to eq '644'
     end
 
     it 'template contents' do
@@ -96,7 +97,7 @@ def expect_creates_policy_json(service, user, group, action = :restart) # ruboco
     end
 
     it 'has proper modes' do
-      expect(sprintf('%o', @template.mode)).to eq '644'
+      expect(format('%o', @template.mode)).to eq '644'
     end
 
     it 'notifies service restart' do
@@ -104,9 +105,5 @@ def expect_creates_policy_json(service, user, group, action = :restart) # ruboco
     end
   end
 end
-
-# README(galstrom21): This will remove any coverage warnings from
-#   dependent cookbooks
-ChefSpec::Coverage.filters << '*/openstack-orchestration'
 
 at_exit { ChefSpec::Coverage.report! }

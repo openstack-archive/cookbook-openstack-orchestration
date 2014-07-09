@@ -53,7 +53,7 @@ describe 'openstack-orchestration::common' do
     end
 
     it 'has proper modes' do
-      expect(sprintf('%o', @dir.mode)).to eq '700'
+      expect(format('%o', @dir.mode)).to eq '700'
     end
 
   end
@@ -68,7 +68,7 @@ describe 'openstack-orchestration::common' do
     end
 
     it 'has proper modes' do
-      expect(sprintf('%o', @dir.mode)).to eq '700'
+      expect(format('%o', @dir.mode)).to eq '700'
     end
 
   end
@@ -83,7 +83,7 @@ describe 'openstack-orchestration::common' do
     end
 
     it 'has proper modes' do
-      expect(sprintf('%o', @dir.mode)).to eq '700'
+      expect(format('%o', @dir.mode)).to eq '700'
     end
   end
 
@@ -97,7 +97,7 @@ describe 'openstack-orchestration::common' do
     end
 
     it 'has proper modes' do
-      expect(sprintf('%o', @template.mode)).to eq '644'
+      expect(format('%o', @template.mode)).to eq '644'
     end
 
     # Pending on https://review.openstack.org/#/c/59088/
@@ -117,7 +117,7 @@ describe 'openstack-orchestration::common' do
     end
 
     it 'has proper modes' do
-      expect(sprintf('%o', @template.mode)).to eq '644'
+      expect(format('%o', @template.mode)).to eq '644'
     end
   end
 

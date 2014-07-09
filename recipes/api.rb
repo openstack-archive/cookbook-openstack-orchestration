@@ -40,16 +40,16 @@ end
 
 template '/etc/heat/api-paste.ini' do
   source 'api-paste.ini.erb'
-  group  node['openstack']['orchestration']['group']
-  owner  node['openstack']['orchestration']['user']
-  mode   00644
+  group node['openstack']['orchestration']['group']
+  owner node['openstack']['orchestration']['user']
+  mode 00644
   notifies :restart, 'service[heat-api]', :immediately
 end
 
 template '/etc/heat/policy.json' do
   source 'policy.json.erb'
-  group  node['openstack']['orchestration']['group']
-  owner  node['openstack']['orchestration']['user']
-  mode   00644
+  group node['openstack']['orchestration']['group']
+  owner node['openstack']['orchestration']['user']
+  mode 00644
   notifies :restart, 'service[heat-api]', :immediately
 end
