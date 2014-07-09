@@ -30,6 +30,8 @@ platform_options['heat_api_cfn_packages'].each do |pkg|
   end
 end
 
+package "heat-api-cfn"
+
 service 'heat-api-cfn' do
   service_name platform_options['heat_api_cfn_service']
   supports status: true, restart: true
