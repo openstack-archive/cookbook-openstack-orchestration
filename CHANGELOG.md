@@ -6,6 +6,7 @@ This file is used to list changes made in each version of cookbook-openstack-orc
 * python_packages database client attributes have been migrated to
 the -common cookbook
 * bump berkshelf to 2.0.18 to allow Supermarket support
+* fix fauxhai version for suse and redhat
 
 ## 9.1.6
 * Allow region_name_for_services to be overridden
