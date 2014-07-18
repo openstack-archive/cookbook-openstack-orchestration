@@ -2,22 +2,16 @@
 require_relative 'spec_helper'
 
 describe 'openstack-orchestration::engine' do
-  before { orchestration_stubs }
   describe 'redhat' do
-    before do
-      @chef_run = ::ChefSpec::Runner.new ::REDHAT_OPTS
-      @chef_run.converge 'openstack-orchestration::engine'
-    end
+    let(:runner) { ChefSpec::Runner.new(REDHAT_OPTS) }
+    let(:node) { runner.node }
+    let(:chef_run) { runner.converge(described_recipe) }
 
-    expect_runs_openstack_orchestration_common_recipe
-    expect_installs_python_keystoneclient
-
-    it 'does not run logging recipe' do
-      expect(@chef_run).not_to include_recipe 'openstack-common::logging'
-    end
+    include_context 'orchestration_stubs'
+    include_examples 'expect runs openstack orchestration common recipe'
 
     it 'starts heat engine on boot' do
-      expect(@chef_run).to enable_service('openstack-heat-engine')
+      expect(chef_run).to enable_service('openstack-heat-engine')
     end
   end
 end
