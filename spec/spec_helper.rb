@@ -25,28 +25,28 @@ SUSE_OPTS = {
 
 shared_context 'orchestration_stubs' do
   before do
-    ::Chef::Recipe.any_instance.stub(:rabbit_servers)
+    allow_any_instance_of(Chef::Recipe).to receive(:rabbit_servers)
       .and_return '1.1.1.1:5672,2.2.2.2:5672'
-    ::Chef::Recipe.any_instance.stub(:address_for)
+    allow_any_instance_of(Chef::Recipe).to receive(:address_for)
       .with('lo')
       .and_return '127.0.1.1'
-    ::Chef::Recipe.any_instance.stub(:get_secret)
+    allow_any_instance_of(Chef::Recipe).to receive(:get_secret)
       .with('openstack_identity_bootstrap_token')
       .and_return 'bootstrap-token'
 
-    ::Chef::Recipe.any_instance.stub(:get_password)
+    allow_any_instance_of(Chef::Recipe).to receive(:get_password)
       .with('db', 'heat')
       .and_return 'heat'
-    ::Chef::Recipe.any_instance.stub(:get_password)
+    allow_any_instance_of(Chef::Recipe).to receive(:get_password)
       .with('user', 'guest')
       .and_return 'mq-pass'
-    ::Chef::Recipe.any_instance.stub(:get_password)
+    allow_any_instance_of(Chef::Recipe).to receive(:get_password)
       .with('user', 'admin-user')
       .and_return 'admin-pass'
-    ::Chef::Recipe.any_instance.stub(:get_password)
+    allow_any_instance_of(Chef::Recipe).to receive(:get_password)
       .with('service', 'openstack-orchestration')
       .and_return 'heat-pass'
-    ::Chef::Application.stub(:fatal!)
+    allow(Chef::Application).to receive(:fatal!)
   end
 end
 
