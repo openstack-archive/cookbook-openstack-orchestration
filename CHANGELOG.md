@@ -2,6 +2,9 @@
 
 This file is used to list changes made in each version of cookbook-openstack-orchestration
 
+## 10.0.0
+* Upgrading to Juno
+
 ## 9.2.0
 * python_packages database client attributes have been migrated to
 the -common cookbook
