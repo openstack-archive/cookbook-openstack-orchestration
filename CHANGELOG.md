@@ -5,6 +5,7 @@ This file is used to list changes made in each version of cookbook-openstack-orc
 ## 10.0.0
 * Upgrading to Juno
 * Sync conf files with Juno
+* Upgrading berkshelf from 2.0.18 to 3.1.5
 
 ## 9.2.0
 * python_packages database client attributes have been migrated to
