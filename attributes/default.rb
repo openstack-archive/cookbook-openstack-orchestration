@@ -61,7 +61,7 @@ default['openstack']['orchestration']['api']['auth']['cafile'] = nil
 default['openstack']['orchestration']['api']['auth']['insecure'] = false
 
 # Keystone role for heat template-defined users. (string value)
-default['openstack']['orchestration']['heat_stack_user_role'] = 'heat_stack_user'
+default['openstack']['orchestration']['heat_stack_user_role'] = nil
 
 # Keystone domain name which contains heat template-defined users. (string value)
 default['openstack']['orchestration']['stack_user_domain_name'] = nil

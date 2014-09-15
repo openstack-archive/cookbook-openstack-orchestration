@@ -9,8 +9,8 @@ This file is used to list changes made in each version of cookbook-openstack-orc
 * Update mode for heat.conf from 644 to 640
 * Add cafile, memcached_servers, memcache_security_strategy, memcache_secret_key, insecure and hash_algorithms so that they are configurable.
 * Add attributes for stack role and domain users
-
 * Bump Chef gem to 11.16
+* Create role and domain setup for heat template defined users
 
 ## 9.2.0
 * python_packages database client attributes have been migrated to

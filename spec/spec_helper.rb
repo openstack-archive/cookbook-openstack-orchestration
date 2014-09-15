@@ -49,6 +49,12 @@ shared_context 'orchestration_stubs' do
     allow_any_instance_of(Chef::Recipe).to receive(:get_password)
       .with('service', 'openstack-orchestration')
       .and_return 'heat-pass'
+    allow_any_instance_of(Chef::Recipe).to receive(:get_password)
+      .with('user', 'stack_domain_admin')
+      .and_return 'stack_domain_admin_pass'
+    allow_any_instance_of(Chef::Recipe).to receive(:get_password)
+      .with('user', 'admin')
+      .and_return 'admin_pass'
     allow(Chef::Application).to receive(:fatal!)
   end
 end
@@ -233,8 +239,9 @@ shared_examples 'expects to create heat conf' do
     end
 
     describe 'domain values' do
-      it 'has corrrect default domain values' do
+      it 'has no default domain values' do
         [
+          /^heat_stack_user_role=/,
           /^stack_user_domain_name=/,
           /^stack_domain_admin=/,
           /^stack_domain_admin_password=/
@@ -244,11 +251,11 @@ shared_examples 'expects to create heat conf' do
       end
 
       it 'has domain override values' do
-        node.set['openstack']['orchestration']['heat_stack_user_role'] = 'heat_stack_user_test'
+        node.set['openstack']['orchestration']['heat_stack_user_role'] = 'heat_stack_user'
         node.set['openstack']['orchestration']['stack_user_domain_name'] = 'heat'
         node.set['openstack']['orchestration']['stack_domain_admin'] = 'heat_stack_admin'
         [
-          /^heat_stack_user_role=heat_stack_user_test$/,
+          /^heat_stack_user_role=heat_stack_user$/,
           /^stack_user_domain_name=heat$/,
           /^stack_domain_admin=heat_stack_admin$/,
           /^stack_domain_admin_password=heat_stack_domain_admin_password$/

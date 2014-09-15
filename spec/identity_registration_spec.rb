@@ -120,5 +120,49 @@ describe 'openstack-orchestration::identity_registration' do
         action: [:grant_role]
       )
     end
+
+    it 'does not create role for template defined users by default' do
+      expect(chef_run).not_to create_role_openstack_identity_register(
+        "Create '' Role for template defined users"
+      ).with(
+        auth_uri: 'http://127.0.0.1:35357/v2.0',
+        bootstrap_token: 'bootstrap-token',
+        role_name: '',
+        action: [:create_role]
+      )
+    end
+
+    it 'creates role for template defined users' do
+      node.set['openstack']['orchestration']['heat_stack_user_role'] = 'heat_stack_user'
+      expect(chef_run).to create_role_openstack_identity_register(
+        "Create 'heat_stack_user' Role for template defined users"
+      ).with(
+        auth_uri: 'http://127.0.0.1:35357/v2.0',
+        bootstrap_token: 'bootstrap-token',
+        role_name: 'heat_stack_user',
+        action: [:create_role]
+      )
+    end
+
+    it 'does not call domain setup script by default' do
+      expect(chef_run).not_to run_execute('heat-keystone-setup-domain')
+    end
+
+    it 'calls domain setup script' do
+      node.set['openstack']['orchestration']['heat_stack_user_role'] = 'heat_stack_user'
+      node.set['openstack']['orchestration']['stack_user_domain_name'] = 'stack_user_domain_name'
+      node.set['openstack']['orchestration']['stack_domain_admin'] = 'stack_domain_admin'
+
+      expect(chef_run).to run_execute('heat-keystone-setup-domain')
+        .with(
+          environment: { 'OS_USERNAME' => 'admin',
+                         'OS_PASSWORD' => 'admin_pass',
+                         'OS_AUTH_URL' => 'http://127.0.0.1:35357/v2.0',
+                         'HEAT_DOMAIN' => 'stack_user_domain_name',
+                         'HEAT_DOMAIN_ADMIN' => 'stack_domain_admin',
+                         'HEAT_DOMAIN_PASSWORD' => 'stack_domain_admin_pass'
+          }
+        )
+    end
   end
 end

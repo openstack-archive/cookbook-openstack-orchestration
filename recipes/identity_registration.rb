@@ -37,6 +37,7 @@ service_tenant_name = node['openstack']['orchestration']['service_tenant_name']
 service_user = node['openstack']['orchestration']['service_user']
 service_role = node['openstack']['orchestration']['service_role']
 region = node['openstack']['orchestration']['region']
+stack_user_role = node['openstack']['orchestration']['heat_stack_user_role']
 
 # Do not configure a service/endpoint in keystone for heat-api-cloudwatch(Bug #1167927),
 # See discussions on https://bugs.launchpad.net/heat/+bug/1167927
@@ -127,4 +128,33 @@ openstack_identity_register "Grant '#{service_role}' Role to #{service_user} Use
   role_name service_role
 
   action :grant_role
+end
+
+## Create role for heat template defined users ##
+openstack_identity_register "Create '#{stack_user_role}' Role for template defined users" do
+  auth_uri auth_url
+  bootstrap_token token
+  role_name stack_user_role
+
+  action :create_role
+  not_if { stack_user_role.nil? }
+end
+
+stack_user_domain_name = node['openstack']['orchestration']['stack_user_domain_name']
+stack_domain_admin = node['openstack']['orchestration']['stack_domain_admin']
+
+if !stack_user_role.nil? && !stack_user_domain_name.nil? && !stack_domain_admin.nil?
+  stack_domain_admin_password = get_password 'user', stack_domain_admin
+  admin_user = node['openstack']['identity']['admin_user']
+  admin_pass = get_password 'user', admin_user
+
+  execute 'heat-keystone-setup-domain' do
+    environment 'OS_USERNAME' => admin_user,
+                'OS_PASSWORD' => admin_pass,
+                'OS_AUTH_URL' => auth_url,
+                'HEAT_DOMAIN' => stack_user_domain_name,
+                'HEAT_DOMAIN_ADMIN' => stack_domain_admin,
+                'HEAT_DOMAIN_PASSWORD' => stack_domain_admin_password
+    action :run
+  end
 end
