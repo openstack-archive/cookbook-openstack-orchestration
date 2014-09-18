@@ -142,6 +142,47 @@ shared_examples 'expects to create heat conf' do
       )
     end
 
+    it 'uses default values for these attributes and they are not set' do
+      expect(chef_run).not_to render_file(file.name).with_content(
+        /^memcached_servers=/)
+      expect(chef_run).not_to render_file(file.name).with_content(
+        /^memcache_security_strategy=/)
+      expect(chef_run).not_to render_file(file.name).with_content(
+        /^memcache_secret_key=/)
+      expect(chef_run).not_to render_file(file.name).with_content(
+        /^cafile=/)
+    end
+
+    it 'sets memcached server(s)' do
+      node.set['openstack']['orchestration']['api']['auth']['memcached_servers'] = 'localhost:11211'
+      expect(chef_run).to render_file(file.name).with_content(/^memcached_servers=localhost:11211$/)
+    end
+
+    it 'sets memcache security strategy' do
+      node.set['openstack']['orchestration']['api']['auth']['memcache_security_strategy'] = 'MAC'
+      expect(chef_run).to render_file(file.name).with_content(/^memcache_security_strategy=MAC$/)
+    end
+
+    it 'sets memcache secret key' do
+      node.set['openstack']['orchestration']['api']['auth']['memcache_secret_key'] = '0123456789ABCDEF'
+      expect(chef_run).to render_file(file.name).with_content(/^memcache_secret_key=0123456789ABCDEF$/)
+    end
+
+    it 'sets cafile' do
+      node.set['openstack']['orchestration']['api']['auth']['cafile'] = 'dir/to/path'
+      expect(chef_run).to render_file(file.name).with_content(%r{^cafile=dir/to/path$})
+    end
+
+    it 'sets token hash algorithms' do
+      node.set['openstack']['orchestration']['api']['auth']['hash_algorithms'] = 'sha2'
+      expect(chef_run).to render_file(file.name).with_content(/^hash_algorithms=sha2$/)
+    end
+
+    it 'sets insecure' do
+      node.set['openstack']['orchestration']['api']['auth']['insecure'] = false
+      expect(chef_run).to render_file(file.name).with_content(/^insecure=false$/)
+    end
+
     describe 'default values' do
       it 'has default conf values' do
         [
@@ -175,6 +216,8 @@ shared_examples 'expects to create heat conf' do
           /^auth_protocol=http$/,
           %r{^auth_uri=http://127.0.0.1:5000/v2.0$},
           /^auth_version=v2.0$/,
+          /^hash_algorithms=md5$/,
+          /^insecure=false$/,
           /^admin_user=heat$/,
           /^admin_password=heat-pass$/,
           /^admin_tenant_name=service$/,

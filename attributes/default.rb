@@ -42,6 +42,24 @@ default['openstack']['orchestration']['service_role'] = 'admin'
 
 default['openstack']['orchestration']['api']['auth']['version'] = node['openstack']['api']['auth']['version']
 
+# A list of memcached server(s) for caching
+default['openstack']['orchestration']['api']['auth']['memcached_servers'] = nil
+
+# Whether token data should be authenticated or authenticated and encrypted. Acceptable values are MAC or ENCRYPT
+default['openstack']['orchestration']['api']['auth']['memcache_security_strategy'] = nil
+
+# This string is used for key derivation
+default['openstack']['orchestration']['api']['auth']['memcache_secret_key'] = nil
+
+# Hash algorithms to use for hashing PKI tokens
+default['openstack']['orchestration']['api']['auth']['hash_algorithms'] = 'md5'
+
+# A PEM encoded Certificate Authority to use when verifying HTTPs connections
+default['openstack']['orchestration']['api']['auth']['cafile'] = nil
+
+# Whether to allow the client to perform insecure SSL (https) requests
+default['openstack']['orchestration']['api']['auth']['insecure'] = false
+
 # If set, heat API service will bind to the address on this interface,
 # otherwise it will bind to the API endpoint's host.
 default['openstack']['orchestration']['api']['bind_interface'] = nil

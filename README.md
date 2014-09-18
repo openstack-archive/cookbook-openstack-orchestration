@@ -76,6 +76,12 @@ Attributes for the Heat service are in the ['openstack']['orchestration'] namesp
 * `openstack['orchestration']['rpc_response_timeout']` - seconds to wait for a response from call or multicall
 * `openstack['orchestration']['platform']` - hash of platform specific package/service names and options
 * `openstack['orchestration']['api']['auth']['version']` - Select v2.0 or v3.0. Default v2.0. The auth API version used to interact with identity service.
+* `openstack['orchestration']['api']['auth']['memcached_servers']` - A list of memcached server(s) for caching
+* `openstack['orchestration']['api']['auth']['memcache_security_strategy']` - Whether token data should be authenticated or authenticated and encrypted. Acceptable values are MAC or ENCRYPT.
+* `openstack['orchestration']['api']['auth']['memcache_secret_key']` - This string is used for key derivation.
+* `openstack['orchestration']['api']['auth']['hash_algorithms']` - Hash algorithms to use for hashing PKI tokens.
+* `openstack['orchestration']['api']['auth']['cafile']` - A PEM encoded Certificate Authority to use when verifying HTTPs connections.
+* `openstack['orchestration']['api']['auth']['insecure']` - Whether to allow the client to perform insecure SSL (https) requests.
 
 Notification definitions
 ------------------------
