@@ -101,7 +101,7 @@ template '/etc/heat/heat.conf' do
   source 'heat.conf.erb'
   group  node['openstack']['orchestration']['group']
   owner  node['openstack']['orchestration']['user']
-  mode   00644
+  mode   00640
   variables(
     mq_service_type: mq_service_type,
     mq_password: mq_password,

@@ -138,7 +138,7 @@ shared_examples 'expects to create heat conf' do
       expect(chef_run).to create_template(file.name).with(
         owner: 'heat',
         group: 'heat',
-        mode: 0644
+        mode: 0640
       )
     end
 
