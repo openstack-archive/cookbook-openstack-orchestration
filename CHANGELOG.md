@@ -9,6 +9,8 @@ This file is used to list changes made in each version of cookbook-openstack-orc
 * Update mode for heat.conf from 644 to 640
 * Add cafile, memcached_servers, memcache_security_strategy, memcache_secret_key, insecure and hash_algorithms so that they are configurable.
 
+* Bump Chef gem to 11.16
+
 ## 9.2.0
 * python_packages database client attributes have been migrated to
 the -common cookbook
