@@ -104,9 +104,14 @@ heat_watch_server_url=http://<%= @heat_api_cloudwatch_endpoint.host %>:<%= @heat
 # value)
 region_name_for_services=<%= node['openstack']['orchestration']['region'] %>
 
+
 # Keystone role for heat template-defined users. (string
 # value)
-#heat_stack_user_role=heat_stack_user
+<% if node['openstack']['orchestration']['heat_stack_user_role'] -%>
+heat_stack_user_role=<%= node['openstack']['orchestration']['heat_stack_user_role'] %>
+<% else -%>
+#heat_stack_user_role=<None>
+<% end -%>
 
 # Keystone domain ID which contains heat template-defined
 # users. If this option is set, stack_user_domain_name option
@@ -117,15 +122,27 @@ region_name_for_services=<%= node['openstack']['orchestration']['region'] %>
 # Keystone domain name which contains heat template-defined
 # users. If `stack_user_domain_id` option is set, this option
 # is ignored. (string value)
+<% if node['openstack']['orchestration']['stack_user_domain_name'] -%>
+stack_user_domain_name=<%= node['openstack']['orchestration']['stack_user_domain_name'] %>
+<% else -%>
 #stack_user_domain_name=<None>
+<% end -%>
 
 # Keystone username, a user with roles sufficient to manage
 # users and projects in the stack_user_domain. (string value)
+<% if node['openstack']['orchestration']['stack_domain_admin'] -%>
+stack_domain_admin=<%= node['openstack']['orchestration']['stack_domain_admin'] %>
+<% else -%>
 #stack_domain_admin=<None>
+<% end -%>
 
 # Keystone password for stack_domain_admin user. (string
 # value)
+<% if @stack_domain_admin_password -%>
+stack_domain_admin_password=<%= @stack_domain_admin_password %>
+<% else -%>
 #stack_domain_admin_password=<None>
+<% end -%>
 
 # Maximum raw byte size of any template. (integer value)
 #max_template_size=524288

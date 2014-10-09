@@ -60,6 +60,16 @@ default['openstack']['orchestration']['api']['auth']['cafile'] = nil
 # Whether to allow the client to perform insecure SSL (https) requests
 default['openstack']['orchestration']['api']['auth']['insecure'] = false
 
+# Keystone role for heat template-defined users. (string value)
+default['openstack']['orchestration']['heat_stack_user_role'] = 'heat_stack_user'
+
+# Keystone domain name which contains heat template-defined users. (string value)
+default['openstack']['orchestration']['stack_user_domain_name'] = nil
+
+# Keystone username, a user with roles sufficient to manage
+# users and projects in the stack_user_domain. (string value)
+default['openstack']['orchestration']['stack_domain_admin'] = nil
+
 # If set, heat API service will bind to the address on this interface,
 # otherwise it will bind to the API endpoint's host.
 default['openstack']['orchestration']['api']['bind_interface'] = nil
