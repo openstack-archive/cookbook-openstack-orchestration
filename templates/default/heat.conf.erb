@@ -575,6 +575,12 @@ log_config = /etc/openstack/logging.conf
 # (string value)
 #policy_default_rule=default
 
+<% if node["openstack"]["orchestration"]["misc_heat"] %>
+##### THIRD PARTY ADDITIONS #####
+<% node["openstack"]["orchestration"]["misc_heat"].each do |m| %>
+<%= m %>
+<% end %>
+<% end %>
 
 [auth_password]
 

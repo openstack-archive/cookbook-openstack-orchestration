@@ -112,6 +112,9 @@ default['openstack']['orchestration']['default_publisher_id'] = ''
 default['openstack']['orchestration']['list_notifier_drivers'] = 'heat.openstack.common.notifier.no_op_notifier'
 default['openstack']['orchestration']['notification_topics'] = 'notifications'
 
+# Array of options for `heat.conf` (e.g. ['option1=value1', 'option2=value2'])
+default['openstack']['orchestration']['misc_heat'] = nil
+
 # platform-specific settings
 case platform_family
 when 'fedora', 'rhel' # :pragma-foodcritic: ~FC024 - won't fix this

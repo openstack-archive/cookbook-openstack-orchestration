@@ -31,5 +31,15 @@ describe 'openstack-orchestration::common' do
       expect(chef_run).not_to upgrade_package 'python-ibm-db'
       expect(chef_run).not_to upgrade_package 'python-ibm-db-sa'
     end
+
+    describe 'heat.conf' do
+      let(:file) { chef_run.template('/etc/heat/heat.conf') }
+
+      it 'adds misc_heat array correctly' do
+        node.set['openstack']['orchestration']['misc_heat'] = ['MISC_OPTION=FOO']
+        expect(chef_run).to render_file(file.name).with_content('MISC_OPTION=FOO')
+      end
+
+    end
   end
 end

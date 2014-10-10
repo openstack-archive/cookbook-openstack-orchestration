@@ -139,6 +139,13 @@ The following attributes are defined in attributes/default.rb of the common cook
 
 If the value of the 'bind_interface' attribute is non-nil, then the service will be bound to the first IP address on that interface. If the value of the 'bind_interface' attribute is nil, then the service will be bound to the IP address specifie>
 
+Miscellaneous Options
+---------------------
+
+Arrays whose elements will be copied exactly into the respective config files (contents e.g. ['option1=value1', 'option2=value2']).
+
+* `openstack["orchestration"]["misc_heat"]` - Array of bare options for `heat.conf`.
+
 Testing
 =====
 
