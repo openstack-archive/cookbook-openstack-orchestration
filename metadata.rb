@@ -1,6 +1,7 @@
 # encoding: UTF-8
 name              'openstack-orchestration'
-maintainer        'IBM, Inc.'
+maintainer       'openstack-chef'
+maintainer_email 'opscode-chef-openstack@googlegroups.com'
 license           'Apache 2.0'
 description       'Installs and configures the Heat Service'
 long_description  IO.read(File.join(File.dirname(__FILE__), 'README.md'))
