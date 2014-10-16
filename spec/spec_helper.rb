@@ -192,6 +192,29 @@ shared_examples 'expects to create heat conf' do
       expect(chef_run).to render_file(file.name).with_content(/^insecure=false$/)
     end
 
+    describe 'default values for certificates files' do
+      it 'has no such values' do
+        [
+          /^ca_file=/,
+          /^cert_file=/,
+          /^key_file=/
+        ].each do |line|
+          expect(chef_run).not_to render_file(file.name).with_content(line)
+        end
+      end
+
+      it 'sets clients ca_file cert_file key_file insecure' do
+        node.set['openstack']['orchestration']['clients']['ca_file'] = 'dir/to/path'
+        node.set['openstack']['orchestration']['clients']['cert_file'] = 'dir/to/path'
+        node.set['openstack']['orchestration']['clients']['key_file'] = 'dir/to/path'
+        node.set['openstack']['orchestration']['clients']['insecure'] = true
+        expect(chef_run).to render_file(file.name).with_content(%r{^ca_file=dir/to/path$})
+        expect(chef_run).to render_file(file.name).with_content(%r{^cert_file=dir/to/path$})
+        expect(chef_run).to render_file(file.name).with_content(%r{^key_file=dir/to/path$})
+        expect(chef_run).to render_file(file.name).with_content(/^insecure=true$/)
+      end
+    end
+
     describe 'default values' do
       it 'has default conf values' do
         [

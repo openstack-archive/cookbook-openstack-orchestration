@@ -83,6 +83,13 @@ Attributes for the Heat service are in the ['openstack']['orchestration'] namesp
 * `openstack['orchestration']['api']['auth']['cafile']` - A PEM encoded Certificate Authority to use when verifying HTTPs connections.
 * `openstack['orchestration']['api']['auth']['insecure']` - Whether to allow the client to perform insecure SSL (https) requests.
 
+Clients configurations
+----------------------
+* `openstack['orchestration']['clients']['ca_file']` - A PEM encoded Certificate Authority to use for clients when verifying HTTPs connections.
+* `openstack['orchestration']['clients']['cert_file']` - Cert file to use for clients when verifying HTTPs connections.
+* `openstack['orchestration']['clients']['key_file']` - Private key file to use for clients when verifying HTTPs connections.
+* `openstack['orchestration']['clients']['insecure']` - Whether to allow insecure SSL (https) requests when calling clients.
+
 Notification definitions
 ------------------------
 * `openstack['orchestration']['notification_driver']` - driver

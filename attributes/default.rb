@@ -42,6 +42,15 @@ default['openstack']['orchestration']['service_role'] = 'admin'
 
 default['openstack']['orchestration']['api']['auth']['version'] = node['openstack']['api']['auth']['version']
 
+# A PEM encoded Certificate Authority to use for clients when verifying HTTPs connections.
+default['openstack']['orchestration']['clients']['ca_file'] = nil
+# Cert file to use for clients when verifying HTTPs connections.
+default['openstack']['orchestration']['clients']['cert_file'] = nil
+# Private key file to use for clients when verifying HTTPs connections.
+default['openstack']['orchestration']['clients']['key_file'] = nil
+# Whether to allow insecure SSL (https) requests when calling clients.
+default['openstack']['orchestration']['clients']['insecure'] = false
+
 # A list of memcached server(s) for caching
 default['openstack']['orchestration']['api']['auth']['memcached_servers'] = nil
 

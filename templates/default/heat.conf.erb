@@ -603,19 +603,32 @@ log_config = /etc/openstack/logging.conf
 
 # Optional CA cert file to use in SSL connections. (string
 # value)
+<% if node['openstack']['orchestration']['clients']['ca_file'] -%>
+ca_file=<%= node['openstack']['orchestration']['clients']['ca_file'] %>
+<% else -%>
 #ca_file=<None>
+<% end -%>
 
 # Optional PEM-formatted certificate chain file. (string
 # value)
+<% if node['openstack']['orchestration']['clients']['cert_file'] -%>
+cert_file=<%= node['openstack']['orchestration']['clients']['cert_file'] %>
+<% else -%>
 #cert_file=<None>
+<% end -%>
 
 # Optional PEM-formatted file that contains the private key.
 # (string value)
+<% if node['openstack']['orchestration']['clients']['key_file'] -%>
+key_file=<%= node['openstack']['orchestration']['clients']['key_file'] %>
+<% else -%>
 #key_file=<None>
+<% end -%>
 
 # If set, then the server's certificate will not be verified.
 # (boolean value)
 #insecure=false
+insecure=<%= node['openstack']['orchestration']['clients']['insecure'] %>
 
 
 [clients_ceilometer]
