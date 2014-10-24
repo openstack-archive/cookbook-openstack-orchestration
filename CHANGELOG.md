@@ -12,6 +12,7 @@ This file is used to list changes made in each version of cookbook-openstack-orc
 * Bump Chef gem to 11.16
 * Create role and domain setup for heat template defined users
 * Add cert_file, key_file, ca_file and insecure for clients so that they are configurable.
+* Make 3 schemes configurable instead of being the hardcoded http
 
 ## 9.2.0
 * python_packages database client attributes have been migrated to

@@ -259,6 +259,14 @@ shared_examples 'expects to create heat conf' do
           expect(chef_run).to render_file(file.name).with_content(line)
         end
       end
+
+      it 'overrides the schemes' do
+        node.set['openstack']['endpoints']['orchestration-api-cfn']['scheme'] = 'https'
+        node.set['openstack']['endpoints']['orchestration-api-cloudwatch']['scheme'] = 'https'
+        expect(chef_run).to render_file(file.name).with_content(%r{^heat_metadata_server_url=https://127.0.0.1:8000$})
+        expect(chef_run).to render_file(file.name).with_content(%r{^heat_waitcondition_server_url=https://127.0.0.1:8000/v1/waitcondition$})
+        expect(chef_run).to render_file(file.name).with_content(%r{^heat_watch_server_url=https://127.0.0.1:8003$})
+      end
     end
 
     describe 'domain values' do
