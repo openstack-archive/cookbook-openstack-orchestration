@@ -649,19 +649,32 @@ insecure=<%= node['openstack']['orchestration']['clients']['insecure'] %>
 
 # Optional CA cert file to use in SSL connections. (string
 # value)
+<% if node['openstack']['orchestration']['clients_ceilometer']['ca_file'] -%>
+ca_file=<%= node['openstack']['orchestration']['clients_ceilometer']['ca_file'] %>
+<% else -%>
 #ca_file=<None>
+<% end -%>
 
 # Optional PEM-formatted certificate chain file. (string
 # value)
+<% if node['openstack']['orchestration']['clients_ceilometer']['cert_file'] -%>
+cert_file=<%= node['openstack']['orchestration']['clients_ceilometer']['cert_file'] %>
+<% else -%>
 #cert_file=<None>
+<% end -%>
 
 # Optional PEM-formatted file that contains the private key.
 # (string value)
+<% if node['openstack']['orchestration']['clients_ceilometer']['key_file'] -%>
+key_file=<%= node['openstack']['orchestration']['clients_ceilometer']['key_file'] %>
+<% else -%>
 #key_file=<None>
+<% end -%>
 
 # If set, then the server's certificate will not be verified.
 # (boolean value)
 #insecure=false
+insecure=<%= node['openstack']['orchestration']['clients_ceilometer']['insecure'] %>
 
 
 [clients_cinder]
@@ -676,19 +689,32 @@ insecure=<%= node['openstack']['orchestration']['clients']['insecure'] %>
 
 # Optional CA cert file to use in SSL connections. (string
 # value)
+<% if node['openstack']['orchestration']['clients_cinder']['ca_file'] -%>
+ca_file=<%= node['openstack']['orchestration']['clients_cinder']['ca_file'] %>
+<% else -%>
 #ca_file=<None>
+<% end -%>
 
 # Optional PEM-formatted certificate chain file. (string
 # value)
+<% if node['openstack']['orchestration']['clients_cinder']['cert_file'] -%>
+cert_file=<%= node['openstack']['orchestration']['clients_cinder']['cert_file'] %>
+<% else -%>
 #cert_file=<None>
+<% end -%>
 
 # Optional PEM-formatted file that contains the private key.
 # (string value)
+<% if node['openstack']['orchestration']['clients_cinder']['key_file'] -%>
+key_file=<%= node['openstack']['orchestration']['clients_cinder']['key_file'] %>
+<% else -%>
 #key_file=<None>
+<% end -%>
 
 # If set, then the server's certificate will not be verified.
 # (boolean value)
 #insecure=false
+insecure=<%= node['openstack']['orchestration']['clients_cinder']['insecure'] %>
 
 
 [clients_glance]
@@ -703,19 +729,32 @@ insecure=<%= node['openstack']['orchestration']['clients']['insecure'] %>
 
 # Optional CA cert file to use in SSL connections. (string
 # value)
+<% if node['openstack']['orchestration']['clients_glance']['ca_file'] -%>
+ca_file=<%= node['openstack']['orchestration']['clients_glance']['ca_file'] %>
+<% else -%>
 #ca_file=<None>
+<% end -%>
 
 # Optional PEM-formatted certificate chain file. (string
 # value)
+<% if node['openstack']['orchestration']['clients_glance']['cert_file'] -%>
+cert_file=<%= node['openstack']['orchestration']['clients_glance']['cert_file'] %>
+<% else -%>
 #cert_file=<None>
+<% end -%>
 
 # Optional PEM-formatted file that contains the private key.
 # (string value)
+<% if node['openstack']['orchestration']['clients_glance']['key_file'] -%>
+key_file=<%= node['openstack']['orchestration']['clients_glance']['key_file'] %>
+<% else -%>
 #key_file=<None>
+<% end -%>
 
 # If set, then the server's certificate will not be verified.
 # (boolean value)
 #insecure=false
+insecure=<%= node['openstack']['orchestration']['clients_glance']['insecure'] %>
 
 
 [clients_heat]
@@ -730,20 +769,32 @@ insecure=<%= node['openstack']['orchestration']['clients']['insecure'] %>
 
 # Optional CA cert file to use in SSL connections. (string
 # value)
+<% if node['openstack']['orchestration']['clients_heat']['ca_file'] -%>
+ca_file=<%= node['openstack']['orchestration']['clients_heat']['ca_file'] %>
+<% else -%>
 #ca_file=<None>
+<% end -%>
 
 # Optional PEM-formatted certificate chain file. (string
 # value)
+<% if node['openstack']['orchestration']['clients_heat']['cert_file'] -%>
+cert_file=<%= node['openstack']['orchestration']['clients_heat']['cert_file'] %>
+<% else -%>
 #cert_file=<None>
+<% end -%>
 
 # Optional PEM-formatted file that contains the private key.
 # (string value)
+<% if node['openstack']['orchestration']['clients_heat']['key_file'] -%>
+key_file=<%= node['openstack']['orchestration']['clients_heat']['key_file'] %>
+<% else -%>
 #key_file=<None>
+<% end -%>
 
 # If set, then the server's certificate will not be verified.
 # (boolean value)
 #insecure=false
-
+insecure=<%= node['openstack']['orchestration']['clients_heat']['insecure'] %>
 
 #
 # Options defined in heat.common.config
@@ -766,19 +817,32 @@ insecure=<%= node['openstack']['orchestration']['clients']['insecure'] %>
 
 # Optional CA cert file to use in SSL connections. (string
 # value)
+<% if node['openstack']['orchestration']['clients_keystone']['ca_file'] -%>
+ca_file=<%= node['openstack']['orchestration']['clients_keystone']['ca_file'] %>
+<% else -%>
 #ca_file=<None>
+<% end -%>
 
 # Optional PEM-formatted certificate chain file. (string
 # value)
+<% if node['openstack']['orchestration']['clients_keystone']['cert_file'] -%>
+cert_file=<%= node['openstack']['orchestration']['clients_keystone']['cert_file'] %>
+<% else -%>
 #cert_file=<None>
+<% end -%>
 
 # Optional PEM-formatted file that contains the private key.
 # (string value)
+<% if node['openstack']['orchestration']['clients_keystone']['key_file'] -%>
+key_file=<%= node['openstack']['orchestration']['clients_keystone']['key_file'] %>
+<% else -%>
 #key_file=<None>
+<% end -%>
 
 # If set, then the server's certificate will not be verified.
 # (boolean value)
 #insecure=false
+insecure=<%= node['openstack']['orchestration']['clients_keystone']['insecure'] %>
 
 
 [clients_neutron]
@@ -793,19 +857,32 @@ insecure=<%= node['openstack']['orchestration']['clients']['insecure'] %>
 
 # Optional CA cert file to use in SSL connections. (string
 # value)
+<% if node['openstack']['orchestration']['clients_neutron']['ca_file'] -%>
+ca_file=<%= node['openstack']['orchestration']['clients_neutron']['ca_file'] %>
+<% else -%>
 #ca_file=<None>
+<% end -%>
 
 # Optional PEM-formatted certificate chain file. (string
 # value)
+<% if node['openstack']['orchestration']['clients_neutron']['cert_file'] -%>
+cert_file=<%= node['openstack']['orchestration']['clients_neutron']['cert_file'] %>
+<% else -%>
 #cert_file=<None>
+<% end -%>
 
 # Optional PEM-formatted file that contains the private key.
 # (string value)
+<% if node['openstack']['orchestration']['clients_neutron']['key_file'] -%>
+key_file=<%= node['openstack']['orchestration']['clients_neutron']['key_file'] %>
+<% else -%>
 #key_file=<None>
+<% end -%>
 
 # If set, then the server's certificate will not be verified.
 # (boolean value)
 #insecure=false
+insecure=<%= node['openstack']['orchestration']['clients_neutron']['insecure'] %>
 
 
 [clients_nova]
@@ -820,20 +897,32 @@ insecure=<%= node['openstack']['orchestration']['clients']['insecure'] %>
 
 # Optional CA cert file to use in SSL connections. (string
 # value)
+<% if node['openstack']['orchestration']['clients_nova']['ca_file'] -%>
+ca_file=<%= node['openstack']['orchestration']['clients_nova']['ca_file'] %>
+<% else -%>
 #ca_file=<None>
+<% end -%>
 
 # Optional PEM-formatted certificate chain file. (string
 # value)
+<% if node['openstack']['orchestration']['clients_nova']['cert_file'] -%>
+cert_file=<%= node['openstack']['orchestration']['clients_nova']['cert_file'] %>
+<% else -%>
 #cert_file=<None>
+<% end -%>
 
 # Optional PEM-formatted file that contains the private key.
 # (string value)
+<% if node['openstack']['orchestration']['clients_nova']['key_file'] -%>
+key_file=<%= node['openstack']['orchestration']['clients_nova']['key_file'] %>
+<% else -%>
 #key_file=<None>
+<% end -%>
 
 # If set, then the server's certificate will not be verified.
 # (boolean value)
 #insecure=false
-
+insecure=<%= node['openstack']['orchestration']['clients_nova']['insecure'] %>
 
 #
 # Options defined in heat.common.config

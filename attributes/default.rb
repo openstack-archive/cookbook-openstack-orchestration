@@ -51,6 +51,69 @@ default['openstack']['orchestration']['clients']['key_file'] = nil
 # Whether to allow insecure SSL (https) requests when calling clients.
 default['openstack']['orchestration']['clients']['insecure'] = false
 
+# A PEM encoded Certificate Authority to use for clients_ceilometer when verifying HTTPs connections.
+default['openstack']['orchestration']['clients_ceilometer']['ca_file'] = node['openstack']['orchestration']['clients']['ca_file']
+# Cert file to use for clients_ceilometer when verifying HTTPs connections.
+default['openstack']['orchestration']['clients_ceilometer']['cert_file'] = node['openstack']['orchestration']['clients']['cert_file']
+# Private key file to use for clients_ceilometer when verifying HTTPs connections.
+default['openstack']['orchestration']['clients_ceilometer']['key_file'] = node['openstack']['orchestration']['clients']['key_file']
+# Whether to allow insecure SSL (https) requests when calling clients_ceilometer.
+default['openstack']['orchestration']['clients_ceilometer']['insecure'] = node['openstack']['orchestration']['clients']['insecure']
+
+# A PEM encoded Certificate Authority to use for clients_cinder when verifying HTTPs connections.
+default['openstack']['orchestration']['clients_cinder']['ca_file'] = node['openstack']['orchestration']['clients']['ca_file']
+# Cert file to use for clients_cinder when verifying HTTPs connections.
+default['openstack']['orchestration']['clients_cinder']['cert_file'] = node['openstack']['orchestration']['clients']['cert_file']
+# Private key file to use for clients_cinder when verifying HTTPs connections.
+default['openstack']['orchestration']['clients_cinder']['key_file'] = node['openstack']['orchestration']['clients']['key_file']
+# Whether to allow insecure SSL (https) requests when calling clients_cinder.
+default['openstack']['orchestration']['clients_cinder']['insecure'] = node['openstack']['orchestration']['clients']['insecure']
+
+# A PEM encoded Certificate Authority to use for clients_glance when verifying HTTPs connections.
+default['openstack']['orchestration']['clients_glance']['ca_file'] = node['openstack']['orchestration']['clients']['ca_file']
+# Cert file to use for clients_glance when verifying HTTPs connections.
+default['openstack']['orchestration']['clients_glance']['cert_file'] = node['openstack']['orchestration']['clients']['cert_file']
+# Private key file to use for clients_glance when verifying HTTPs connections.
+default['openstack']['orchestration']['clients_glance']['key_file'] = node['openstack']['orchestration']['clients']['key_file']
+# Whether to allow insecure SSL (https) requests when calling clients_glance.
+default['openstack']['orchestration']['clients_glance']['insecure'] = node['openstack']['orchestration']['clients']['insecure']
+
+# A PEM encoded Certificate Authority to use for clients_heat when verifying HTTPs connections.
+default['openstack']['orchestration']['clients_heat']['ca_file'] = node['openstack']['orchestration']['clients']['ca_file']
+# Cert file to use for clients_heat when verifying HTTPs connections.
+default['openstack']['orchestration']['clients_heat']['cert_file'] = node['openstack']['orchestration']['clients']['cert_file']
+# Private key file to use for clients_heat when verifying HTTPs connections.
+default['openstack']['orchestration']['clients_heat']['key_file'] = node['openstack']['orchestration']['clients']['key_file']
+# Whether to allow insecure SSL (https) requests when calling clients_heat.
+default['openstack']['orchestration']['clients_heat']['insecure'] = node['openstack']['orchestration']['clients']['insecure']
+
+# A PEM encoded Certificate Authority to use for clients_keystone when verifying HTTPs connections.
+default['openstack']['orchestration']['clients_keystone']['ca_file'] = node['openstack']['orchestration']['clients']['ca_file']
+# Cert file to use for clients_keystone when verifying HTTPs connections.
+default['openstack']['orchestration']['clients_keystone']['cert_file'] = node['openstack']['orchestration']['clients']['cert_file']
+# Private key file to use for clients_keystone when verifying HTTPs connections.
+default['openstack']['orchestration']['clients_keystone']['key_file'] = node['openstack']['orchestration']['clients']['key_file']
+# Whether to allow insecure SSL (https) requests when calling clients_keystone.
+default['openstack']['orchestration']['clients_keystone']['insecure'] = node['openstack']['orchestration']['clients']['insecure']
+
+# A PEM encoded Certificate Authority to use for clients_neutron when verifying HTTPs connections.
+default['openstack']['orchestration']['clients_neutron']['ca_file'] = node['openstack']['orchestration']['clients']['ca_file']
+# Cert file to use for clients_neutron when verifying HTTPs connections.
+default['openstack']['orchestration']['clients_neutron']['cert_file'] = node['openstack']['orchestration']['clients']['cert_file']
+# Private key file to use for clients_neutron when verifying HTTPs connections.
+default['openstack']['orchestration']['clients_neutron']['key_file'] = node['openstack']['orchestration']['clients']['key_file']
+# Whether to allow insecure SSL (https) requests when calling clients_neutron.
+default['openstack']['orchestration']['clients_neutron']['insecure'] = node['openstack']['orchestration']['clients']['insecure']
+
+# A PEM encoded Certificate Authority to use for clients_nova when verifying HTTPs connections.
+default['openstack']['orchestration']['clients_nova']['ca_file'] = node['openstack']['orchestration']['clients']['ca_file']
+# Cert file to use for clients_nova when verifying HTTPs connections.
+default['openstack']['orchestration']['clients_nova']['cert_file'] = node['openstack']['orchestration']['clients']['cert_file']
+# Private key file to use for clients_nova when verifying HTTPs connections.
+default['openstack']['orchestration']['clients_nova']['key_file'] = node['openstack']['orchestration']['clients']['key_file']
+# Whether to allow insecure SSL (https) requests when calling clients_nova.
+default['openstack']['orchestration']['clients_nova']['insecure'] = node['openstack']['orchestration']['clients']['insecure']
+
 # A list of memcached server(s) for caching
 default['openstack']['orchestration']['api']['auth']['memcached_servers'] = nil
 

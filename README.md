@@ -90,6 +90,55 @@ Clients configurations
 * `openstack['orchestration']['clients']['key_file']` - Private key file to use for clients when verifying HTTPs connections.
 * `openstack['orchestration']['clients']['insecure']` - Whether to allow insecure SSL (https) requests when calling clients.
 
+clients_ceilometer configurations
+---------------------------------
+* `openstack['orchestration']['clients_ceilometer']['ca_file']` - A PEM encoded Certificate Authority to use for clients_ceilometer when verifying HTTPs connections.
+* `openstack['orchestration']['clients_ceilometer']['cert_file']` - Cert file to use for clients_ceilometer when verifying HTTPs connections.
+* `openstack['orchestration']['clients_ceilometer']['key_file']` - Private key file to use for clients_ceilometer when verifying HTTPs connections.
+* `openstack['orchestration']['clients_ceilometer']['insecure']` - Whether to allow insecure SSL (https) requests when calling clients_ceilometer.
+
+clients_cinder configurations
+-----------------------------
+* `openstack['orchestration']['clients_cinder']['ca_file']` - A PEM encoded Certificate Authority to use for clients_cinder when verifying HTTPs connections.
+* `openstack['orchestration']['clients_cinder']['cert_file']` - Cert file to use for clients_cinder when verifying HTTPs connections.
+* `openstack['orchestration']['clients_cinder']['key_file']` - Private key file to use for clients_cinder when verifying HTTPs connections.
+* `openstack['orchestration']['clients_cinder']['insecure']` - Whether to allow insecure SSL (https) requests when calling clients_cinder.
+
+clients_glance configurations
+-----------------------------
+* `openstack['orchestration']['clients_glance']['ca_file']` - A PEM encoded Certificate Authority to use for clients_glance when verifying HTTPs connections.
+* `openstack['orchestration']['clients_glance']['cert_file']` - Cert file to use for clients_glance when verifying HTTPs connections.
+* `openstack['orchestration']['clients_glance']['key_file']` - Private key file to use for clients_glance when verifying HTTPs connections.
+* `openstack['orchestration']['clients_glance']['insecure']` - Whether to allow insecure SSL (https) requests when calling clients_glance.
+
+clients_heat configurations
+---------------------------
+* `openstack['orchestration']['clients_heat']['ca_file']` - A PEM encoded Certificate Authority to use for clients_heat when verifying HTTPs connections.
+* `openstack['orchestration']['clients_heat']['cert_file']` - Cert file to use for clients_heat when verifying HTTPs connections.
+* `openstack['orchestration']['clients_heat']['key_file']` - Private key file to use for clients_heat when verifying HTTPs connections.
+* `openstack['orchestration']['clients_heat']['insecure']` - Whether to allow insecure SSL (https) requests when calling clients_heat.
+
+clients_keystone configurations
+-------------------------------
+* `openstack['orchestration']['clients_keystone']['ca_file']` - A PEM encoded Certificate Authority to use for clients_keystone when verifying HTTPs connections.
+* `openstack['orchestration']['clients_keystone']['cert_file']` - Cert file to use for clients_keystone when verifying HTTPs connections.
+* `openstack['orchestration']['clients_keystone']['key_file']` - Private key file to use for clients_keystone when verifying HTTPs connections.
+* `openstack['orchestration']['clients_keystone']['insecure']` - Whether to allow insecure SSL (https) requests when calling clients_keystone.
+
+clients_neutron configurations
+------------------------------
+* `openstack['orchestration']['clients_neutron']['ca_file']` - A PEM encoded Certificate Authority to use for clients_neutron when verifying HTTPs connections.
+* `openstack['orchestration']['clients_neutron']['cert_file']` - Cert file to use for clients_neutron when verifying HTTPs connections.
+* `openstack['orchestration']['clients_neutron']['key_file']` - Private key file to use for clients_neutron when verifying HTTPs connections.
+* `openstack['orchestration']['clients_neutron']['insecure']` - Whether to allow insecure SSL (https) requests when calling clients_neutron.
+
+clients_nova configurations
+---------------------------------
+* `openstack['orchestration']['clients_nova']['ca_file']` - A PEM encoded Certificate Authority to use for clients_nova when verifying HTTPs connections.
+* `openstack['orchestration']['clients_nova']['cert_file']` - Cert file to use for clients_nova when verifying HTTPs connections.
+* `openstack['orchestration']['clients_nova']['key_file']` - Private key file to use for clients_nova when verifying HTTPs connections.
+* `openstack['orchestration']['clients_nova']['insecure']` - Whether to allow insecure SSL (https) requests when calling clients_nova.
+
 Notification definitions
 ------------------------
 * `openstack['orchestration']['notification_driver']` - driver

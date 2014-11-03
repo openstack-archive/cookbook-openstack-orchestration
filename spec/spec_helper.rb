@@ -213,6 +213,83 @@ shared_examples 'expects to create heat conf' do
         expect(chef_run).to render_file(file.name).with_content(%r{^key_file=dir/to/path$})
         expect(chef_run).to render_file(file.name).with_content(/^insecure=true$/)
       end
+
+      it 'sets clients_ceilometer ca_file cert_file key_file insecure' do
+        node.set['openstack']['orchestration']['clients_ceilometer']['ca_file'] = 'dir/to/path'
+        node.set['openstack']['orchestration']['clients_ceilometer']['cert_file'] = 'dir/to/path'
+        node.set['openstack']['orchestration']['clients_ceilometer']['key_file'] = 'dir/to/path'
+        node.set['openstack']['orchestration']['clients_ceilometer']['insecure'] = true
+        expect(chef_run).to render_file(file.name).with_content(%r{^ca_file=dir/to/path$})
+        expect(chef_run).to render_file(file.name).with_content(%r{^cert_file=dir/to/path$})
+        expect(chef_run).to render_file(file.name).with_content(%r{^key_file=dir/to/path$})
+        expect(chef_run).to render_file(file.name).with_content(/^insecure=true$/)
+      end
+
+      it 'sets clients_cinder ca_file cert_file key_file insecure' do
+        node.set['openstack']['orchestration']['clients_cinder']['ca_file'] = 'dir/to/path'
+        node.set['openstack']['orchestration']['clients_cinder']['cert_file'] = 'dir/to/path'
+        node.set['openstack']['orchestration']['clients_cinder']['key_file'] = 'dir/to/path'
+        node.set['openstack']['orchestration']['clients_cinder']['insecure'] = true
+        expect(chef_run).to render_file(file.name).with_content(%r{^ca_file=dir/to/path$})
+        expect(chef_run).to render_file(file.name).with_content(%r{^cert_file=dir/to/path$})
+        expect(chef_run).to render_file(file.name).with_content(%r{^key_file=dir/to/path$})
+        expect(chef_run).to render_file(file.name).with_content(/^insecure=true$/)
+      end
+
+      it 'sets clients_glance ca_file cert_file key_file insecure' do
+        node.set['openstack']['orchestration']['clients_glance']['ca_file'] = 'dir/to/path'
+        node.set['openstack']['orchestration']['clients_glance']['cert_file'] = 'dir/to/path'
+        node.set['openstack']['orchestration']['clients_glance']['key_file'] = 'dir/to/path'
+        node.set['openstack']['orchestration']['clients_glance']['insecure'] = true
+        expect(chef_run).to render_file(file.name).with_content(%r{^ca_file=dir/to/path$})
+        expect(chef_run).to render_file(file.name).with_content(%r{^cert_file=dir/to/path$})
+        expect(chef_run).to render_file(file.name).with_content(%r{^key_file=dir/to/path$})
+        expect(chef_run).to render_file(file.name).with_content(/^insecure=true$/)
+      end
+
+      it 'sets clients_heat ca_file cert_file key_file insecure' do
+        node.set['openstack']['orchestration']['clients_heat']['ca_file'] = 'dir/to/path'
+        node.set['openstack']['orchestration']['clients_heat']['cert_file'] = 'dir/to/path'
+        node.set['openstack']['orchestration']['clients_heat']['key_file'] = 'dir/to/path'
+        node.set['openstack']['orchestration']['clients_heat']['insecure'] = true
+        expect(chef_run).to render_file(file.name).with_content(%r{^ca_file=dir/to/path$})
+        expect(chef_run).to render_file(file.name).with_content(%r{^cert_file=dir/to/path$})
+        expect(chef_run).to render_file(file.name).with_content(%r{^key_file=dir/to/path$})
+        expect(chef_run).to render_file(file.name).with_content(/^insecure=true$/)
+      end
+
+      it 'sets clients_keystone ca_file cert_file key_file insecure' do
+        node.set['openstack']['orchestration']['clients_keystone']['ca_file'] = 'dir/to/path'
+        node.set['openstack']['orchestration']['clients_keystone']['cert_file'] = 'dir/to/path'
+        node.set['openstack']['orchestration']['clients_keystone']['key_file'] = 'dir/to/path'
+        node.set['openstack']['orchestration']['clients_keystone']['insecure'] = true
+        expect(chef_run).to render_file(file.name).with_content(%r{^ca_file=dir/to/path$})
+        expect(chef_run).to render_file(file.name).with_content(%r{^cert_file=dir/to/path$})
+        expect(chef_run).to render_file(file.name).with_content(%r{^key_file=dir/to/path$})
+        expect(chef_run).to render_file(file.name).with_content(/^insecure=true$/)
+      end
+
+      it 'sets clients_neutron ca_file cert_file key_file insecure' do
+        node.set['openstack']['orchestration']['clients_neutron']['ca_file'] = 'dir/to/path'
+        node.set['openstack']['orchestration']['clients_neutron']['cert_file'] = 'dir/to/path'
+        node.set['openstack']['orchestration']['clients_neutron']['key_file'] = 'dir/to/path'
+        node.set['openstack']['orchestration']['clients_neutron']['insecure'] = true
+        expect(chef_run).to render_file(file.name).with_content(%r{^ca_file=dir/to/path$})
+        expect(chef_run).to render_file(file.name).with_content(%r{^cert_file=dir/to/path$})
+        expect(chef_run).to render_file(file.name).with_content(%r{^key_file=dir/to/path$})
+        expect(chef_run).to render_file(file.name).with_content(/^insecure=true$/)
+      end
+
+      it 'sets clients_nova ca_file cert_file key_file insecure' do
+        node.set['openstack']['orchestration']['clients_nova']['ca_file'] = 'dir/to/path'
+        node.set['openstack']['orchestration']['clients_nova']['cert_file'] = 'dir/to/path'
+        node.set['openstack']['orchestration']['clients_nova']['key_file'] = 'dir/to/path'
+        node.set['openstack']['orchestration']['clients_nova']['insecure'] = true
+        expect(chef_run).to render_file(file.name).with_content(%r{^ca_file=dir/to/path$})
+        expect(chef_run).to render_file(file.name).with_content(%r{^cert_file=dir/to/path$})
+        expect(chef_run).to render_file(file.name).with_content(%r{^key_file=dir/to/path$})
+        expect(chef_run).to render_file(file.name).with_content(/^insecure=true$/)
+      end
     end
 
     describe 'default values' do

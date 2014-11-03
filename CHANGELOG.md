@@ -14,6 +14,7 @@ This file is used to list changes made in each version of cookbook-openstack-orc
 * Add cert_file, key_file, ca_file and insecure for clients so that they are configurable.
 * Make 3 schemes configurable instead of being the hardcoded http
 * Add misc options for heat.conf
+* Add cert_file, key_file, ca_file and insecure for clients_XXX so that they are configurable.
 
 ## 9.2.0
 * python_packages database client attributes have been migrated to
