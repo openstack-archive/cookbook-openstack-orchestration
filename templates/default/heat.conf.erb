@@ -116,8 +116,12 @@ heat_stack_user_role=<%= node['openstack']['orchestration']['heat_stack_user_rol
 # Keystone domain ID which contains heat template-defined
 # users. If this option is set, stack_user_domain_name option
 # will be ignored. (string value)
-# Deprecated group/name - [DEFAULT]/stack_user_domain
+# Deprecated group/name - [DEFAULT]/stack_user_domain_id
+<% if node['openstack']['orchestration']['stack_user_domain_id'] -%>
+stack_user_domain_id=<%= node['openstack']['orchestration']['stack_user_domain_id'] %>
+<% else -%>
 #stack_user_domain_id=<None>
+<% end -%>
 
 # Keystone domain name which contains heat template-defined
 # users. If `stack_user_domain_id` option is set, this option

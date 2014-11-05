@@ -351,6 +351,7 @@ shared_examples 'expects to create heat conf' do
         [
           /^heat_stack_user_role=/,
           /^stack_user_domain_name=/,
+          /^stack_user_domain_id=/,
           /^stack_domain_admin=/,
           /^stack_domain_admin_password=/
         ].each do |line|
@@ -361,10 +362,12 @@ shared_examples 'expects to create heat conf' do
       it 'has domain override values' do
         node.set['openstack']['orchestration']['heat_stack_user_role'] = 'heat_stack_user'
         node.set['openstack']['orchestration']['stack_user_domain_name'] = 'heat'
+        node.set['openstack']['orchestration']['stack_user_domain_id'] = '123'
         node.set['openstack']['orchestration']['stack_domain_admin'] = 'heat_stack_admin'
         [
           /^heat_stack_user_role=heat_stack_user$/,
           /^stack_user_domain_name=heat$/,
+          /^stack_user_domain_id=123$/,
           /^stack_domain_admin=heat_stack_admin$/,
           /^stack_domain_admin_password=heat_stack_domain_admin_password$/
         ].each do |line|
