@@ -148,16 +148,46 @@ describe 'openstack-orchestration::identity_registration' do
       expect(chef_run).not_to run_execute('heat-keystone-setup-domain')
     end
 
-    it 'calls domain setup script' do
+    it 'calls domain setup script with insecure mode' do
       node.set['openstack']['orchestration']['heat_stack_user_role'] = 'heat_stack_user'
       node.set['openstack']['orchestration']['stack_user_domain_name'] = 'stack_user_domain_name'
       node.set['openstack']['orchestration']['stack_domain_admin'] = 'stack_domain_admin'
+      node.set['openstack']['orchestration']['clients']['insecure'] = true
+      node.set['openstack']['endpoints']['identity-admin']['scheme'] = 'https'
 
-      expect(chef_run).to run_execute('heat-keystone-setup-domain')
+      expect(chef_run).to run_execute('heat-keystone-setup-domain --insecure')
         .with(
           environment: { 'OS_USERNAME' => 'admin',
                          'OS_PASSWORD' => 'admin_pass',
-                         'OS_AUTH_URL' => 'http://127.0.0.1:35357/v2.0',
+                         'OS_AUTH_URL' => 'https://127.0.0.1:35357/v2.0',
+                         'OS_CACERT' => nil,
+                         'OS_CERT' => nil,
+                         'OS_KEY' => nil,
+                         'HEAT_DOMAIN' => 'stack_user_domain_name',
+                         'HEAT_DOMAIN_ADMIN' => 'stack_domain_admin',
+                         'HEAT_DOMAIN_PASSWORD' => 'stack_domain_admin_pass'
+          }
+        )
+    end
+
+    it 'calls domain setup script with secure mode' do
+      node.set['openstack']['orchestration']['heat_stack_user_role'] = 'heat_stack_user'
+      node.set['openstack']['orchestration']['stack_user_domain_name'] = 'stack_user_domain_name'
+      node.set['openstack']['orchestration']['stack_domain_admin'] = 'stack_domain_admin'
+      node.set['openstack']['orchestration']['clients']['insecure'] = false
+      node.set['openstack']['orchestration']['clients']['ca_file'] = 'path/cacert'
+      node.set['openstack']['orchestration']['clients']['cert_file'] = 'path/cert_file'
+      node.set['openstack']['orchestration']['clients']['key_file'] = 'path/key_file'
+      node.set['openstack']['endpoints']['identity-admin']['scheme'] = 'https'
+
+      expect(chef_run).to run_execute('heat-keystone-setup-domain ')
+        .with(
+          environment: { 'OS_USERNAME' => 'admin',
+                         'OS_PASSWORD' => 'admin_pass',
+                         'OS_AUTH_URL' => 'https://127.0.0.1:35357/v2.0',
+                         'OS_CACERT' => 'path/cacert',
+                         'OS_CERT' => 'path/cert_file',
+                         'OS_KEY' => 'path/key_file',
                          'HEAT_DOMAIN' => 'stack_user_domain_name',
                          'HEAT_DOMAIN_ADMIN' => 'stack_domain_admin',
                          'HEAT_DOMAIN_PASSWORD' => 'stack_domain_admin_pass'

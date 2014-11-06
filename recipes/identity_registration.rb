@@ -147,14 +147,21 @@ if !stack_user_role.nil? && !stack_user_domain_name.nil? && !stack_domain_admin.
   stack_domain_admin_password = get_password 'user', stack_domain_admin
   admin_user = node['openstack']['identity']['admin_user']
   admin_pass = get_password 'user', admin_user
+  ca_cert = node['openstack']['orchestration']['clients']['ca_file']
+  cert_file = node['openstack']['orchestration']['clients']['cert_file']
+  key_file = node['openstack']['orchestration']['clients']['key_file']
+  insecure = node['openstack']['orchestration']['clients']['insecure'] && '--insecure' || ''
 
   execute 'heat-keystone-setup-domain' do
     environment 'OS_USERNAME' => admin_user,
                 'OS_PASSWORD' => admin_pass,
                 'OS_AUTH_URL' => auth_url,
+                'OS_CACERT' => ca_cert,
+                'OS_CERT' => cert_file,
+                'OS_KEY' => key_file,
                 'HEAT_DOMAIN' => stack_user_domain_name,
                 'HEAT_DOMAIN_ADMIN' => stack_domain_admin,
                 'HEAT_DOMAIN_PASSWORD' => stack_domain_admin_password
-    action :run
+    command "heat-keystone-setup-domain #{insecure}"
   end
 end
