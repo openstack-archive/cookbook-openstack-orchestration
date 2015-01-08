@@ -17,6 +17,7 @@ This file is used to list changes made in each version of cookbook-openstack-orc
 * Add cert_file, key_file, ca_file and insecure for clients_XXX so that they are configurable.
 * Add security arguments for heat-keystone-setup-domain command
 * Allow domain id as attribute
+* Add rabbit_ha_queues=True when rabbit HA is enabled
 
 ## 9.2.0
 * python_packages database client attributes have been migrated to

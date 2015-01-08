@@ -314,6 +314,7 @@ shared_examples 'expects to create heat conf' do
           /^amqp_auto_delete=false$/,
           /^rabbit_host=127.0.0.1$/,
           /^rabbit_port=5672$/,
+          /^rabbit_ha_queues=False$/,
           /^rabbit_use_ssl=false$/,
           /^rabbit_userid=guest$/,
           /^rabbit_password=mq-pass$/,
@@ -395,6 +396,19 @@ shared_examples 'expects to create heat conf' do
           /^qpid_reconnect_interval_max=0$/,
           /^qpid_reconnect_interval=0$/,
           /^qpid_topology_version=1$/
+        ].each do |line|
+          expect(chef_run).to render_file(file.name).with_content(line)
+        end
+      end
+    end
+
+    describe 'has rabbit values' do
+      it 'has rabbit ha values' do
+        node.set['openstack']['mq']['orchestration']['service_type'] = 'rabbitmq'
+        node.set['openstack']['mq']['orchestration']['rabbit']['ha'] = true
+        [
+          /^rabbit_hosts=1.1.1.1:5672,2.2.2.2:5672$/,
+          /^rabbit_ha_queues=True$/
         ].each do |line|
           expect(chef_run).to render_file(file.name).with_content(line)
         end
