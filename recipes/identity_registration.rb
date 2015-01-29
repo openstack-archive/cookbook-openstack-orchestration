@@ -24,13 +24,17 @@ class ::Chef::Recipe # rubocop:disable Documentation
   include ::Openstack
 end
 
-identity_admin_endpoint = endpoint 'identity-admin'
+identity_admin_endpoint = admin_endpoint 'identity-admin'
 
 token = get_secret 'openstack_identity_bootstrap_token'
 auth_url = ::URI.decode identity_admin_endpoint.to_s
 
-heat_endpoint = endpoint 'orchestration-api'
-heat_cfn_endpoint = endpoint 'orchestration-api-cfn'
+admin_heat_endpoint = admin_endpoint 'orchestration-api'
+internal_heat_endpoint = internal_endpoint 'orchestration-api'
+public_heat_endpoint = public_endpoint 'orchestration-api'
+admin_heat_cfn_endpoint = admin_endpoint 'orchestration-api-cfn'
+internal_heat_cfn_endpoint = internal_endpoint 'orchestration-api-cfn'
+public_heat_cfn_endpoint = public_endpoint 'orchestration-api-cfn'
 
 service_pass = get_password 'service', 'openstack-orchestration'
 service_tenant_name = node['openstack']['orchestration']['service_tenant_name']
@@ -59,9 +63,9 @@ openstack_identity_register 'Register Heat Orchestration Endpoint' do
   bootstrap_token token
   service_type 'orchestration'
   endpoint_region region
-  endpoint_adminurl heat_endpoint.to_s
-  endpoint_internalurl heat_endpoint.to_s
-  endpoint_publicurl heat_endpoint.to_s
+  endpoint_adminurl admin_heat_endpoint.to_s
+  endpoint_internalurl internal_heat_endpoint.to_s
+  endpoint_publicurl public_heat_endpoint.to_s
 
   action :create_endpoint
 end
@@ -87,9 +91,9 @@ openstack_identity_register 'Register Heat Cloudformation Endpoint' do
   bootstrap_token token
   service_type 'cloudformation'
   endpoint_region region
-  endpoint_adminurl heat_cfn_endpoint.to_s
-  endpoint_internalurl heat_cfn_endpoint.to_s
-  endpoint_publicurl heat_cfn_endpoint.to_s
+  endpoint_adminurl admin_heat_cfn_endpoint.to_s
+  endpoint_internalurl internal_heat_cfn_endpoint.to_s
+  endpoint_publicurl public_heat_cfn_endpoint.to_s
 
   action :create_endpoint
 end

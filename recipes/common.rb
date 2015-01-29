@@ -53,14 +53,14 @@ db_user = node['openstack']['db']['orchestration']['username']
 db_pass = get_password 'db', 'heat'
 sql_connection = db_uri('orchestration', db_user, db_pass)
 
-identity_endpoint = endpoint 'identity-api'
-identity_admin_endpoint = endpoint 'identity-admin'
-heat_api_bind = endpoint 'orchestration-api-bind'
-heat_api_endpoint = endpoint 'orchestration-api'
-heat_api_cfn_bind = endpoint 'orchestration-api-cfn-bind'
-heat_api_cfn_endpoint = endpoint 'orchestration-api-cfn'
-heat_api_cloudwatch_bind = endpoint 'orchestration-api-cloudwatch-bind'
-heat_api_cloudwatch_endpoint = endpoint 'orchestration-api-cloudwatch'
+identity_endpoint = internal_endpoint 'identity-api'
+identity_admin_endpoint = admin_endpoint 'identity-admin'
+heat_api_bind = internal_endpoint 'orchestration-api-bind'
+heat_api_endpoint = internal_endpoint 'orchestration-api'
+heat_api_cfn_bind = internal_endpoint 'orchestration-api-cfn-bind'
+heat_api_cfn_endpoint = internal_endpoint 'orchestration-api-cfn'
+heat_api_cloudwatch_bind = internal_endpoint 'orchestration-api-cloudwatch-bind'
+heat_api_cloudwatch_endpoint = internal_endpoint 'orchestration-api-cloudwatch'
 
 service_pass = get_password 'service', 'openstack-orchestration'
 

@@ -68,6 +68,98 @@ describe 'openstack-orchestration::identity_registration' do
       )
     end
 
+    it 'register heat-api endpoint with different admin url' do
+      admin_url = 'https://admin.host:123/admin_path'
+      general_url = 'http://general.host:456/general_path'
+
+      # Set the general endpoint
+      node.set['openstack']['endpoints']['orchestration-api']['uri'] = general_url
+      # Set the admin endpoint override
+      node.set['openstack']['endpoints']['admin']['orchestration-api']['uri'] = admin_url
+
+      expect(chef_run).to create_endpoint_openstack_identity_register(
+        'Register Heat Orchestration Endpoint'
+      ).with(
+        auth_uri: 'http://127.0.0.1:35357/v2.0',
+        bootstrap_token: 'bootstrap-token',
+        service_type: 'orchestration',
+        endpoint_region: 'RegionOne',
+        endpoint_adminurl: admin_url,
+        endpoint_internalurl: general_url,
+        endpoint_publicurl: general_url,
+        action: [:create_endpoint]
+      )
+    end
+
+    it 'register heat-api endpoint with different public url' do
+      public_url = 'https://public.host:789/public_path'
+      general_url = 'http://general.host:456/general_path'
+
+      # Set the general endpoint
+      node.set['openstack']['endpoints']['orchestration-api']['uri'] = general_url
+      # Set the public endpoint override
+      node.set['openstack']['endpoints']['public']['orchestration-api']['uri'] = public_url
+
+      expect(chef_run).to create_endpoint_openstack_identity_register(
+        'Register Heat Orchestration Endpoint'
+      ).with(
+        auth_uri: 'http://127.0.0.1:35357/v2.0',
+        bootstrap_token: 'bootstrap-token',
+        service_type: 'orchestration',
+        endpoint_region: 'RegionOne',
+        endpoint_adminurl: general_url,
+        endpoint_internalurl: general_url,
+        endpoint_publicurl: public_url,
+        action: [:create_endpoint]
+      )
+    end
+
+    it 'register heat-api endpoint with different internal url' do
+      internal_url = 'http://internal.host:456/internal_path'
+      general_url = 'http://general.host:456/general_path'
+
+      # Set general endpoint
+      node.set['openstack']['endpoints']['orchestration-api']['uri'] = general_url
+      # Set the internal endpoint override
+      node.set['openstack']['endpoints']['internal']['orchestration-api']['uri'] = internal_url
+
+      expect(chef_run).to create_endpoint_openstack_identity_register(
+        'Register Heat Orchestration Endpoint'
+      ).with(
+        auth_uri: 'http://127.0.0.1:35357/v2.0',
+        bootstrap_token: 'bootstrap-token',
+        service_type: 'orchestration',
+        endpoint_region: 'RegionOne',
+        endpoint_adminurl: general_url,
+        endpoint_internalurl: internal_url,
+        endpoint_publicurl: general_url,
+        action: [:create_endpoint]
+      )
+    end
+
+    it 'register heat-api endpoint with all different urls' do
+      admin_url = 'https://admin.host:123/admin_path'
+      internal_url = 'http://internal.host:456/internal_path'
+      public_url = 'https://public.host:789/public_path'
+
+      node.set['openstack']['endpoints']['admin']['orchestration-api']['uri'] = admin_url
+      node.set['openstack']['endpoints']['internal']['orchestration-api']['uri'] = internal_url
+      node.set['openstack']['endpoints']['public']['orchestration-api']['uri'] = public_url
+
+      expect(chef_run).to create_endpoint_openstack_identity_register(
+        'Register Heat Orchestration Endpoint'
+      ).with(
+        auth_uri: 'http://127.0.0.1:35357/v2.0',
+        bootstrap_token: 'bootstrap-token',
+        service_type: 'orchestration',
+        endpoint_region: 'RegionOne',
+        endpoint_adminurl: admin_url,
+        endpoint_internalurl: internal_url,
+        endpoint_publicurl: public_url,
+        action: [:create_endpoint]
+      )
+    end
+
     it 'register heat cloudformation endpoint' do
       expect(chef_run).to create_endpoint_openstack_identity_register(
         'Register Heat Cloudformation Endpoint'
@@ -79,6 +171,91 @@ describe 'openstack-orchestration::identity_registration' do
         endpoint_adminurl: 'http://127.0.0.1:8000/v1',
         endpoint_internalurl: 'http://127.0.0.1:8000/v1',
         endpoint_publicurl: 'http://127.0.0.1:8000/v1',
+        action: [:create_endpoint]
+      )
+    end
+
+    it 'register heat-cfn endpoint with different admin url' do
+      admin_url = 'https://admin.host:123/admin_path'
+      general_url = 'http://general.host:456/general_path'
+      # Set the general endpoint
+      node.set['openstack']['endpoints']['orchestration-api-cfn']['uri'] = general_url
+      # Set the admin endpoint override
+      node.set['openstack']['endpoints']['admin']['orchestration-api-cfn']['uri'] = admin_url
+      expect(chef_run).to create_endpoint_openstack_identity_register(
+        'Register Heat Cloudformation Endpoint'
+      ).with(
+        auth_uri: 'http://127.0.0.1:35357/v2.0',
+        bootstrap_token: 'bootstrap-token',
+        service_type: 'cloudformation',
+        endpoint_region: 'RegionOne',
+        endpoint_adminurl: admin_url,
+        endpoint_internalurl: general_url,
+        endpoint_publicurl: general_url,
+        action: [:create_endpoint]
+      )
+    end
+
+    it 'register heat-cfn endpoint with different public url' do
+      public_url = 'https://public.host:789/public_path'
+      general_url = 'http://general.host:456/general_path'
+      # Set the general endpoint
+      node.set['openstack']['endpoints']['orchestration-api-cfn']['uri'] = general_url
+      # Set the public endpoint override
+      node.set['openstack']['endpoints']['public']['orchestration-api-cfn']['uri'] = public_url
+      expect(chef_run).to create_endpoint_openstack_identity_register(
+        'Register Heat Cloudformation Endpoint'
+      ).with(
+        auth_uri: 'http://127.0.0.1:35357/v2.0',
+        bootstrap_token: 'bootstrap-token',
+        service_type: 'cloudformation',
+        endpoint_region: 'RegionOne',
+        endpoint_adminurl: general_url,
+        endpoint_internalurl: general_url,
+        endpoint_publicurl: public_url,
+        action: [:create_endpoint]
+      )
+    end
+
+    it 'register heat-cfn endpoint with different internal url' do
+      internal_url = 'http://internal.host:456/internal_path'
+      general_url = 'http://general.host:456/general_path'
+      # Set the general endpoint
+      node.set['openstack']['endpoints']['orchestration-api-cfn']['uri'] = general_url
+      # Set the internal endpoint override
+      node.set['openstack']['endpoints']['internal']['orchestration-api-cfn']['uri'] = internal_url
+      expect(chef_run).to create_endpoint_openstack_identity_register(
+        'Register Heat Cloudformation Endpoint'
+      ).with(
+        auth_uri: 'http://127.0.0.1:35357/v2.0',
+        bootstrap_token: 'bootstrap-token',
+        service_type: 'cloudformation',
+        endpoint_region: 'RegionOne',
+        endpoint_adminurl: general_url,
+        endpoint_internalurl: internal_url,
+        endpoint_publicurl: general_url,
+        action: [:create_endpoint]
+      )
+    end
+
+    it 'register heat-cfn endpoint with all different urls' do
+      admin_url = 'https://admin.host:123/admin_path'
+      internal_url = 'http://internal.host:456/internal_path'
+      public_url = 'https://public.host:789/public_path'
+
+      node.set['openstack']['endpoints']['admin']['orchestration-api-cfn']['uri'] = admin_url
+      node.set['openstack']['endpoints']['internal']['orchestration-api-cfn']['uri'] = internal_url
+      node.set['openstack']['endpoints']['public']['orchestration-api-cfn']['uri'] = public_url
+      expect(chef_run).to create_endpoint_openstack_identity_register(
+        'Register Heat Cloudformation Endpoint'
+      ).with(
+        auth_uri: 'http://127.0.0.1:35357/v2.0',
+        bootstrap_token: 'bootstrap-token',
+        service_type: 'cloudformation',
+        endpoint_region: 'RegionOne',
+        endpoint_adminurl: admin_url,
+        endpoint_internalurl: internal_url,
+        endpoint_publicurl: public_url,
         action: [:create_endpoint]
       )
     end
