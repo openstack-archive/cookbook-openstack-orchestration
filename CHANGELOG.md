@@ -19,6 +19,7 @@ This file is used to list changes made in each version of cookbook-openstack-orc
 * Allow domain id as attribute
 * Add rabbit_ha_queues=True when rabbit HA is enabled
 * Use common specific_endpoint routines (bug 1412919)
+* Use identity-internal endpoint (bug 1412919)
 
 ## 9.2.0
 * python_packages database client attributes have been migrated to
