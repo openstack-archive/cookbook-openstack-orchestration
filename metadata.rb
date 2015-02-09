@@ -18,5 +18,5 @@ recipe            'openstack-orchestration::identity_registration', 'Registers H
   supports os
 end
 
-depends           'openstack-common', '~> 10.0'
-depends           'openstack-identity', '~> 10.0'
+depends           'openstack-common', '>= 10.2.0'
+depends           'openstack-identity', '>= 10.0.0'
