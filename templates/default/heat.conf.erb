@@ -35,7 +35,9 @@
 
 # Select deferred auth method, stored password or trusts.
 # (string value)
-#deferred_auth_method=password
+<% if node['openstack']['orchestration']['deferred_auth_method'] -%>
+deferred_auth_method=<%= node['openstack']['orchestration']['deferred_auth_method'] %>
+<% end -%>
 
 # Subset of trustor roles to be delegated to heat. (list
 # value)

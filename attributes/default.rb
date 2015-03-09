@@ -147,6 +147,9 @@ default['openstack']['orchestration']['stack_user_domain_name'] = nil
 # users and projects in the stack_user_domain. (string value)
 default['openstack']['orchestration']['stack_domain_admin'] = nil
 
+# Select deferred auth method, stored password or trusts.
+default['openstack']['orchestration']['deferred_auth_method'] = 'trusts'
+
 # If set, heat API service will bind to the address on this interface,
 # otherwise it will bind to the API endpoint's host.
 default['openstack']['orchestration']['api']['bind_interface'] = nil
