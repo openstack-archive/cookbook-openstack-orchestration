@@ -41,11 +41,3 @@ service 'heat-api-cloudwatch' do
   action :enable
   subscribes :restart, 'template[/etc/heat/heat.conf]'
 end
-
-template '/etc/heat/api-paste.ini' do
-  source 'api-paste.ini.erb'
-  group  node['openstack']['orchestration']['group']
-  owner  node['openstack']['orchestration']['user']
-  mode   00644
-  notifies :restart, 'service[heat-api-cloudwatch]', :immediately
-end

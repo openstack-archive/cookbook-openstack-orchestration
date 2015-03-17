@@ -14,8 +14,6 @@ describe 'openstack-orchestration::api-cloudwatch' do
       expect(chef_run).to upgrade_package 'python-heatclient'
     end
 
-    expect_creates_api_paste 'service[heat-api-cloudwatch]'
-
     it 'starts heat api-cloudwatch on boot' do
       expect(chef_run).to enable_service('openstack-heat-api-cloudwatch')
     end

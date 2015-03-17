@@ -77,24 +77,6 @@ shared_examples 'expect runs openstack common logging recipe' do
   end
 end
 
-def expect_creates_api_paste(service, action = :restart) # rubocop:disable MethodLength
-  describe 'api-paste.ini' do
-    let(:template) { chef_run.template('/etc/heat/api-paste.ini') }
-
-    it 'creates the heat.conf file' do
-      expect(chef_run).to create_template(template.name).with(
-        owner: 'heat',
-        group: 'heat',
-        mode: 0644
-      )
-    end
-
-    it 'notifies heat-api restart' do
-      expect(template).to notify(service).to(action)
-    end
-  end
-end
-
 shared_examples 'expect installs common heat package' do
   it 'installs the openstack-heat package' do
     expect(chef_run).to upgrade_package 'openstack-heat'
