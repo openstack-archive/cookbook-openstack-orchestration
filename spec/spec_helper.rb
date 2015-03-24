@@ -332,6 +332,7 @@ shared_examples 'expects to create heat conf' do
           /^admin_password=heat-pass$/,
           /^admin_tenant_name=service$/,
           /^deferred_auth_method=trusts$/,
+          /^stack_scheduler_hints=false$/,
           %r{^signing_dir=/var/cache/heat$},
           /^region_name_for_services=RegionOne$/
         ].each do |line|

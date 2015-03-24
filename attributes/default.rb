@@ -150,6 +150,9 @@ default['openstack']['orchestration']['stack_domain_admin'] = nil
 # Select deferred auth method, stored password or trusts.
 default['openstack']['orchestration']['deferred_auth_method'] = 'trusts'
 
+# If true, will passing stack information to scheduler hints when creating instances.
+default['openstack']['orchestration']['stack_scheduler_hints'] = false
+
 # If set, heat API service will bind to the address on this interface,
 # otherwise it will bind to the API endpoint's host.
 default['openstack']['orchestration']['api']['bind_interface'] = nil
