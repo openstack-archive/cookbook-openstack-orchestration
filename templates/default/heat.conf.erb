@@ -111,8 +111,6 @@ region_name_for_services=<%= node['openstack']['orchestration']['region'] %>
 # value)
 <% if node['openstack']['orchestration']['heat_stack_user_role'] -%>
 heat_stack_user_role=<%= node['openstack']['orchestration']['heat_stack_user_role'] %>
-<% else -%>
-#heat_stack_user_role=<None>
 <% end -%>
 
 # Keystone domain ID which contains heat template-defined
@@ -121,8 +119,6 @@ heat_stack_user_role=<%= node['openstack']['orchestration']['heat_stack_user_rol
 # Deprecated group/name - [DEFAULT]/stack_user_domain_id
 <% if node['openstack']['orchestration']['stack_user_domain_id'] -%>
 stack_user_domain_id=<%= node['openstack']['orchestration']['stack_user_domain_id'] %>
-<% else -%>
-#stack_user_domain_id=<None>
 <% end -%>
 
 # Keystone domain name which contains heat template-defined
@@ -130,24 +126,18 @@ stack_user_domain_id=<%= node['openstack']['orchestration']['stack_user_domain_i
 # is ignored. (string value)
 <% if node['openstack']['orchestration']['stack_user_domain_name'] -%>
 stack_user_domain_name=<%= node['openstack']['orchestration']['stack_user_domain_name'] %>
-<% else -%>
-#stack_user_domain_name=<None>
 <% end -%>
 
 # Keystone username, a user with roles sufficient to manage
 # users and projects in the stack_user_domain. (string value)
 <% if node['openstack']['orchestration']['stack_domain_admin'] -%>
 stack_domain_admin=<%= node['openstack']['orchestration']['stack_domain_admin'] %>
-<% else -%>
-#stack_domain_admin=<None>
 <% end -%>
 
 # Keystone password for stack_domain_admin user. (string
 # value)
 <% if @stack_domain_admin_password -%>
 stack_domain_admin_password=<%= @stack_domain_admin_password %>
-<% else -%>
-#stack_domain_admin_password=<None>
 <% end -%>
 
 # Maximum raw byte size of any template. (integer value)
@@ -620,24 +610,18 @@ log_config = /etc/openstack/logging.conf
 # value)
 <% if node['openstack']['orchestration']['clients']['ca_file'] -%>
 ca_file=<%= node['openstack']['orchestration']['clients']['ca_file'] %>
-<% else -%>
-#ca_file=<None>
 <% end -%>
 
 # Optional PEM-formatted certificate chain file. (string
 # value)
 <% if node['openstack']['orchestration']['clients']['cert_file'] -%>
 cert_file=<%= node['openstack']['orchestration']['clients']['cert_file'] %>
-<% else -%>
-#cert_file=<None>
 <% end -%>
 
 # Optional PEM-formatted file that contains the private key.
 # (string value)
 <% if node['openstack']['orchestration']['clients']['key_file'] -%>
 key_file=<%= node['openstack']['orchestration']['clients']['key_file'] %>
-<% else -%>
-#key_file=<None>
 <% end -%>
 
 # If set, then the server's certificate will not be verified.
@@ -660,24 +644,18 @@ insecure=<%= node['openstack']['orchestration']['clients']['insecure'] %>
 # value)
 <% if node['openstack']['orchestration']['clients_ceilometer']['ca_file'] -%>
 ca_file=<%= node['openstack']['orchestration']['clients_ceilometer']['ca_file'] %>
-<% else -%>
-#ca_file=<None>
 <% end -%>
 
 # Optional PEM-formatted certificate chain file. (string
 # value)
 <% if node['openstack']['orchestration']['clients_ceilometer']['cert_file'] -%>
 cert_file=<%= node['openstack']['orchestration']['clients_ceilometer']['cert_file'] %>
-<% else -%>
-#cert_file=<None>
 <% end -%>
 
 # Optional PEM-formatted file that contains the private key.
 # (string value)
 <% if node['openstack']['orchestration']['clients_ceilometer']['key_file'] -%>
 key_file=<%= node['openstack']['orchestration']['clients_ceilometer']['key_file'] %>
-<% else -%>
-#key_file=<None>
 <% end -%>
 
 # If set, then the server's certificate will not be verified.
@@ -700,24 +678,18 @@ insecure=<%= node['openstack']['orchestration']['clients_ceilometer']['insecure'
 # value)
 <% if node['openstack']['orchestration']['clients_cinder']['ca_file'] -%>
 ca_file=<%= node['openstack']['orchestration']['clients_cinder']['ca_file'] %>
-<% else -%>
-#ca_file=<None>
 <% end -%>
 
 # Optional PEM-formatted certificate chain file. (string
 # value)
 <% if node['openstack']['orchestration']['clients_cinder']['cert_file'] -%>
 cert_file=<%= node['openstack']['orchestration']['clients_cinder']['cert_file'] %>
-<% else -%>
-#cert_file=<None>
 <% end -%>
 
 # Optional PEM-formatted file that contains the private key.
 # (string value)
 <% if node['openstack']['orchestration']['clients_cinder']['key_file'] -%>
 key_file=<%= node['openstack']['orchestration']['clients_cinder']['key_file'] %>
-<% else -%>
-#key_file=<None>
 <% end -%>
 
 # If set, then the server's certificate will not be verified.
@@ -740,24 +712,18 @@ insecure=<%= node['openstack']['orchestration']['clients_cinder']['insecure'] %>
 # value)
 <% if node['openstack']['orchestration']['clients_glance']['ca_file'] -%>
 ca_file=<%= node['openstack']['orchestration']['clients_glance']['ca_file'] %>
-<% else -%>
-#ca_file=<None>
 <% end -%>
 
 # Optional PEM-formatted certificate chain file. (string
 # value)
 <% if node['openstack']['orchestration']['clients_glance']['cert_file'] -%>
 cert_file=<%= node['openstack']['orchestration']['clients_glance']['cert_file'] %>
-<% else -%>
-#cert_file=<None>
 <% end -%>
 
 # Optional PEM-formatted file that contains the private key.
 # (string value)
 <% if node['openstack']['orchestration']['clients_glance']['key_file'] -%>
 key_file=<%= node['openstack']['orchestration']['clients_glance']['key_file'] %>
-<% else -%>
-#key_file=<None>
 <% end -%>
 
 # If set, then the server's certificate will not be verified.
@@ -780,24 +746,18 @@ insecure=<%= node['openstack']['orchestration']['clients_glance']['insecure'] %>
 # value)
 <% if node['openstack']['orchestration']['clients_heat']['ca_file'] -%>
 ca_file=<%= node['openstack']['orchestration']['clients_heat']['ca_file'] %>
-<% else -%>
-#ca_file=<None>
 <% end -%>
 
 # Optional PEM-formatted certificate chain file. (string
 # value)
 <% if node['openstack']['orchestration']['clients_heat']['cert_file'] -%>
 cert_file=<%= node['openstack']['orchestration']['clients_heat']['cert_file'] %>
-<% else -%>
-#cert_file=<None>
 <% end -%>
 
 # Optional PEM-formatted file that contains the private key.
 # (string value)
 <% if node['openstack']['orchestration']['clients_heat']['key_file'] -%>
 key_file=<%= node['openstack']['orchestration']['clients_heat']['key_file'] %>
-<% else -%>
-#key_file=<None>
 <% end -%>
 
 # If set, then the server's certificate will not be verified.
@@ -828,24 +788,18 @@ insecure=<%= node['openstack']['orchestration']['clients_heat']['insecure'] %>
 # value)
 <% if node['openstack']['orchestration']['clients_keystone']['ca_file'] -%>
 ca_file=<%= node['openstack']['orchestration']['clients_keystone']['ca_file'] %>
-<% else -%>
-#ca_file=<None>
 <% end -%>
 
 # Optional PEM-formatted certificate chain file. (string
 # value)
 <% if node['openstack']['orchestration']['clients_keystone']['cert_file'] -%>
 cert_file=<%= node['openstack']['orchestration']['clients_keystone']['cert_file'] %>
-<% else -%>
-#cert_file=<None>
 <% end -%>
 
 # Optional PEM-formatted file that contains the private key.
 # (string value)
 <% if node['openstack']['orchestration']['clients_keystone']['key_file'] -%>
 key_file=<%= node['openstack']['orchestration']['clients_keystone']['key_file'] %>
-<% else -%>
-#key_file=<None>
 <% end -%>
 
 # If set, then the server's certificate will not be verified.
@@ -868,24 +822,18 @@ insecure=<%= node['openstack']['orchestration']['clients_keystone']['insecure'] 
 # value)
 <% if node['openstack']['orchestration']['clients_neutron']['ca_file'] -%>
 ca_file=<%= node['openstack']['orchestration']['clients_neutron']['ca_file'] %>
-<% else -%>
-#ca_file=<None>
 <% end -%>
 
 # Optional PEM-formatted certificate chain file. (string
 # value)
 <% if node['openstack']['orchestration']['clients_neutron']['cert_file'] -%>
 cert_file=<%= node['openstack']['orchestration']['clients_neutron']['cert_file'] %>
-<% else -%>
-#cert_file=<None>
 <% end -%>
 
 # Optional PEM-formatted file that contains the private key.
 # (string value)
 <% if node['openstack']['orchestration']['clients_neutron']['key_file'] -%>
 key_file=<%= node['openstack']['orchestration']['clients_neutron']['key_file'] %>
-<% else -%>
-#key_file=<None>
 <% end -%>
 
 # If set, then the server's certificate will not be verified.
@@ -908,24 +856,18 @@ insecure=<%= node['openstack']['orchestration']['clients_neutron']['insecure'] %
 # value)
 <% if node['openstack']['orchestration']['clients_nova']['ca_file'] -%>
 ca_file=<%= node['openstack']['orchestration']['clients_nova']['ca_file'] %>
-<% else -%>
-#ca_file=<None>
 <% end -%>
 
 # Optional PEM-formatted certificate chain file. (string
 # value)
 <% if node['openstack']['orchestration']['clients_nova']['cert_file'] -%>
 cert_file=<%= node['openstack']['orchestration']['clients_nova']['cert_file'] %>
-<% else -%>
-#cert_file=<None>
 <% end -%>
 
 # Optional PEM-formatted file that contains the private key.
 # (string value)
 <% if node['openstack']['orchestration']['clients_nova']['key_file'] -%>
 key_file=<%= node['openstack']['orchestration']['clients_nova']['key_file'] %>
-<% else -%>
-#key_file=<None>
 <% end -%>
 
 # If set, then the server's certificate will not be verified.
