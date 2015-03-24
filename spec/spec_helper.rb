@@ -405,8 +405,11 @@ shared_examples 'expects to create heat conf' do
     end
 
     describe 'has rabbit values' do
-      it 'has rabbit ha values' do
+      before do
         node.set['openstack']['mq']['orchestration']['service_type'] = 'rabbitmq'
+      end
+
+      it 'has rabbit ha values' do
         node.set['openstack']['mq']['orchestration']['rabbit']['ha'] = true
         [
           /^rabbit_hosts=1.1.1.1:5672,2.2.2.2:5672$/,
@@ -414,6 +417,17 @@ shared_examples 'expects to create heat conf' do
         ].each do |line|
           expect(chef_run).to render_file(file.name).with_content(line)
         end
+      end
+
+      it 'does not have kombu ssl version set' do
+        expect(chef_run).not_to render_config_file(file.name).with_section_content('DEFAULT', /^kombu_ssl_version=TLSv1.2$/)
+      end
+
+      it 'sets kombu ssl version' do
+        node.set['openstack']['mq']['orchestration']['rabbit']['use_ssl'] = true
+        node.set['openstack']['mq']['orchestration']['rabbit']['kombu_ssl_version'] = 'TLSv1.2'
+
+        expect(chef_run).to render_config_file(file.name).with_section_content('DEFAULT', /^kombu_ssl_version=TLSv1.2$/)
       end
     end
   end

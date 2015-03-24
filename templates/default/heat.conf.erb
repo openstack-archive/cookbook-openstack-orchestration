@@ -258,6 +258,10 @@ qpid_reconnect_interval=<%= node["openstack"]["mq"]["orchestration"]["qpid"]["re
 
 <% if @mq_service_type == "rabbitmq"  %>
 
+<% if node["openstack"]["mq"]["orchestration"]["rabbit"]["use_ssl"] && node["openstack"]["mq"]["orchestration"]["rabbit"]["kombu_ssl_version"] %>
+kombu_ssl_version=<%= node["openstack"]["mq"]["orchestration"]["rabbit"]["kombu_ssl_version"] %>
+<% end -%>
+
 # RabbitMQ HA cluster host:port pairs (list value)
 <% if node["openstack"]["mq"]["orchestration"]["rabbit"]["ha"] -%>
 rabbit_hosts=<%= @rabbit_hosts %>
