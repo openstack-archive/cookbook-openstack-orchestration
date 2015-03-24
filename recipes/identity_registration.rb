@@ -123,7 +123,7 @@ openstack_identity_register 'Register Heat Service User' do
   action :create_user
 end
 
-## Grant Admin role to Service User for Service Tenant ##
+## Grant Service role to Service User for Service Tenant ##
 openstack_identity_register "Grant '#{service_role}' Role to #{service_user} User for #{service_tenant_name} Tenant" do
   auth_uri auth_url
   bootstrap_token token
