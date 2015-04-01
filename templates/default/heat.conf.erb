@@ -3,6 +3,16 @@
 [DEFAULT]
 
 #
+# Options defined in heat.api.middleware.ssl
+#
+
+# The HTTP Header that will be used to determine which the
+# original request protocol scheme was, even if it was removed
+# by an SSL terminator proxy. (string value)
+#secure_proxy_ssl_header=X-Forwarded-Proto
+
+
+#
 # Options defined in heat.common.config
 #
 
@@ -23,11 +33,8 @@
 # AWS::EC2::Instance). (string value)
 #instance_user=ec2-user
 
-# Driver to use for controlling instances. (string value)
-#instance_driver=heat.engine.nova
-
 # List of directories to search for plug-ins. (list value)
-#plugin_dirs=/usr/lib64/heat,/usr/lib/heat
+#plugin_dirs=/usr/lib64/heat,/usr/lib/heat,/usr/local/lib/heat,/usr/local/lib64/heat
 
 # The directory to search for environment files. (string
 # value)
@@ -51,6 +58,10 @@ deferred_auth_method=<%= node['openstack']['orchestration']['deferred_auth_metho
 # one time. (integer value)
 #max_stacks_per_tenant=100
 
+# Number of times to retry to bring a resource to a non-error state. Set to 0
+# to disable retries. (integer value)
+#action_retry_limit=5
+
 # Controls how many events will be pruned whenever a  stack's
 # events exceed max_events_per_stack. Set this lower to keep
 # more events at the expense of more frequent purges. (integer
@@ -66,17 +77,47 @@ deferred_auth_method=<%= node['openstack']['orchestration']['deferred_auth_metho
 # (integer value)
 #stack_action_timeout=3600
 
+# Error wait time in seconds for stack action (ie. create or update). (integer
+# value)
+#error_wait_time=240
+
 # RPC timeout for the engine liveness check that is used for
 # stack locking. (integer value)
 #engine_life_check_timeout=2
 
-# onready allows you to send a notification when the heat
-# processes are ready to serve.  This is either a module with
-# the notify() method or a shell command.  To enable
-# notifications with systemd, one may use the 'systemd-notify
-# --ready' shell command or the 'heat.common.systemd'
-# notification module. (string value)
-#onready=<None>
+
+# Enable the legacy OS::Heat::CWLiteAlarm resource. (boolean value)
+#enable_cloud_watch_lite=true
+
+# Enable the preview Stack Abandon feature. (boolean value)
+#enable_stack_abandon=false
+
+# Enable the preview Stack Adopt feature. (boolean value)
+#enable_stack_adopt=false
+
+# Enables engine with convergence architecture. All stacks with this option
+# will be created using convergence engine . (boolean value)
+#convergence_engine=false
+
+# Template default for how the server should receive the metadata required for
+# software configuration. POLL_SERVER_CFN will allow calls to the cfn API
+# action DescribeStackResource authenticated with the provided keypair
+# (requires enabled heat-api-cfn). POLL_SERVER_HEAT will allow calls to the
+# Heat API resource-show using the provided keystone credentials (requires
+# keystone v3 API, and configured stack_user_* config options). POLL_TEMP_URL
+# will create and populate a Swift TempURL with metadata for polling (requires
+# object-store endpoint which supports TempURL). (string value)
+# Allowed values: POLL_SERVER_CFN, POLL_SERVER_HEAT, POLL_TEMP_URL
+#default_software_config_transport=POLL_SERVER_CFN
+
+# Template default for how the server should signal to heat with the deployment
+# output values. CFN_SIGNAL will allow an HTTP POST to a CFN keypair signed URL
+# (requires enabled heat-api-cfn). TEMP_URL_SIGNAL will create a Swift TempURL
+# to be signaled via HTTP PUT (requires object-store endpoint which supports
+# TempURL). HEAT_SIGNAL will allow calls to the Heat API resource-signal using
+# the provided keystone credentials (string value)
+# Allowed values: CFN_SIGNAL, TEMP_URL_SIGNAL, HEAT_SIGNAL
+#default_deployment_signal_transport=CFN_SIGNAL
 
 # When this feature is enabled, scheduler hints identifying the heat stack
 # context of a server resource are passed to the configured schedulers in nova,
@@ -156,11 +197,29 @@ stack_domain_admin_password=<%= @stack_domain_admin_password %>
 
 # Maximum depth allowed when using nested stacks. (integer
 # value)
-#max_nested_stack_depth=3
+#max_nested_stack_depth=5
 
 # Number of heat-engine processes to fork and run. (integer
 # value)
 #num_engine_workers=1
+
+
+#
+# Options defined in heat.common.crypt
+#
+
+# Encryption key used for authentication info in database.
+# (string value)
+#auth_encryption_key=notgood but just long enough i think
+
+
+#
+# Options defined in heat.common.heat_keystoneclient
+#
+
+# Fully qualified class name to use as a keystone backend.
+# (string value)
+#keystone_backend=heat.common.heat_keystoneclient.KeystoneClientV3
 
 
 #
@@ -170,6 +229,15 @@ stack_domain_admin_password=<%= @stack_domain_admin_password %>
 # Maximum raw byte size of JSON request body. Should be larger
 # than max_template_size. (integer value)
 #max_json_body_size=1048576
+
+
+#
+# Options defined in heat.engine.clients
+#
+
+# Fully qualified class name to use as a client backend.
+# (string value)
+#cloud_backend=heat.engine.clients.OpenStackClients
 
 
 #
@@ -387,43 +455,6 @@ rpc_response_timeout=<%= node["openstack"]["orchestration"]["rpc_response_timeou
 # overridden by an exchange name specified in the
 # transport_url option. (string value)
 #control_exchange=openstack
-
-
-#
-# Options defined in heat.api.middleware.ssl
-#
-
-# The HTTP Header that will be used to determine which the
-# original request protocol scheme was, even if it was removed
-# by an SSL terminator proxy. (string value)
-#secure_proxy_ssl_header=X-Forwarded-Proto
-
-
-#
-# Options defined in heat.common.crypt
-#
-
-# Encryption key used for authentication info in database.
-# (string value)
-#auth_encryption_key=notgood but just long enough i think
-
-
-#
-# Options defined in heat.common.heat_keystoneclient
-#
-
-# Fully qualified class name to use as a keystone backend.
-# (string value)
-#keystone_backend=heat.common.heat_keystoneclient.KeystoneClientV3
-
-
-#
-# Options defined in heat.engine.clients
-#
-
-# Fully qualified class name to use as a client backend.
-# (string value)
-#cloud_backend=heat.engine.clients.OpenStackClients
 
 
 #
