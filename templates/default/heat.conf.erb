@@ -258,134 +258,7 @@ rpc_conn_pool_size=<%= node["openstack"]["orchestration"]["rpc_conn_pool_size"] 
 # upon receiving exception data from an rpc call. (list value)
 #allowed_rpc_exception_modules=oslo.messaging.exceptions,nova.exception,cinder.exception,exceptions
 
-<% if @mq_service_type == "qpid"  %>
-rpc_backend=heat.openstack.common.rpc.impl_qpid
 
-# Qpid broker hostname. (string value)
-qpid_hostname=<%= node["openstack"]["mq"]["orchestration"]["qpid"]["host"] %>
-
-# Qpid broker port. (integer value)
-qpid_port=<%= node["openstack"]["mq"]["orchestration"]["qpid"]["port"] %>
-
-# Qpid HA cluster host:port pairs. (list value)
-#qpid_hosts=$qpid_hostname:$qpid_port
-
-# Username for Qpid connection. (string value)
-qpid_username=<%= node["openstack"]["mq"]["orchestration"]["qpid"]["username"] %>
-
-# Password for Qpid connection. (string value)
-qpid_password=<%= @mq_password %>
-
-# Space separated list of SASL mechanisms to use for auth.
-# (string value)
-qpid_sasl_mechanisms=<%= node["openstack"]["mq"]["orchestration"]["qpid"]["sasl_mechanisms"] %>
-
-# Seconds between connection keepalive heartbeats. (integer
-# value)
-qpid_heartbeat=<%= node["openstack"]["mq"]["orchestration"]["qpid"]["heartbeat"] %>
-
-# Transport to use, either 'tcp' or 'ssl'. (string value)
-qpid_protocol=<%= node["openstack"]["mq"]["orchestration"]["qpid"]["protocol"] %>
-
-# Whether to disable the Nagle algorithm. (boolean value)
-qpid_tcp_nodelay=<%= node["openstack"]["mq"]["orchestration"]["qpid"]["tcp_nodelay"] %>
-
-# The qpid topology version to use.  Version 1 is what was
-# originally used by impl_qpid.  Version 2 includes some
-# backwards-incompatible changes that allow broker federation
-# to work.  Users should update to version 2 when they are
-# able to take everything down, as it requires a clean break.
-# (integer value)
-qpid_topology_version=<%= node['openstack']['mq']['orchestration']['qpid']['topology_version'] %>
-
-qpid_reconnect_timeout=<%= node["openstack"]["mq"]["orchestration"]["qpid"]["reconnect_timeout"] %>
-qpid_reconnect_limit=<%= node["openstack"]["mq"]["orchestration"]["qpid"]["reconnect_limit"] %>
-qpid_reconnect_interval_min=<%= node["openstack"]["mq"]["orchestration"]["qpid"]["reconnect_interval_min"] %>
-qpid_reconnect_interval_max=<%= node["openstack"]["mq"]["orchestration"]["qpid"]["reconnect_interval_max"] %>
-qpid_reconnect_interval=<%= node["openstack"]["mq"]["orchestration"]["qpid"]["reconnect_interval"] %>
-<% end -%>
-
-# SSL version to use (valid only if SSL enabled). valid values
-# are TLSv1, SSLv23 and SSLv3. SSLv2 may be available on some
-# distributions. (string value)
-#kombu_ssl_version=
-
-# SSL key file (valid only if SSL enabled). (string value)
-#kombu_ssl_keyfile=
-
-# SSL cert file (valid only if SSL enabled). (string value)
-#kombu_ssl_certfile=
-
-# SSL certification authority file (valid only if SSL
-# enabled). (string value)
-#kombu_ssl_ca_certs=
-
-# How long to wait before reconnecting in response to an AMQP
-# consumer cancel notification. (floating point value)
-#kombu_reconnect_delay=1.0
-
-<% if @mq_service_type == "rabbitmq"  %>
-
-<% if node["openstack"]["mq"]["orchestration"]["rabbit"]["use_ssl"] && node["openstack"]["mq"]["orchestration"]["rabbit"]["kombu_ssl_version"] %>
-kombu_ssl_version=<%= node["openstack"]["mq"]["orchestration"]["rabbit"]["kombu_ssl_version"] %>
-<% end -%>
-
-# RabbitMQ HA cluster host:port pairs (list value)
-<% if node["openstack"]["mq"]["orchestration"]["rabbit"]["ha"] -%>
-rabbit_hosts=<%= @rabbit_hosts %>
-
-# Use HA queues in RabbitMQ (x-ha-policy: all). If you change
-# this option, you must wipe the RabbitMQ database. (boolean
-# value)
-rabbit_ha_queues=True
-<% else -%>
-# The RabbitMQ broker address where a single node is used.
-# (string value)
-rabbit_host=<%= node["openstack"]["mq"]["orchestration"]["rabbit"]["host"] %>
-
-# The RabbitMQ broker port where a single node is used.
-# (integer value)
-rabbit_port=<%= node["openstack"]["mq"]["orchestration"]["rabbit"]["port"] %>
-
-# Use HA queues in RabbitMQ (x-ha-policy: all). If you change
-# this option, you must wipe the RabbitMQ database. (boolean
-# value)
-rabbit_ha_queues=False
-<% end -%>
-
-# RabbitMQ HA cluster host:port pairs. (list value)
-#rabbit_hosts=$rabbit_host:$rabbit_port
-
-# Connect over SSL for RabbitMQ. (boolean value)
-rabbit_use_ssl=<%= node["openstack"]["mq"]["orchestration"]["rabbit"]["use_ssl"] %>
-
-# The RabbitMQ userid. (string value)
-rabbit_userid=<%= node["openstack"]["mq"]["orchestration"]["rabbit"]["userid"] %>
-
-# The RabbitMQ password. (string value)
-rabbit_password=<%= @mq_password %>
-
-# the RabbitMQ login method (string value)
-#rabbit_login_method=AMQPLAIN
-
-# The RabbitMQ virtual host. (string value)
-rabbit_virtual_host=<%= node["openstack"]["mq"]["orchestration"]["rabbit"]["vhost"] %>
-
-# How frequently to retry connecting with RabbitMQ. (integer
-# value)
-#rabbit_retry_interval=1
-
-# How long to backoff for between retries when connecting to
-# RabbitMQ. (integer value)
-#rabbit_retry_backoff=2
-
-# Maximum number of RabbitMQ connection retries. Default is 0
-# (infinite retry count). (integer value)
-#rabbit_max_retries=0
-
-# If passed, use a fake RabbitMQ provider. (boolean value)
-#fake_rabbit=false
-<% end -%>
 
 # ZeroMQ bind address. Should be a wildcard (*), an ethernet
 # interface, or IP. The "host" option should point or resolve
@@ -423,15 +296,6 @@ rabbit_virtual_host=<%= node["openstack"]["mq"]["orchestration"]["rabbit"]["vhos
 # Heartbeat time-to-live. (integer value)
 #matchmaker_heartbeat_ttl=600
 
-# Host to locate redis. (string value)
-#host=127.0.0.1
-
-# Use this port to connect to redis host. (integer value)
-#port=6379
-
-# Password for Redis server (optional). (string value)
-#password=<None>
-
 # Size of RPC greenthread pool. (integer value)
 rpc_thread_pool_size=<%= node["openstack"]["orchestration"]["rpc_thread_pool_size"] %>
 
@@ -453,7 +317,9 @@ rpc_response_timeout=<%= node["openstack"]["orchestration"]["rpc_response_timeou
 
 # The messaging driver to use, defaults to rabbit. Other
 # drivers include qpid and zmq. (string value)
-#rpc_backend=rabbit
+<% if @mq_service_type == "qpid"  %>
+rpc_backend=heat.openstack.common.rpc.impl_qpid
+<% end -%>
 
 # The default exchange under which topics are scoped. May be
 # overridden by an exchange name specified in the
@@ -1380,6 +1246,230 @@ memcache_secret_key=<%= node['openstack']['orchestration']['api']['auth']['memca
 # (list value)
 #hash_algorithms=md5
 hash_algorithms=<%= node['openstack']['orchestration']['api']['auth']['hash_algorithms'] %>
+
+
+[oslo_messaging_amqp]
+
+#
+# From oslo.messaging
+#
+
+# address prefix used when sending to a specific server (string value)
+# Deprecated group/name - [amqp1]/server_request_prefix
+#server_request_prefix = exclusive
+
+# address prefix used when broadcasting to all servers (string value)
+# Deprecated group/name - [amqp1]/broadcast_prefix
+#broadcast_prefix = broadcast
+
+# address prefix when sending to any server in group (string value)
+# Deprecated group/name - [amqp1]/group_request_prefix
+#group_request_prefix = unicast
+
+# Name for the AMQP container (string value)
+# Deprecated group/name - [amqp1]/container_name
+#container_name = <None>
+
+# Timeout for inactive connections (in seconds) (integer value)
+# Deprecated group/name - [amqp1]/idle_timeout
+#idle_timeout = 0
+
+# Debug: dump AMQP frames to stdout (boolean value)
+# Deprecated group/name - [amqp1]/trace
+#trace = false
+
+# CA certificate PEM file for verifing server certificate (string value)
+# Deprecated group/name - [amqp1]/ssl_ca_file
+#ssl_ca_file =
+
+# Identifying certificate PEM file to present to clients (string value)
+# Deprecated group/name - [amqp1]/ssl_cert_file
+#ssl_cert_file =
+
+# Private key PEM file used to sign cert_file certificate (string value)
+# Deprecated group/name - [amqp1]/ssl_key_file
+#ssl_key_file =
+
+# Password for decrypting ssl_key_file (if encrypted) (string value)
+# Deprecated group/name - [amqp1]/ssl_key_password
+#ssl_key_password = <None>
+
+# Accept clients using either SSL or plain TCP (boolean value)
+# Deprecated group/name - [amqp1]/allow_insecure_clients
+#allow_insecure_clients = false
+
+
+<% if @mq_service_type == "qpid"  %>
+[oslo_messaging_qpid]
+
+# Use durable queues in amqp. (boolean value)
+# Deprecated group/name - [DEFAULT]/rabbit_durable_queues
+amqp_durable_queues=<%= node['openstack']['mq']['orchestration']['durable_queues'] %>
+
+# Auto-delete queues in amqp. (boolean value)
+amqp_auto_delete=<%= node['openstack']['mq']['orchestration']['auto_delete'] %>
+
+# Size of RPC connection pool. (integer value)
+rpc_conn_pool_size=<%= node["openstack"]["orchestration"]["rpc_conn_pool_size"] %>
+
+# Qpid broker hostname. (string value)
+qpid_hostname=<%= node["openstack"]["mq"]["orchestration"]["qpid"]["host"] %>
+
+# Qpid broker port. (integer value)
+qpid_port=<%= node["openstack"]["mq"]["orchestration"]["qpid"]["port"] %>
+
+# Qpid HA cluster host:port pairs. (list value)
+#qpid_hosts=$qpid_hostname:$qpid_port
+
+# Username for Qpid connection. (string value)
+qpid_username=<%= node["openstack"]["mq"]["orchestration"]["qpid"]["username"] %>
+
+# Password for Qpid connection. (string value)
+qpid_password=<%= @mq_password %>
+
+# Space separated list of SASL mechanisms to use for auth.
+# (string value)
+qpid_sasl_mechanisms=<%= node["openstack"]["mq"]["orchestration"]["qpid"]["sasl_mechanisms"] %>
+
+# Seconds between connection keepalive heartbeats. (integer
+# value)
+qpid_heartbeat=<%= node["openstack"]["mq"]["orchestration"]["qpid"]["heartbeat"] %>
+
+# Transport to use, either 'tcp' or 'ssl'. (string value)
+qpid_protocol=<%= node["openstack"]["mq"]["orchestration"]["qpid"]["protocol"] %>
+
+# Whether to disable the Nagle algorithm. (boolean value)
+qpid_tcp_nodelay=<%= node["openstack"]["mq"]["orchestration"]["qpid"]["tcp_nodelay"] %>
+
+# The qpid topology version to use.  Version 1 is what was
+# originally used by impl_qpid.  Version 2 includes some
+# backwards-incompatible changes that allow broker federation
+# to work.  Users should update to version 2 when they are
+# able to take everything down, as it requires a clean break.
+# (integer value)
+qpid_topology_version=<%= node['openstack']['mq']['orchestration']['qpid']['topology_version'] %>
+
+qpid_reconnect_timeout=<%= node["openstack"]["mq"]["orchestration"]["qpid"]["reconnect_timeout"] %>
+qpid_reconnect_limit=<%= node["openstack"]["mq"]["orchestration"]["qpid"]["reconnect_limit"] %>
+qpid_reconnect_interval_min=<%= node["openstack"]["mq"]["orchestration"]["qpid"]["reconnect_interval_min"] %>
+qpid_reconnect_interval_max=<%= node["openstack"]["mq"]["orchestration"]["qpid"]["reconnect_interval_max"] %>
+qpid_reconnect_interval=<%= node["openstack"]["mq"]["orchestration"]["qpid"]["reconnect_interval"] %>
+<% end -%>
+
+
+<% if @mq_service_type == "rabbitmq"  %>
+[oslo_messaging_rabbit]
+
+# Use durable queues in amqp. (boolean value)
+# Deprecated group/name - [DEFAULT]/rabbit_durable_queues
+amqp_durable_queues=<%= node['openstack']['mq']['orchestration']['durable_queues'] %>
+
+# Auto-delete queues in amqp. (boolean value)
+amqp_auto_delete=<%= node['openstack']['mq']['orchestration']['auto_delete'] %>
+
+# Size of RPC connection pool. (integer value)
+rpc_conn_pool_size=<%= node["openstack"]["orchestration"]["rpc_conn_pool_size"] %>
+
+# SSL version to use (valid only if SSL enabled). Valid values are TLSv1 and
+# SSLv23. SSLv2, SSLv3, TLSv1_1, and TLSv1_2 may be available on some
+# distributions. (string value)
+# Deprecated group/name - [DEFAULT]/kombu_ssl_version
+<% if node["openstack"]["mq"]["orchestration"]["rabbit"]["use_ssl"] && node["openstack"]["mq"]["orchestration"]["rabbit"]["kombu_ssl_version"] %>
+kombu_ssl_version=<%= node["openstack"]["mq"]["orchestration"]["rabbit"]["kombu_ssl_version"] %>
+<% end -%>
+
+# SSL key file (valid only if SSL enabled). (string value)
+#kombu_ssl_keyfile=
+
+# SSL cert file (valid only if SSL enabled). (string value)
+#kombu_ssl_certfile=
+
+# SSL certification authority file (valid only if SSL
+# enabled). (string value)
+#kombu_ssl_ca_certs=
+
+# How long to wait before reconnecting in response to an AMQP
+# consumer cancel notification. (floating point value)
+#kombu_reconnect_delay=1.0
+
+# RabbitMQ HA cluster host:port pairs (list value)
+<% if node["openstack"]["mq"]["orchestration"]["rabbit"]["ha"] -%>
+rabbit_hosts=<%= @rabbit_hosts %>
+
+# Use HA queues in RabbitMQ (x-ha-policy: all). If you change
+# this option, you must wipe the RabbitMQ database. (boolean
+# value)
+rabbit_ha_queues=True
+<% else -%>
+# The RabbitMQ broker address where a single node is used.
+# (string value)
+rabbit_host=<%= node["openstack"]["mq"]["orchestration"]["rabbit"]["host"] %>
+
+# The RabbitMQ broker port where a single node is used.
+# (integer value)
+rabbit_port=<%= node["openstack"]["mq"]["orchestration"]["rabbit"]["port"] %>
+
+# Use HA queues in RabbitMQ (x-ha-policy: all). If you change
+# this option, you must wipe the RabbitMQ database. (boolean
+# value)
+rabbit_ha_queues=False
+<% end -%>
+
+# Connect over SSL for RabbitMQ. (boolean value)
+rabbit_use_ssl=<%= node["openstack"]["mq"]["orchestration"]["rabbit"]["use_ssl"] %>
+
+# The RabbitMQ userid. (string value)
+rabbit_userid=<%= node["openstack"]["mq"]["orchestration"]["rabbit"]["userid"] %>
+
+# The RabbitMQ password. (string value)
+rabbit_password=<%= @mq_password %>
+
+# the RabbitMQ login method (string value)
+#rabbit_login_method=AMQPLAIN
+
+# The RabbitMQ virtual host. (string value)
+rabbit_virtual_host=<%= node["openstack"]["mq"]["orchestration"]["rabbit"]["vhost"] %>
+
+# How frequently to retry connecting with RabbitMQ. (integer
+# value)
+#rabbit_retry_interval=1
+
+# How long to backoff for between retries when connecting to
+# RabbitMQ. (integer value)
+#rabbit_retry_backoff=2
+
+# Maximum number of RabbitMQ connection retries. Default is 0
+# (infinite retry count). (integer value)
+#rabbit_max_retries=0
+
+# Number of seconds after which the Rabbit broker is considered down if
+# heartbeat's keep-alive fails (0 disable the heartbeat). (integer value)
+#heartbeat_timeout_threshold = 60
+
+# How often times during the heartbeat_timeout_threshold we check the
+# heartbeat. (integer value)
+#heartbeat_rate = 2
+
+# If passed, use a fake RabbitMQ provider. (boolean value)
+#fake_rabbit=false
+<% end -%>
+
+
+[matchmaker_redis]
+
+#
+# From oslo.messaging
+#
+
+# Host to locate redis. (string value)
+#host = 127.0.0.1
+
+# Use this port to connect to redis host. (integer value)
+#port = 6379
+
+# Password for Redis server (optional). (string value)
+#password = <None>
+
 
 [matchmaker_ring]
 
