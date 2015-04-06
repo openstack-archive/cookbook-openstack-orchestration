@@ -38,7 +38,7 @@ default['openstack']['orchestration']['rabbit_server_chef_role'] = 'os-ops-messa
 
 default['openstack']['orchestration']['service_tenant_name'] = 'service'
 default['openstack']['orchestration']['service_user'] = 'heat'
-default['openstack']['orchestration']['service_role'] = 'admin'
+default['openstack']['orchestration']['service_role'] = 'service'
 
 default['openstack']['orchestration']['api']['auth']['version'] = node['openstack']['api']['auth']['version']
 
