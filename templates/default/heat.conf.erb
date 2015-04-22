@@ -457,7 +457,7 @@ log_config = /etc/openstack/logging.conf
 # (Optional) The base directory used for relative --log-file
 # paths. (string value)
 # Deprecated group/name - [DEFAULT]/logdir
-#log_dir=<None>
+log_dir=<%= node["openstack"]["orchestration"]["log_dir"] %>
 
 # Use syslog for logging. Existing syslog format is DEPRECATED
 # during I, and will change in J to honor RFC5424. (boolean

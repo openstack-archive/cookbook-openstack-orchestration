@@ -284,6 +284,7 @@ shared_examples 'expects to create heat conf' do
           %r{^signing_dir=/var/cache/heat$},
           /^debug=False$/,
           /^verbose=False$/,
+          %r{^log_dir=/var/log/heat$},
           /^notification_driver = heat.openstack.common.notifier.rpc_notifier$/,
           /^default_notification_level = INFO$/,
           /^default_publisher_id = $/,
@@ -303,7 +304,6 @@ shared_examples 'expects to create heat conf' do
           /^admin_tenant_name=service$/,
           /^deferred_auth_method=trusts$/,
           /^stack_scheduler_hints=false$/,
-          %r{^signing_dir=/var/cache/heat$},
           /^region_name_for_services=RegionOne$/
         ].each do |line|
           expect(chef_run).to render_file(file.name).with_content(line)

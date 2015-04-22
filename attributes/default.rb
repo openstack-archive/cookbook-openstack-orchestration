@@ -26,6 +26,7 @@ default['openstack']['orchestration']['custom_template_banner'] = '
 
 default['openstack']['orchestration']['verbose'] = 'False'
 default['openstack']['orchestration']['debug'] = 'False'
+default['openstack']['orchestration']['log_dir'] = '/var/log/heat'
 # This is the name of the Chef role that will install the Keystone Service API
 default['openstack']['orchestration']['identity_service_chef_role'] = 'os-identity'
 
