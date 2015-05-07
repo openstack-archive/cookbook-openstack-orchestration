@@ -133,6 +133,27 @@ shared_examples 'expects to create heat conf' do
       )
     end
 
+    describe 'workers' do
+      it 'has default worker values' do
+        [
+          'heat_api',
+          'heat_api_cfn',
+          'heat_api_cloudwatch'
+        ].each do |section|
+          expect(chef_run).to render_config_file(file.name).with_section_content(section, /^workers=0$/)
+        end
+      end
+
+      it 'has engine workers not set by default' do
+        expect(chef_run).not_to render_config_file(file.name).with_section_content('DEFAULT', /^num_engine_workers=/)
+      end
+
+      it 'allows engine workers override' do
+        node.set['openstack']['orchestration']['num_engine_workers'] = 5
+        expect(chef_run).to render_config_file(file.name).with_section_content('DEFAULT', /^num_engine_workers=5$/)
+      end
+    end
+
     it 'uses default values for these attributes and they are not set' do
       expect(chef_run).not_to render_file(file.name).with_content(
         /^memcached_servers=/)

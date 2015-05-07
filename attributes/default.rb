@@ -30,6 +30,15 @@ default['openstack']['orchestration']['log_dir'] = '/var/log/heat'
 # This is the name of the Chef role that will install the Keystone Service API
 default['openstack']['orchestration']['identity_service_chef_role'] = 'os-identity'
 
+# Number of heat-engine processes to fork and run.
+default['openstack']['orchestration']['num_engine_workers'] = nil
+# Number of workers for Heat api service.
+default['openstack']['orchestration']['api']['workers'] = 0
+# Number of workers for Heat api cfn service.
+default['openstack']['orchestration']['api_cfn']['workers'] = 0
+# Number of workers for Heat api cloudwatch service.
+default['openstack']['orchestration']['api_cloudwatch']['workers'] = 0
+
 # Gets set in the Heat Endpoint when registering with Keystone
 default['openstack']['orchestration']['region'] = node['openstack']['region']
 

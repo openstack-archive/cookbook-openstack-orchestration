@@ -201,8 +201,9 @@ stack_domain_admin_password=<%= @stack_domain_admin_password %>
 
 # Number of heat-engine processes to fork and run. (integer
 # value)
-#num_engine_workers=1
-
+<% if node['openstack']['orchestration']['num_engine_workers'] -%>
+num_engine_workers=<%= node['openstack']['orchestration']['num_engine_workers'] %>
+<% end -%>
 
 #
 # Options defined in heat.common.crypt
@@ -1000,7 +1001,7 @@ bind_port=<%= @heat_api_bind.port %>
 #key_file=<None>
 
 # Number of workers for Heat service. (integer value)
-#workers=0
+workers=<%= node['openstack']['orchestration']['api']['workers'] %>
 
 # Maximum line size of message headers to be accepted.
 # max_header_line may need to be increased when using large
@@ -1035,7 +1036,7 @@ bind_port=<%= @heat_api_cfn_bind.port %>
 #key_file=<None>
 
 # Number of workers for Heat service. (integer value)
-#workers=0
+workers=<%= node['openstack']['orchestration']['api_cfn']['workers'] %>
 
 # Maximum line size of message headers to be accepted.
 # max_header_line may need to be increased when using large
@@ -1070,7 +1071,7 @@ bind_port=<%= @heat_api_cloudwatch_bind.port %>
 #key_file=<None>
 
 # Number of workers for Heat service. (integer value)
-#workers=0
+workers=<%= node['openstack']['orchestration']['api_cloudwatch']['workers'] %>
 
 # Maximum line size of message headers to be accepted.
 # max_header_line may need to be increased when using large

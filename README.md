@@ -60,6 +60,10 @@ Attributes for the Heat service are in the ['openstack']['orchestration'] namesp
 * `openstack['orchestration']['rabbit_server_chef_role']` - The name of the Chef role that knows about the message queue server
 * `openstack['orchestration']['user']` - User heat runs as
 * `openstack['orchestration']['group']` - Group heat runs as
+* `openstack['orchestration']['num_engine_workers']` - Number of heat-engine processes to fork and run.
+* `openstack['orchestration']['api']['workers']` - Number of workers for Heat api service.
+* `openstack['orchestration']['api_cfn']['workers']` - Number of workers for Heat api cfn service.
+* `openstack['orchestration']['api_cloudwatch']['workers']` - Number of workers for Heat api cloudwatch service.
 * `openstack['orchestration']['db']['username']` - Username for heat database access
 * `openstack['orchestration']['api']['adminURL']` - Used when registering heat endpoint with keystone
 * `openstack['orchestration']['api']['internalURL']` - Used when registering heat endpoint with keystone
