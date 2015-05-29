@@ -84,15 +84,15 @@ elsif mq_service_type == 'qpid'
 end
 
 directory '/etc/heat' do
-  group  node['openstack']['orchestration']['group']
-  owner  node['openstack']['orchestration']['user']
+  group node['openstack']['orchestration']['group']
+  owner node['openstack']['orchestration']['user']
   mode 00700
   action :create
 end
 
 directory '/etc/heat/environment.d' do
-  group  node['openstack']['orchestration']['group']
-  owner  node['openstack']['orchestration']['user']
+  group node['openstack']['orchestration']['group']
+  owner node['openstack']['orchestration']['user']
   mode 00700
   action :create
 end
@@ -105,9 +105,9 @@ end
 
 template '/etc/heat/heat.conf' do
   source 'heat.conf.erb'
-  group  node['openstack']['orchestration']['group']
-  owner  node['openstack']['orchestration']['user']
-  mode   00640
+  group node['openstack']['orchestration']['group']
+  owner node['openstack']['orchestration']['user']
+  mode 00640
   variables(
     stack_domain_admin_password: stack_domain_admin_password,
     mq_service_type: mq_service_type,
@@ -128,9 +128,9 @@ end
 
 template '/etc/heat/environment.d/default.yaml' do
   source 'default.yaml.erb'
-  group  node['openstack']['orchestration']['group']
-  owner  node['openstack']['orchestration']['user']
-  mode   00644
+  group node['openstack']['orchestration']['group']
+  owner node['openstack']['orchestration']['user']
+  mode 00644
 end
 
 execute 'heat-manage db_sync' do

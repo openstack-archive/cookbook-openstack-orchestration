@@ -3,7 +3,6 @@ require_relative 'spec_helper'
 
 describe 'openstack-orchestration::client' do
   describe 'ubuntu' do
-
     let(:runner) { ChefSpec::SoloRunner.new(UBUNTU_OPTS) }
     let(:chef_run) { runner.converge(described_recipe) }
 

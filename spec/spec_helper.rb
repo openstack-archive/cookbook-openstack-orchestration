@@ -98,26 +98,26 @@ end
 shared_examples 'expects to create heat directories' do
   it 'creates /etc/heat' do
     expect(chef_run).to create_directory('/etc/heat').with(
-          owner: 'heat',
-          group: 'heat',
-          mode: 0700
-        )
+      owner: 'heat',
+      group: 'heat',
+      mode: 0700
+    )
   end
 
   it 'creates /etc/heat/environment.d' do
     expect(chef_run).to create_directory('/etc/heat/environment.d').with(
-          owner: 'heat',
-          group: 'heat',
-          mode: 0700
-        )
+      owner: 'heat',
+      group: 'heat',
+      mode: 0700
+    )
   end
 
   it 'creates /var/cache/heat' do
     expect(chef_run).to create_directory('/var/cache/heat').with(
-          owner: 'heat',
-          group: 'heat',
-          mode: 0700
-        )
+      owner: 'heat',
+      group: 'heat',
+      mode: 0700
+    )
   end
 end
 

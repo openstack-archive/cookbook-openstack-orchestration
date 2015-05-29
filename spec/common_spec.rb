@@ -39,7 +39,6 @@ describe 'openstack-orchestration::common' do
         node.set['openstack']['orchestration']['misc_heat'] = ['MISC_OPTION=FOO']
         expect(chef_run).to render_file(file.name).with_content('MISC_OPTION=FOO')
       end
-
     end
   end
 end
