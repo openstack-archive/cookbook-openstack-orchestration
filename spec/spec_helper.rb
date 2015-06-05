@@ -404,6 +404,17 @@ shared_examples 'expects to create heat conf' do
         node.set['openstack']['mq']['orchestration']['service_type'] = 'rabbitmq'
       end
 
+      it 'has default rabbit values' do
+        [/^rpc_conn_pool_size=30$/,
+         /^amqp_durable_queues=false$/,
+         /^amqp_auto_delete=false$/,
+         /^heartbeat_timeout_threshold=0$/,
+         /^heartbeat_rate=2$/
+        ].each do |line|
+          expect(chef_run).to render_config_file(file.name).with_section_content('oslo_messaging_rabbit', line)
+        end
+      end
+
       it 'does not have rabbit ha values' do
         [
           /^rabbit_host=127.0.0.1$/,
