@@ -1417,7 +1417,7 @@ rabbit_virtual_host=<%= node["openstack"]["mq"]["orchestration"]["rabbit"]["vhos
 
 # How frequently to retry connecting with RabbitMQ. (integer
 # value)
-#rabbit_retry_interval=1
+rabbit_retry_interval=<%= node["openstack"]["mq"]["orchestration"]["rabbit"]["rabbit_retry_interval"] %>
 
 # How long to backoff for between retries when connecting to
 # RabbitMQ. (integer value)
@@ -1425,7 +1425,7 @@ rabbit_virtual_host=<%= node["openstack"]["mq"]["orchestration"]["rabbit"]["vhos
 
 # Maximum number of RabbitMQ connection retries. Default is 0
 # (infinite retry count). (integer value)
-#rabbit_max_retries=0
+rabbit_max_retries=<%= node["openstack"]["mq"]["orchestration"]["rabbit"]["rabbit_max_retries"] %>
 
 # Number of seconds after which the Rabbit broker is considered down if
 # heartbeat's keep-alive fails (0 disable the heartbeat). (integer value)
