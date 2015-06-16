@@ -435,15 +435,35 @@ shared_examples 'expects to create heat conf' do
         end
       end
 
-      it 'does not have kombu ssl version set' do
-        expect(chef_run).not_to render_config_file(file.name).with_section_content('oslo_messaging_rabbit', /^kombu_ssl_version=TLSv1.2$/)
+      it 'does not have ssl config set' do
+        [/^rabbit_use_ssl=/,
+         /^kombu_ssl_version=/,
+         /^kombu_ssl_keyfile=/,
+         /^kombu_ssl_certfile=/,
+         /^kombu_ssl_ca_certs=/,
+         /^kombu_reconnect_delay=/,
+         /^kombu_reconnect_timeout=/].each do |line|
+          expect(chef_run).not_to render_config_file(file.name).with_section_content('oslo_messaging_rabbit', line)
+        end
       end
 
-      it 'sets kombu ssl version' do
+      it 'sets ssl config' do
         node.set['openstack']['mq']['orchestration']['rabbit']['use_ssl'] = true
         node.set['openstack']['mq']['orchestration']['rabbit']['kombu_ssl_version'] = 'TLSv1.2'
-
-        expect(chef_run).to render_config_file(file.name).with_section_content('oslo_messaging_rabbit', /^kombu_ssl_version=TLSv1.2$/)
+        node.set['openstack']['mq']['orchestration']['rabbit']['kombu_ssl_keyfile'] = 'keyfile'
+        node.set['openstack']['mq']['orchestration']['rabbit']['kombu_ssl_certfile'] = 'certfile'
+        node.set['openstack']['mq']['orchestration']['rabbit']['kombu_ssl_ca_certs'] = 'certsfile'
+        node.set['openstack']['mq']['orchestration']['rabbit']['kombu_reconnect_delay'] = 123.123
+        node.set['openstack']['mq']['orchestration']['rabbit']['kombu_reconnect_timeout'] = 123
+        [/^rabbit_use_ssl=true/,
+         /^kombu_ssl_version=TLSv1.2$/,
+         /^kombu_ssl_keyfile=keyfile$/,
+         /^kombu_ssl_certfile=certfile$/,
+         /^kombu_ssl_ca_certs=certsfile$/,
+         /^kombu_reconnect_delay=123.123$/,
+         /^kombu_reconnect_timeout=123$/].each do |line|
+          expect(chef_run).to render_config_file(file.name).with_section_content('oslo_messaging_rabbit', line)
+        end
       end
 
       it 'has the default rabbit_retry_interval set' do

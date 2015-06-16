@@ -18,5 +18,5 @@ recipe 'openstack-orchestration::identity_registration', 'Registers Heat service
   supports os
 end
 
-depends 'openstack-common', '>= 11.2.0'
+depends 'openstack-common', '>= 11.4.0'
 depends 'openstack-identity', '>= 11.0.0'
