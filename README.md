@@ -198,6 +198,7 @@ Miscellaneous Options
 Arrays whose elements will be copied exactly into the respective config files (contents e.g. ['option1=value1', 'option2=value2']).
 
 * `openstack["orchestration"]["misc_heat"]` - Array of bare options for `heat.conf`.
+* `orchestration_auth_encryption_key` - Key used to encrypt authentication info in the database. Length of this key must be 16, 24 or 32 characters. Comes from secrets databag.
 
 Testing
 =====

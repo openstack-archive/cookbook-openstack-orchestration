@@ -211,7 +211,7 @@ num_engine_workers=<%= node['openstack']['orchestration']['num_engine_workers'] 
 
 # Encryption key used for authentication info in database.
 # (string value)
-#auth_encryption_key=notgood but just long enough i think
+auth_encryption_key=<%= @auth_encryption_key %>
 
 
 #

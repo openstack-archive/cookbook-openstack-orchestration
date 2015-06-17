@@ -55,6 +55,9 @@ shared_context 'orchestration_stubs' do
     allow_any_instance_of(Chef::Recipe).to receive(:get_password)
       .with('user', 'admin')
       .and_return 'admin_pass'
+    allow_any_instance_of(Chef::Recipe).to receive(:get_password)
+      .with('token', 'orchestration_auth_encryption_key')
+      .and_return 'auth_encryption_key_secret'
     allow(Chef::Application).to receive(:fatal!)
   end
 end
@@ -193,6 +196,10 @@ shared_examples 'expects to create heat conf' do
     it 'sets insecure' do
       node.set['openstack']['orchestration']['api']['auth']['insecure'] = false
       expect(chef_run).to render_file(file.name).with_content(/^insecure=false$/)
+    end
+
+    it 'sets auth_encryption_key' do
+      expect(chef_run).to render_config_file(file.name).with_section_content('DEFAULT', /^auth_encryption_key=auth_encryption_key_secret$/)
     end
 
     describe 'default values for certificates files' do
