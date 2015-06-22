@@ -30,8 +30,8 @@ shared_context 'orchestration_stubs' do
     allow_any_instance_of(Chef::Recipe).to receive(:address_for)
       .with('lo')
       .and_return '127.0.1.1'
-    allow_any_instance_of(Chef::Recipe).to receive(:get_secret)
-      .with('openstack_identity_bootstrap_token')
+    allow_any_instance_of(Chef::Recipe).to receive(:get_password)
+      .with('token', 'openstack_identity_bootstrap_token')
       .and_return 'bootstrap-token'
 
     allow_any_instance_of(Chef::Recipe).to receive(:get_password)
