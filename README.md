@@ -3,7 +3,7 @@ Description
 
 This cookbook installs the OpenStack Heat service **Heat** as part of an OpenStack reference deployment Chef for OpenStack.
 
-http://heat.openstack.org/
+https://wiki.openstack.org/wiki/Heat
 
 Requirements
 ============
