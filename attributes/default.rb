@@ -50,6 +50,7 @@ default['openstack']['orchestration']['service_tenant_name'] = 'service'
 default['openstack']['orchestration']['service_user'] = 'heat'
 default['openstack']['orchestration']['service_role'] = 'service'
 
+default['openstack']['orchestration']['ec2authtoken']['auth']['version'] = 'v2.0'
 default['openstack']['orchestration']['api']['auth']['version'] = node['openstack']['api']['auth']['version']
 
 # A PEM encoded Certificate Authority to use for clients when verifying HTTPs connections.

@@ -70,6 +70,7 @@ if node['openstack']['orchestration']['stack_domain_admin']
   stack_domain_admin_password = get_password 'user', node['openstack']['orchestration']['stack_domain_admin']
 end
 
+ec2_auth_uri = auth_uri_transform identity_endpoint.to_s, node['openstack']['orchestration']['ec2authtoken']['auth']['version']
 auth_uri = auth_uri_transform identity_endpoint.to_s, node['openstack']['orchestration']['api']['auth']['version']
 identity_uri = identity_uri_transform(identity_admin_endpoint)
 
@@ -114,6 +115,7 @@ template '/etc/heat/heat.conf' do
     mq_service_type: mq_service_type,
     mq_password: mq_password,
     rabbit_hosts: rabbit_hosts,
+    ec2_auth_uri: ec2_auth_uri,
     auth_uri: auth_uri,
     identity_uri: identity_uri,
     service_pass: service_pass,

@@ -406,6 +406,12 @@ shared_examples 'expects to create heat conf' do
       end
     end
 
+    describe 'has ec2authtoken values' do
+      it 'has default ec2authtoken values' do
+        expect(chef_run).to render_config_file(file.name).with_section_content('ec2authtoken', %r{^auth_uri=http://127.0.0.1:5000/v2.0$})
+      end
+    end
+
     describe 'has rabbit values' do
       before do
         node.set['openstack']['mq']['orchestration']['service_type'] = 'rabbitmq'
