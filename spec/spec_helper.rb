@@ -305,7 +305,7 @@ shared_examples 'expects to create heat conf' do
     describe 'default values' do
       it 'has default conf values' do
         [
-          %r{^sql_connection=mysql://heat:heat@127.0.0.1:3306/heat\?charset=utf8$},
+          %r{^connection=mysql://heat:heat@127.0.0.1:3306/heat\?charset=utf8$},
           %r{^heat_metadata_server_url=http://127.0.0.1:8000$},
           %r{^heat_waitcondition_server_url=http://127.0.0.1:8000/v1/waitcondition$},
           %r{^heat_watch_server_url=http://127.0.0.1:8003$},
