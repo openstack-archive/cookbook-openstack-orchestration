@@ -10,6 +10,10 @@ describe 'openstack-orchestration::engine' do
     include_context 'orchestration_stubs'
     include_examples 'expect runs openstack orchestration common recipe'
 
+    it 'installs heat engine package' do
+      expect(chef_run).to upgrade_package 'openstack-heat-engine'
+    end
+
     it 'starts heat engine on boot' do
       expect(chef_run).to enable_service('openstack-heat-engine')
     end
