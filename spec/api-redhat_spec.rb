@@ -10,8 +10,10 @@ describe 'openstack-orchestration::api' do
     include_context 'orchestration_stubs'
     include_examples 'expect runs openstack orchestration common recipe'
 
-    it 'installs heat client packages' do
-      expect(chef_run).to upgrade_package 'python-heatclient'
+    it 'installs heat api packages' do
+      ['openstack-heat-api', 'python-heatclient'].each do |pkg|
+        expect(chef_run).to upgrade_package pkg
+      end
     end
 
     it 'starts heat api on boot' do

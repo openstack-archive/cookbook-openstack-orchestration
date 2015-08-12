@@ -81,8 +81,8 @@ shared_examples 'expect runs openstack common logging recipe' do
 end
 
 shared_examples 'expect installs common heat package' do
-  it 'installs the openstack-heat package' do
-    expect(chef_run).to upgrade_package 'openstack-heat'
+  it 'installs the openstack-heat common package' do
+    expect(chef_run).to upgrade_package 'openstack-heat-common'
   end
 end
 
