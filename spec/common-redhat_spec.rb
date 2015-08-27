@@ -25,14 +25,5 @@ describe 'openstack-orchestration::common' do
       expect(chef_run).not_to upgrade_package 'python-ibm-db'
       expect(chef_run).not_to upgrade_package 'python-ibm-db-sa'
     end
-
-    it 'installs db2 python packages if explicitly told' do
-      node.set['openstack']['db']['orchestration']['service_type'] = 'db2'
-
-      expect(chef_run).to upgrade_package 'python-ibm-db'
-      expect(chef_run).to upgrade_package 'python-ibm-db-sa'
-      expect(chef_run).not_to upgrade_package 'python-psycopg2'
-      expect(chef_run).not_to upgrade_package 'MySQL-python'
-    end
   end
 end

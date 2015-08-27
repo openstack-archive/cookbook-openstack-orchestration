@@ -1,11 +1,11 @@
 # encoding: UTF-8
 name 'openstack-orchestration'
 maintainer 'openstack-chef'
-maintainer_email 'opscode-chef-openstack@googlegroups.com'
+maintainer_email 'openstack-dev@lists.openstack.org'
 license 'Apache 2.0'
 description 'Installs and configures the Heat Service'
 long_description IO.read(File.join(File.dirname(__FILE__), 'README.md'))
-version '11.0.0'
+version '12.0.0'
 recipe 'openstack-orchestration::api', 'Start and configure the Heat API service'
 recipe 'openstack-orchestration::api-cfn', 'Start and configure the Heat API CloudFormation service'
 recipe 'openstack-orchestration::api-cloudwatch', 'Start and configure the Heat API CloudWatch service'
@@ -18,5 +18,5 @@ recipe 'openstack-orchestration::identity_registration', 'Registers Heat service
   supports os
 end
 
-depends 'openstack-common', '>= 11.5.0'
-depends 'openstack-identity', '>= 11.0.0'
+depends 'openstack-common', '>= 12.0.0'
+depends 'openstack-identity', '>= 12.0.0'
