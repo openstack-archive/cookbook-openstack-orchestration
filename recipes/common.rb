@@ -34,6 +34,16 @@ package 'python-keystoneclient' do
   action :upgrade
 end
 
+node['openstack']['orchestration']['plugins'].each do |plugin|
+  node['openstack']['orchestration'][plugin]['packages'].each do |pkg|
+    package pkg do
+      options platform_options['package_overrides']
+      action :upgrade
+    end
+  end
+  node.default['openstack']['orchestration']['plugin_dirs'].push(node['openstack']['orchestration'][plugin]['path'])
+end
+
 platform_options['heat_common_packages'].each do |pkg|
   package pkg do
     options platform_options['package_overrides']

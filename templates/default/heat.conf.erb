@@ -35,6 +35,9 @@
 
 # List of directories to search for plug-ins. (list value)
 #plugin_dirs=/usr/lib64/heat,/usr/lib/heat,/usr/local/lib/heat,/usr/local/lib64/heat
+<% unless node['openstack']['orchestration']['plugin_dirs'].empty? -%>
+plugin_dirs=<%= node['openstack']['orchestration']['plugin_dirs'].join(',') %>
+<% end -%>
 
 # The directory to search for environment files. (string
 # value)

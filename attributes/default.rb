@@ -200,6 +200,12 @@ default['openstack']['orchestration']['notification_topics'] = 'notifications'
 # Array of options for `heat.conf` (e.g. ['option1=value1', 'option2=value2'])
 default['openstack']['orchestration']['misc_heat'] = nil
 
+# Array of plugins for heat.conf
+default['openstack']['orchestration']['plugins'] = []
+
+# Array of plugin resources dirs for heat.conf
+default['openstack']['orchestration']['plugin_dirs'] = []
+
 # platform-specific settings
 case platform_family
 when 'fedora', 'rhel' # :pragma-foodcritic: ~FC024 - won't fix this
@@ -219,6 +225,9 @@ when 'fedora', 'rhel' # :pragma-foodcritic: ~FC024 - won't fix this
     'heat_api_process_name' => 'heat-api',
     'package_overrides' => ''
   }
+  default['openstack']['orchestration']['nuage']['path'] = '/usr/lib/python2.7/site-packages/nuage-heat/resources'
+  # Nuage Networks heat extensions packages
+  default['openstack']['orchestration']['nuage']['packages'] = ['nuage-openstack-heat']
 when 'debian'
   default['openstack']['orchestration']['user'] = 'heat'
   default['openstack']['orchestration']['group'] = 'heat'
@@ -235,4 +244,7 @@ when 'debian'
     'heat_engine_service' => 'heat-engine',
     'package_overrides' => "-o Dpkg::Options::='--force-confold' -o Dpkg::Options::='--force-confdef'"
   }
+  default['openstack']['orchestration']['nuage']['path'] = '/usr/lib/python2.7/dist-packages/nuage-heat/resources'
+  # Nuage Networks heat extensions packages
+  default['openstack']['orchestration']['nuage']['packages'] = ['nuage-openstack-heat']
 end

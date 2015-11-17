@@ -202,6 +202,11 @@ shared_examples 'expects to create heat conf' do
       expect(chef_run).to render_config_file(file.name).with_section_content('DEFAULT', /^auth_encryption_key=auth_encryption_key_secret$/)
     end
 
+    it 'sets plugin_dirs' do
+      node.set['openstack']['orchestration']['plugins'] = ['nuage']
+      expect(chef_run).to render_file(file.name).with_content(/^plugin_dirs=#{node['openstack']['orchestration']['nuage']['path']}$/)
+    end
+
     describe 'default values for certificates files' do
       it 'has no such values' do
         [

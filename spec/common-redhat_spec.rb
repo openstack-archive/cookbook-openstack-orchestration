@@ -34,5 +34,11 @@ describe 'openstack-orchestration::common' do
       expect(chef_run).not_to upgrade_package 'python-psycopg2'
       expect(chef_run).not_to upgrade_package 'MySQL-python'
     end
+
+    it 'installs Nuage Networks heat extensions packages if explicitly told' do
+      node.set['openstack']['orchestration']['plugins'] = ['nuage']
+
+      expect(chef_run).to upgrade_package 'nuage-openstack-heat'
+    end
   end
 end
