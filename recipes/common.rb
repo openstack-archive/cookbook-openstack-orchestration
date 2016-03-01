@@ -49,91 +49,98 @@ node['openstack']['db']['python_packages'][db_type].each do |pkg|
   end
 end
 
+unless node['openstack']['orchestration']['conf']['DEFAULT']['rpc_backend'].nil? &&
+       node['openstack']['orchestration']['conf']['DEFAULT']['rpc_backend'] == 'rabbit'
+  user = node['openstack']['mq']['orchestration']['rabbit']['userid']
+  node.default['openstack']['orchestration']['conf']
+  .[]('oslo_messaging_rabbit')['rabbit_userid'] = user
+  node.default['openstack']['orchestration']['conf_secrets']
+  .[]('oslo_messaging_rabbit')['rabbit_password'] =
+    get_password 'user', user
+end
+
 db_user = node['openstack']['db']['orchestration']['username']
 db_pass = get_password 'db', 'heat'
-sql_connection = db_uri('orchestration', db_user, db_pass)
 
-identity_endpoint = internal_endpoint 'identity-internal'
-identity_admin_endpoint = admin_endpoint 'identity-admin'
-heat_api_bind = internal_endpoint 'orchestration-api-bind'
-heat_api_endpoint = internal_endpoint 'orchestration-api'
-heat_api_cfn_bind = internal_endpoint 'orchestration-api-cfn-bind'
-heat_api_cfn_endpoint = internal_endpoint 'orchestration-api-cfn'
-heat_api_cloudwatch_bind = internal_endpoint 'orchestration-api-cloudwatch-bind'
-heat_api_cloudwatch_endpoint = internal_endpoint 'orchestration-api-cloudwatch'
+identity_endpoint = internal_endpoint 'identity'
+identity_admin_endpoint = admin_endpoint 'identity'
 
-service_pass = get_password 'service', 'openstack-orchestration'
-auth_encryption_key = get_password 'token', 'orchestration_auth_encryption_key'
-
-stack_domain_admin_password = nil
-if node['openstack']['orchestration']['stack_domain_admin']
-  stack_domain_admin_password = get_password 'user', node['openstack']['orchestration']['stack_domain_admin']
-end
+bind_services = node['openstack']['bind_service']['all']
+api_bind = bind_services['orchestration-api']
+api_cfn_bind = bind_services['orchestration-api-cfn']
+api_cfn_endpoint = internal_endpoint 'orchestration-api-cfn'
+api_cw_bind = bind_services['orchestration-api-cloudwatch']
+api_cw_endpoint = internal_endpoint 'orchestration-api-cloudwatch'
 
 ec2_auth_uri = auth_uri_transform identity_endpoint.to_s, node['openstack']['orchestration']['ec2authtoken']['auth']['version']
 auth_uri = auth_uri_transform identity_endpoint.to_s, node['openstack']['orchestration']['api']['auth']['version']
-identity_uri = identity_uri_transform(identity_admin_endpoint)
 
-mq_service_type = node['openstack']['mq']['orchestration']['service_type']
+# We need these URIs without their default path
+metadata_uri = "#{api_cfn_endpoint.scheme}://#{api_cfn_endpoint.host}:#{api_cfn_endpoint.port}"
+watch_uri = "#{api_cw_endpoint.scheme}://#{api_cw_endpoint.host}:#{api_cw_endpoint.port}"
 
-if mq_service_type == 'rabbitmq'
-  if node['openstack']['mq']['orchestration']['rabbit']['ha']
-    rabbit_hosts = rabbit_servers
-  end
-  mq_password = get_password 'user', node['openstack']['mq']['orchestration']['rabbit']['userid']
-elsif mq_service_type == 'qpid'
-  mq_password = get_password 'user', node['openstack']['mq']['orchestration']['qpid']['username']
+# define attributes that are needed in the heat.conf
+node.default['openstack']['orchestration']['conf'].tap do |conf|
+  conf['DEFAULT']['heat_metadata_server_url'] = metadata_uri
+  conf['DEFAULT']['heat_waitcondition_server_url'] = "#{api_cfn_endpoint}/waitcondition"
+  conf['DEFAULT']['heat_watch_server_url'] = watch_uri
+  conf['DEFAULT']['region_name_for_services'] = node['openstack']['region']
+  conf['clients_keystone']['auth_uri'] = auth_uri
+  conf['ec2authtoken']['auth_uri'] = ec2_auth_uri
+  conf['heat_api']['bind_host'] = bind_address api_bind
+  conf['heat_api']['bind_port'] = api_bind.port
+  conf['heat_api_cfn']['bind_host'] = bind_address api_cfn_bind
+  conf['heat_api_cfn']['bind_port'] = api_cfn_bind.port
+  conf['heat_api_cloudwatch']['bind_host'] = bind_address api_cw_bind
+  conf['heat_api_cloudwatch']['bind_port'] = api_cw_bind.port
+  conf['keystone_authtoken']['auth_url'] = auth_uri
+  conf['trustee']['auth_url'] = identity_admin_endpoint
 end
 
+# define secrets that are needed in the heat.conf
+node.default['openstack']['orchestration']['conf_secrets'].tap do |conf_secrets|
+  conf_secrets['DEFAULT']['auth_encryption_key'] =
+    get_password 'token', 'orchestration_auth_encryption_key'
+  conf_secrets['database']['connection'] =
+    db_uri('orchestration', db_user, db_pass)
+  conf_secrets['keystone_authtoken']['password'] =
+    get_password 'service', 'openstack-orchestration'
+  conf_secrets['trustee']['password'] =
+    get_password 'service', 'openstack-orchestration'
+end
+
+# merge all config options and secrets to be used in the heat.conf
+heat_conf_options = merge_config_options 'orchestration'
+
 directory '/etc/heat' do
-  group node['openstack']['orchestration']['group']
   owner node['openstack']['orchestration']['user']
-  mode 00700
+  group node['openstack']['orchestration']['group']
+  mode 00750
   action :create
 end
 
 directory '/etc/heat/environment.d' do
-  group node['openstack']['orchestration']['group']
   owner node['openstack']['orchestration']['user']
-  mode 00700
+  group node['openstack']['orchestration']['group']
+  mode 00750
   action :create
 end
 
-directory node['openstack']['orchestration']['api']['auth']['cache_dir'] do
-  owner node['openstack']['orchestration']['user']
-  group node['openstack']['orchestration']['group']
-  mode 00700
-end
-
 template '/etc/heat/heat.conf' do
-  source 'heat.conf.erb'
-  group node['openstack']['orchestration']['group']
+  source 'openstack-service.conf.erb'
+  cookbook 'openstack-common'
   owner node['openstack']['orchestration']['user']
+  group node['openstack']['orchestration']['group']
   mode 00640
   variables(
-    stack_domain_admin_password: stack_domain_admin_password,
-    mq_service_type: mq_service_type,
-    mq_password: mq_password,
-    rabbit_hosts: rabbit_hosts,
-    ec2_auth_uri: ec2_auth_uri,
-    auth_uri: auth_uri,
-    identity_uri: identity_uri,
-    service_pass: service_pass,
-    auth_encryption_key: auth_encryption_key,
-    sql_connection: sql_connection,
-    heat_api_bind: heat_api_bind,
-    heat_api_endpoint: heat_api_endpoint,
-    heat_api_cfn_bind: heat_api_cfn_bind,
-    heat_api_cfn_endpoint: heat_api_cfn_endpoint,
-    heat_api_cloudwatch_bind: heat_api_cloudwatch_bind,
-    heat_api_cloudwatch_endpoint: heat_api_cloudwatch_endpoint
+    service_config: heat_conf_options
   )
 end
 
 template '/etc/heat/environment.d/default.yaml' do
   source 'default.yaml.erb'
-  group node['openstack']['orchestration']['group']
   owner node['openstack']['orchestration']['user']
+  group node['openstack']['orchestration']['group']
   mode 00644
 end
 

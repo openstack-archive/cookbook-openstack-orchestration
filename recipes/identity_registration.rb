@@ -24,7 +24,7 @@ class ::Chef::Recipe # rubocop:disable Documentation
   include ::Openstack
 end
 
-identity_admin_endpoint = admin_endpoint 'identity-admin'
+identity_admin_endpoint = admin_endpoint 'identity'
 
 token = get_password 'token', 'openstack_identity_bootstrap_token'
 auth_url = ::URI.decode identity_admin_endpoint.to_s
@@ -37,11 +37,10 @@ internal_heat_cfn_endpoint = internal_endpoint 'orchestration-api-cfn'
 public_heat_cfn_endpoint = public_endpoint 'orchestration-api-cfn'
 
 service_pass = get_password 'service', 'openstack-orchestration'
-service_tenant_name = node['openstack']['orchestration']['service_tenant_name']
-service_user = node['openstack']['orchestration']['service_user']
+service_tenant_name = node['openstack']['orchestration']['conf']['keystone_authtoken']['tenant_name']
+service_user = node['openstack']['orchestration']['conf']['keystone_authtoken']['username']
 service_role = node['openstack']['orchestration']['service_role']
-region = node['openstack']['orchestration']['region']
-stack_user_role = node['openstack']['orchestration']['heat_stack_user_role']
+region = node['openstack']['orchestration']['conf']['DEFAULT']['region_name_for_services']
 
 # Do not configure a service/endpoint in keystone for heat-api-cloudwatch(Bug #1167927),
 # See discussions on https://bugs.launchpad.net/heat/+bug/1167927
@@ -132,40 +131,4 @@ openstack_identity_register "Grant '#{service_role}' Role to #{service_user} Use
   role_name service_role
 
   action :grant_role
-end
-
-## Create role for heat template defined users ##
-openstack_identity_register "Create '#{stack_user_role}' Role for template defined users" do
-  auth_uri auth_url
-  bootstrap_token token
-  role_name stack_user_role
-
-  action :create_role
-  not_if { stack_user_role.nil? }
-end
-
-stack_user_domain_name = node['openstack']['orchestration']['stack_user_domain_name']
-stack_domain_admin = node['openstack']['orchestration']['stack_domain_admin']
-
-if !stack_user_role.nil? && !stack_user_domain_name.nil? && !stack_domain_admin.nil?
-  stack_domain_admin_password = get_password 'user', stack_domain_admin
-  admin_user = node['openstack']['identity']['admin_user']
-  admin_pass = get_password 'user', admin_user
-  ca_cert = node['openstack']['orchestration']['clients']['ca_file']
-  cert_file = node['openstack']['orchestration']['clients']['cert_file']
-  key_file = node['openstack']['orchestration']['clients']['key_file']
-  insecure = node['openstack']['orchestration']['clients']['insecure'] && '--insecure' || ''
-
-  execute 'heat-keystone-setup-domain' do
-    environment 'OS_USERNAME' => admin_user,
-                'OS_PASSWORD' => admin_pass,
-                'OS_AUTH_URL' => auth_url,
-                'OS_CACERT' => ca_cert,
-                'OS_CERT' => cert_file,
-                'OS_KEY' => key_file,
-                'HEAT_DOMAIN' => stack_user_domain_name,
-                'HEAT_DOMAIN_ADMIN' => stack_domain_admin,
-                'HEAT_DOMAIN_PASSWORD' => stack_domain_admin_password
-    command "heat-keystone-setup-domain #{insecure}"
-  end
 end
