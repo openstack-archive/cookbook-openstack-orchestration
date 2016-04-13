@@ -38,7 +38,7 @@ describe 'openstack-orchestration::identity_registration' do
     end
 
     it 'register heat orchestration endpoint with custom region override' do
-      node.set['openstack']['network']['region'] = 'region123'
+      node.set['openstack']['orchestration']['conf']['DEFAULT']['region_name_for_services'] = 'region123'
 
       expect(chef_run).to create_endpoint_openstack_identity_register(
         'Register Heat Orchestration Endpoint'
@@ -47,7 +47,6 @@ describe 'openstack-orchestration::identity_registration' do
         auth_uri: 'http://127.0.0.1:35357/v2.0',
         bootstrap_token: 'bootstrap-token',
         service_type: 'orchestration',
-        endpoint_region: 'RegionOne',
         endpoint_adminurl: 'http://127.0.0.1:8004/v1/%(tenant_id)s',
         endpoint_internalurl: 'http://127.0.0.1:8004/v1/%(tenant_id)s',
         endpoint_publicurl: 'http://127.0.0.1:8004/v1/%(tenant_id)s',

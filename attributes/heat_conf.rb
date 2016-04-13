@@ -18,8 +18,8 @@
 #
 
 default['openstack']['orchestration']['conf']['DEFAULT']['log_dir'] = '/var/log/heat'
-default['openstack']['orchestration']['conf']['DEFAULT']['notification_driver'] = 'heat.openstack.common.notifier.rpc_notifier'
-default['openstack']['orchestration']['conf']['keystone_authtoken']['auth_plugin'] = 'v2password'
+default['openstack']['orchestration']['conf']['oslo_messaging_notifications']['driver'] = 'heat.openstack.common.notifier.rpc_notifier'
+default['openstack']['orchestration']['conf']['keystone_authtoken']['auth_type'] = 'v2password'
 default['openstack']['orchestration']['conf']['keystone_authtoken']['username'] = 'heat'
 default['openstack']['orchestration']['conf']['keystone_authtoken']['tenant_name'] = 'service'
 default['openstack']['orchestration']['conf']['trustee']['auth_plugin'] = 'v2password'

@@ -133,10 +133,17 @@ shared_examples 'expects to create heat conf' do
           %r{^heat_waitcondition_server_url = http://127.0.0.1:8000/v1/waitcondition$},
           %r{^heat_watch_server_url = http://127.0.0.1:8003$},
           %r{^log_dir = /var/log/heat$},
-          /^notification_driver = heat.openstack.common.notifier.rpc_notifier$/,
           /^region_name_for_services = RegionOne$/
         ].each do |line|
           expect(chef_run).to render_config_file(file.name).with_section_content('DEFAULT', line)
+        end
+      end
+
+      it 'has oslo_messaging_notifications conf values' do
+        [
+          /^driver = heat.openstack.common.notifier.rpc_notifier$/
+        ].each do |line|
+          expect(chef_run).to render_config_file(file.name).with_section_content('oslo_messaging_notifications', line)
         end
       end
 
@@ -200,7 +207,7 @@ shared_examples 'expects to create heat conf' do
       it 'has default keystone_authtoken values' do
         [
           %r{^auth_url = http://127.0.0.1:5000/v2.0$},
-          /^auth_plugin = v2password$/,
+          /^auth_type = v2password$/,
           /^username = heat$/,
           /^tenant_name = service$/,
           /^password = heat-pass$/
