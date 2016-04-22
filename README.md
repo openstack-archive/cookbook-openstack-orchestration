@@ -1,105 +1,67 @@
 Description
 ===========
 
-This cookbook installs the OpenStack Heat service **Heat** as part of an OpenStack reference deployment Chef for OpenStack.
+This cookbook installs the OpenStack Heat service **Heat** as part of an
+OpenStack reference deployment Chef for OpenStack.
 
 https://wiki.openstack.org/wiki/Heat
 
 Requirements
 ============
 
-Chef 11 or higher required (for Chef environment use).
+- Chef 12 or higher
+- chefdk 0.9.0 for testing (also includes berkshelf for cookbook dependency
+  resolution)
+
+Platform
+========
+
+- ubuntu
+- redhat
+- centos
 
 Cookbooks
----------
+=========
 
 The following cookbooks are dependencies:
 
-* openstack-common
-* openstack-identity
-
-Usage
-=====
-
-api
-------
-- Configure and start heat-api service
-
-api-cfn
-------
-- Configure and start heat-api-cfn service
-
-api-cloudwatch
-------
-- Configure and start heat-api-cloudwatch service
-
-client
-----
-- Install the heat client packages
-
-common
-------
-- Installs the heat packages and setup configuration for Heat.
-
-engine
-------
-- Setup the heat database and start heat-engine service
-
-identity_registration
----------------------
-- Registers the Heat API endpoint, heat service and user
+- 'openstack-common', '>= 13.0.0'
+- 'openstack-identity', '>= 13.0.0'
 
 Attributes
 ==========
 
-Attributes for the Heat service are in the ['openstack']['orchestration'] namespace.
+Please see the extensive inline documentation in `attributes/*.rb` for
+descriptions of all the settable attributes for this cookbook.
 
-* `openstack['orchestration']['identity_service_chef_role']` - The name of the Chef role that installs the Keystone Service API
-* `openstack['orchestration']['rabbit_server_chef_role']` - The name of the Chef role that knows about the message queue server
-* `openstack['orchestration']['user']` - User heat runs as
-* `openstack['orchestration']['group']` - Group heat runs as
-* `openstack['db']['orchestration']['username']` - Username for heat database access
-* `openstack['orchestration']['service_role']` - User role used by heat when interacting with keystone, defaults to 'service'. Used in the API and registry paste.ini files
-* `openstack['orchestration']['syslog']['use']` - Should heat log to syslog?
-* `openstack['orchestration']['platform']` - hash of platform specific package/service names and options
-* `openstack['orchestration']['api']['auth']['version']` - Select v2.0 or v3.0. Default v2.0. The auth API version used to interact with the identity service.
+Note that all attributes are in the `default['openstack']` "namespace"
 
-TODO: update this section adding new attributes
+The usage of attributes to generate the heat.conf is decribed in the
+openstack-common cookbook.
 
-MQ attributes
--------------
+Recipes
+=======
 
-TODO: update this section with the new attributes
+## openstack-orchestration::api-cloudwatch
+- Configure and start heat-api-cloudwatch service
 
-Service bindings
-----------------
+## openstack-orchestration::api-cfn
+- Configure and start heat-api-cfn service
 
-* `openstack['bind_service']['all']['orchestration-api']['host']` - The IP address to bind the service to
-* `openstack['bind_service']['all']['orchestration-api']['port']` - The port to bind the service to
-* `openstack['bind_service']['all']['orchestration-api']['interface']` - The interface to bind the service to
+## openstack-orchestration::api
+- Configure and start heat-api service
 
-* `openstack['bind_service']['all']['orchestration-api-cfn']['host']` - The IP address to bind the service to
-* `openstack['bind_service']['all']['orchestration-api-cfn']['port']` - The port to bind the service to
-* `openstack['bind_service']['all']['orchestration-api-cfn']['interface']` - The interface to bind the service to
+## openstack-orchestration::client
+- Install the heat client packages
 
-* `openstack['bind_service']['all']['orchestration-api-cloudwatch']['host']` - The IP address to bind the service to
-* `openstack['bind_service']['all']['orchestration-api-cloudwatch']['port']` - The port to bind the service to
-* `openstack['bind_service']['all']['orchestration-api-cloudwatch']['interface']` - The interface to bind the service to
+## openstack-orchestration::common
+- Installs the heat packages and setup configuration for Heat.
 
-If the value of the 'interface' attribute is non-nil, then the service will be bound to the first IP address on that interface and
-the 'host' attribute will be ignored. 
-If the value of the 'interface' attribute is nil (which is the default), then the service will be bound to the IP address specified
-in the 'host' attribute.
+## openstack-orchestration::engine
+- Setup the heat database and start heat-engine service
 
-Miscellaneous Options
----------------------
-
-* `orchestration_auth_encryption_key` - Key used to encrypt authentication info in the database. Length of this key must be 16, 24 or 32 characters. Comes from secrets databag.
-
-Testing
-=====
-
-Please refer to the [TESTING.md](TESTING.md) for instructions for testing the cookbook.
+## openstack-orchestration::identity_registration
+- Registers the Heat API endpoint, heat service and user
 
 License and Author
 ==================
