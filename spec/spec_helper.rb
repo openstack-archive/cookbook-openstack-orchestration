@@ -188,7 +188,7 @@ shared_examples 'expects to create heat conf' do
 
     describe 'has clients_keystone values' do
       it 'has default clients_keystone values' do
-        expect(chef_run).to render_config_file(file.name).with_section_content('clients_keystone', %r{^auth_uri = http://127.0.0.1:5000/v2.0$})
+        expect(chef_run).to render_config_file(file.name).with_section_content('clients_keystone', %r{^auth_uri = http://127.0.0.1:5000/$})
       end
     end
 

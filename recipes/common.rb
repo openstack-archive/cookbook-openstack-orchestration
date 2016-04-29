@@ -74,6 +74,7 @@ api_cw_endpoint = internal_endpoint 'orchestration-api-cloudwatch'
 
 ec2_auth_uri = auth_uri_transform identity_endpoint.to_s, node['openstack']['orchestration']['ec2authtoken']['auth']['version']
 auth_uri = auth_uri_transform identity_endpoint.to_s, node['openstack']['orchestration']['api']['auth']['version']
+base_auth_uri = identity_uri_transform auth_uri
 
 # We need these URIs without their default path
 metadata_uri = "#{api_cfn_endpoint.scheme}://#{api_cfn_endpoint.host}:#{api_cfn_endpoint.port}"
@@ -85,7 +86,7 @@ node.default['openstack']['orchestration']['conf'].tap do |conf|
   conf['DEFAULT']['heat_waitcondition_server_url'] = "#{api_cfn_endpoint}/waitcondition"
   conf['DEFAULT']['heat_watch_server_url'] = watch_uri
   conf['DEFAULT']['region_name_for_services'] = node['openstack']['region']
-  conf['clients_keystone']['auth_uri'] = auth_uri
+  conf['clients_keystone']['auth_uri'] = base_auth_uri
   conf['ec2authtoken']['auth_uri'] = ec2_auth_uri
   conf['heat_api']['bind_host'] = bind_address api_bind
   conf['heat_api']['bind_port'] = api_bind.port
