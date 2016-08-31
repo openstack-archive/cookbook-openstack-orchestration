@@ -9,171 +9,106 @@ describe 'openstack-orchestration::identity_registration' do
 
     include_context 'orchestration_stubs'
 
-    it 'register heat orchestration service' do
-      expect(chef_run).to create_service_openstack_identity_register(
-        'Register Heat Orchestration Service'
+    connection_params = {
+      openstack_auth_url: 'http://127.0.0.1:35357/v3/auth/tokens',
+      openstack_username: 'admin',
+      openstack_api_key: 'admin-pass',
+      openstack_project_name: 'admin',
+      openstack_domain_name: 'default'
+    }
+    service_name = 'heat'
+    service_type = 'orchestration'
+    service_user = 'heat'
+    url = 'http://127.0.0.1:8004/v1/%(tenant_id)s'
+    region = 'RegionOne'
+    project_name = 'service'
+    role_name = 'service'
+    password = 'heat-pass'
+    domain_name = 'Default'
+
+    it "registers #{project_name} Project" do
+      expect(chef_run).to create_openstack_project(
+        project_name
       ).with(
-        auth_uri: 'http://127.0.0.1:35357/v2.0',
-        bootstrap_token: 'bootstrap-token',
-        service_name: 'heat',
-        service_type: 'orchestration',
-        service_description: 'Heat Orchestration Service',
-        action: [:create_service]
+        connection_params: connection_params
       )
     end
 
-    it 'register heat orchestration endpoint' do
-      expect(chef_run).to create_endpoint_openstack_identity_register(
-        'Register Heat Orchestration Endpoint'
+    it "registers #{service_name} service" do
+      expect(chef_run).to create_openstack_service(
+        service_name
       ).with(
-        auth_uri: 'http://127.0.0.1:35357/v2.0',
-        bootstrap_token: 'bootstrap-token',
-        service_type: 'orchestration',
-        endpoint_region: 'RegionOne',
-        endpoint_adminurl: 'http://127.0.0.1:8004/v1/%(tenant_id)s',
-        endpoint_internalurl: 'http://127.0.0.1:8004/v1/%(tenant_id)s',
-        endpoint_publicurl: 'http://127.0.0.1:8004/v1/%(tenant_id)s',
-        action: [:create_endpoint]
+        connection_params: connection_params,
+        type: service_type
       )
     end
 
-    it 'register heat orchestration endpoint with custom region override' do
-      node.set['openstack']['orchestration']['conf']['DEFAULT']['region_name_for_services'] = 'region123'
+    context "registers #{service_name} endpoint" do
+      %w(admin internal public).each do |interface|
+        it "#{interface} endpoint with default values" do
+          expect(chef_run).to create_openstack_endpoint(
+            service_type
+          ).with(
+            service_name: service_name,
+            # interface: interface,
+            url: url,
+            region: region,
+            connection_params: connection_params
+          )
+        end
+      end
+    end
 
-      expect(chef_run).to create_endpoint_openstack_identity_register(
-        'Register Heat Orchestration Endpoint'
+    it 'registers service user' do
+      expect(chef_run).to create_openstack_user(
+        service_user
       ).with(
-        endpoint_region: 'region123',
-        auth_uri: 'http://127.0.0.1:35357/v2.0',
-        bootstrap_token: 'bootstrap-token',
-        service_type: 'orchestration',
-        endpoint_adminurl: 'http://127.0.0.1:8004/v1/%(tenant_id)s',
-        endpoint_internalurl: 'http://127.0.0.1:8004/v1/%(tenant_id)s',
-        endpoint_publicurl: 'http://127.0.0.1:8004/v1/%(tenant_id)s',
-        action: [:create_endpoint]
+        project_name: project_name,
+        role_name: role_name,
+        password: password,
+        connection_params: connection_params
+      )
+    end
+
+    it do
+      expect(chef_run).to grant_domain_openstack_user(
+        service_user
+      ).with(
+        domain_name: domain_name,
+        role_name: role_name,
+        connection_params: connection_params
+      )
+    end
+
+    it do
+      expect(chef_run).to grant_role_openstack_user(
+        service_user
+      ).with(
+        project_name: project_name,
+        role_name: role_name,
+        password: password,
+        connection_params: connection_params
       )
     end
 
     it 'register heat cloudformation service' do
-      expect(chef_run).to create_service_openstack_identity_register(
-        'Register Heat Cloudformation Service'
+      expect(chef_run).to create_openstack_service(
+        'heat-cfn'
       ).with(
-        auth_uri: 'http://127.0.0.1:35357/v2.0',
-        bootstrap_token: 'bootstrap-token',
-        service_name: 'heat-cfn',
-        service_type: 'cloudformation',
-        service_description: 'Heat Cloudformation Service',
-        action: [:create_service]
+        connection_params: connection_params
       )
     end
-
-    it 'registers heat-api endpoint with different urls' do
-      admin_url = 'https://admin.host:123/admin_path'
-      public_url = 'http://public.host:456/public_path'
-      internal_url = 'http://internal.host:456/internal_path'
-
-      node.set['openstack']['endpoints']['admin']['orchestration-api']['uri'] = admin_url
-      node.set['openstack']['endpoints']['public']['orchestration-api']['uri'] = public_url
-      node.set['openstack']['endpoints']['internal']['orchestration-api']['uri'] = internal_url
-
-      expect(chef_run).to create_endpoint_openstack_identity_register(
-        'Register Heat Orchestration Endpoint'
-      ).with(
-        auth_uri: 'http://127.0.0.1:35357/v2.0',
-        bootstrap_token: 'bootstrap-token',
-        service_type: 'orchestration',
-        endpoint_region: 'RegionOne',
-        endpoint_adminurl: admin_url,
-        endpoint_internalurl: internal_url,
-        endpoint_publicurl: public_url,
-        action: [:create_endpoint]
-      )
-    end
-
-    it 'register heat cloudformation endpoint' do
-      expect(chef_run).to create_endpoint_openstack_identity_register(
-        'Register Heat Cloudformation Endpoint'
-      ).with(
-        auth_uri: 'http://127.0.0.1:35357/v2.0',
-        bootstrap_token: 'bootstrap-token',
-        service_type: 'cloudformation',
-        endpoint_region: 'RegionOne',
-        endpoint_adminurl: 'http://127.0.0.1:8000/v1',
-        endpoint_internalurl: 'http://127.0.0.1:8000/v1',
-        endpoint_publicurl: 'http://127.0.0.1:8000/v1',
-        action: [:create_endpoint]
-      )
-    end
-
-    it 'register heat-cfn endpoint with all different urls' do
-      admin_url = 'https://admin.host:123/admin_path'
-      internal_url = 'http://internal.host:456/internal_path'
-      public_url = 'https://public.host:789/public_path'
-
-      node.set['openstack']['endpoints']['admin']['orchestration-api-cfn']['uri'] = admin_url
-      node.set['openstack']['endpoints']['internal']['orchestration-api-cfn']['uri'] = internal_url
-      node.set['openstack']['endpoints']['public']['orchestration-api-cfn']['uri'] = public_url
-      expect(chef_run).to create_endpoint_openstack_identity_register(
-        'Register Heat Cloudformation Endpoint'
-      ).with(
-        auth_uri: 'http://127.0.0.1:35357/v2.0',
-        bootstrap_token: 'bootstrap-token',
-        service_type: 'cloudformation',
-        endpoint_region: 'RegionOne',
-        endpoint_adminurl: admin_url,
-        endpoint_internalurl: internal_url,
-        endpoint_publicurl: public_url,
-        action: [:create_endpoint]
-      )
-    end
-
-    it 'registers service tenant' do
-      expect(chef_run).to create_tenant_openstack_identity_register(
-        'Register Service Tenant'
-      ).with(
-        auth_uri: 'http://127.0.0.1:35357/v2.0',
-        bootstrap_token: 'bootstrap-token',
-        tenant_name: 'service',
-        tenant_description: 'Service Tenant'
-      )
-    end
-
-    it 'registers heat service user' do
-      expect(chef_run).to create_user_openstack_identity_register(
-        'Register Heat Service User'
-      ).with(
-        auth_uri: 'http://127.0.0.1:35357/v2.0',
-        bootstrap_token: 'bootstrap-token',
-        tenant_name: 'service',
-        user_name: 'heat',
-        user_pass: 'heat-pass',
-        user_enabled: true,
-        action: [:create_user]
-      )
-    end
-
-    it 'grants service role to service user for service tenant' do
-      expect(chef_run).to grant_role_openstack_identity_register(
-        "Grant 'service' Role to heat User for service Tenant"
-      ).with(
-        auth_uri: 'http://127.0.0.1:35357/v2.0',
-        bootstrap_token: 'bootstrap-token',
-        tenant_name: 'service',
-        user_name: 'heat',
-        role_name: 'service',
-        action: [:grant_role]
-      )
-    end
-
-    it 'does not create role for template defined users by default' do
-      expect(chef_run).not_to create_role_openstack_identity_register(
-        "Create '' Role for template defined users"
-      ).with(
-        auth_uri: 'http://127.0.0.1:35357/v2.0',
-        bootstrap_token: 'bootstrap-token',
-        role_name: '',
-        action: [:create_role]
-      )
+    %w(admin internal public).each do |interface|
+      it "#{interface} cloudformation endpoint with default values" do
+        expect(chef_run).to create_openstack_endpoint(
+          'cloudformation'
+        ).with(
+          service_name: 'heat-cfn',
+          url: 'http://127.0.0.1:8000/v1',
+          region: region,
+          connection_params: connection_params
+        )
+      end
     end
   end
 end

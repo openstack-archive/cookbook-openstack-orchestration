@@ -26,7 +26,6 @@ end
 
 identity_admin_endpoint = admin_endpoint 'identity'
 
-token = get_password 'token', 'openstack_identity_bootstrap_token'
 auth_url = ::URI.decode identity_admin_endpoint.to_s
 
 admin_heat_endpoint = admin_endpoint 'orchestration-api'
@@ -37,36 +36,88 @@ internal_heat_cfn_endpoint = internal_endpoint 'orchestration-api-cfn'
 public_heat_cfn_endpoint = public_endpoint 'orchestration-api-cfn'
 
 service_pass = get_password 'service', 'openstack-orchestration'
-service_tenant_name = node['openstack']['orchestration']['conf']['keystone_authtoken']['tenant_name']
+service_project_name = node['openstack']['orchestration']['conf']['keystone_authtoken']['project_name']
 service_user = node['openstack']['orchestration']['conf']['keystone_authtoken']['username']
 service_role = node['openstack']['orchestration']['service_role']
-region = node['openstack']['orchestration']['conf']['DEFAULT']['region_name_for_services']
+service_type = 'orchestration'
+service_name = 'heat'
+service_domain_name = node['openstack']['orchestration']['conf']['keystone_authtoken']['user_domain_name']
+admin_user = node['openstack']['identity']['admin_user']
+admin_pass = get_password 'user', node['openstack']['identity']['admin_user']
+admin_project = node['openstack']['identity']['admin_project']
+admin_domain = node['openstack']['identity']['admin_domain_name']
+region = node['openstack']['region']
 
 # Do not configure a service/endpoint in keystone for heat-api-cloudwatch(Bug #1167927),
 # See discussions on https://bugs.launchpad.net/heat/+bug/1167927
 
-# Register Heat API Service
-openstack_identity_register 'Register Heat Orchestration Service' do
-  auth_uri auth_url
-  bootstrap_token token
-  service_name 'heat'
-  service_type 'orchestration'
-  service_description 'Heat Orchestration Service'
+connection_params = {
+  openstack_auth_url:     "#{auth_url}/auth/tokens",
+  openstack_username:     admin_user,
+  openstack_api_key:      admin_pass,
+  openstack_project_name: admin_project,
+  openstack_domain_name:    admin_domain
+}
 
-  action :create_service
+# Register Orchestration Service
+openstack_service service_name do
+  type service_type
+  connection_params connection_params
 end
 
-# Register Heat API Endpoint
-openstack_identity_register 'Register Heat Orchestration Endpoint' do
-  auth_uri auth_url
-  bootstrap_token token
-  service_type 'orchestration'
-  endpoint_region region
-  endpoint_adminurl admin_heat_endpoint.to_s
-  endpoint_internalurl internal_heat_endpoint.to_s
-  endpoint_publicurl public_heat_endpoint.to_s
+# Register Orchestration Public-Endpoint
+openstack_endpoint service_type do
+  service_name service_name
+  interface 'public'
+  url public_heat_endpoint.to_s
+  region region
+  connection_params connection_params
+end
 
-  action :create_endpoint
+# Register Orchestration Internal-Endpoint
+openstack_endpoint service_type do
+  service_name service_name
+  url internal_heat_endpoint.to_s
+  region region
+  connection_params connection_params
+end
+
+# Register Orchestration Admin-Endpoint
+openstack_endpoint service_type do
+  service_name service_name
+  interface 'admin'
+  url admin_heat_endpoint.to_s
+  region region
+  connection_params connection_params
+end
+
+# Register Service Tenant
+openstack_project service_project_name do
+  connection_params connection_params
+end
+
+# Register Service User
+openstack_user service_user do
+  project_name service_project_name
+  role_name service_role
+  password service_pass
+  connection_params connection_params
+end
+
+## Grant Service role to Service User for Service Tenant ##
+openstack_user service_user do
+  role_name service_role
+  project_name service_project_name
+  connection_params connection_params
+  action :grant_role
+end
+
+openstack_user service_user do
+  domain_name service_domain_name
+  role_name service_role
+  user_name service_user
+  connection_params connection_params
+  action :grant_domain
 end
 
 # TODO: (MRV) Revert this change until a better solution can be found
@@ -74,61 +125,62 @@ end
 # if node.run_list.include?('openstack-orchestration::api-cfn')
 
 # Register Heat API Cloudformation Service
-openstack_identity_register 'Register Heat Cloudformation Service' do
-  auth_uri auth_url
-  bootstrap_token token
+openstack_service 'heat-cfn' do
+  type 'cloudformation'
+  connection_params connection_params
+end
+
+# Register Heat API CloudFormation Public-Endpoint
+openstack_endpoint 'cloudformation' do
   service_name 'heat-cfn'
-  service_type 'cloudformation'
-  service_description 'Heat Cloudformation Service'
-
-  action :create_service
+  interface 'public'
+  url public_heat_cfn_endpoint.to_s
+  region region
+  connection_params connection_params
 end
 
-# Register Heat API CloudFormation Endpoint
-openstack_identity_register 'Register Heat Cloudformation Endpoint' do
-  auth_uri auth_url
-  bootstrap_token token
-  service_type 'cloudformation'
-  endpoint_region region
-  endpoint_adminurl admin_heat_cfn_endpoint.to_s
-  endpoint_internalurl internal_heat_cfn_endpoint.to_s
-  endpoint_publicurl public_heat_cfn_endpoint.to_s
-
-  action :create_endpoint
+# Register Heat API CloudFormation Internal-Endpoint
+openstack_endpoint 'cloudformation' do
+  service_name 'heat-cfn'
+  url internal_heat_cfn_endpoint.to_s
+  region region
+  connection_params connection_params
 end
-# end
+
+# Register Heat API CloudFormation Admin-Endpoint
+openstack_endpoint 'cloudformation' do
+  service_name 'heat-cfn'
+  interface 'admin'
+  url admin_heat_cfn_endpoint.to_s
+  region region
+  connection_params connection_params
+end
 
 # Register Service Tenant
-openstack_identity_register 'Register Service Tenant' do
-  auth_uri auth_url
-  bootstrap_token token
-  tenant_name service_tenant_name
-  tenant_description 'Service Tenant'
-  tenant_enabled true # Not required as this is the default
-
-  action :create_tenant
+openstack_project service_project_name do
+  connection_params connection_params
 end
 
 # Register Service User
-openstack_identity_register 'Register Heat Service User' do
-  auth_uri auth_url
-  bootstrap_token token
-  tenant_name service_tenant_name
-  user_name service_user
-  user_pass service_pass
-  # String until https://review.openstack.org/#/c/29498/ merged
-  user_enabled true
-
-  action :create_user
+openstack_user service_user do
+  project_name service_project_name
+  role_name service_role
+  password service_pass
+  connection_params connection_params
 end
 
 ## Grant Service role to Service User for Service Tenant ##
-openstack_identity_register "Grant '#{service_role}' Role to #{service_user} User for #{service_tenant_name} Tenant" do
-  auth_uri auth_url
-  bootstrap_token token
-  tenant_name service_tenant_name
-  user_name service_user
+openstack_user service_user do
   role_name service_role
-
+  project_name service_project_name
+  connection_params connection_params
   action :grant_role
+end
+
+openstack_user service_user do
+  domain_name service_domain_name
+  role_name service_role
+  user_name service_user
+  connection_params connection_params
+  action :grant_domain
 end

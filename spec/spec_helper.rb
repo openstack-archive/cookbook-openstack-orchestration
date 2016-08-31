@@ -48,7 +48,7 @@ shared_context 'orchestration_stubs' do
       .and_return 'heat-pass'
     allow_any_instance_of(Chef::Recipe).to receive(:get_password)
       .with('user', 'admin')
-      .and_return 'admin_pass'
+      .and_return 'admin-pass'
     allow_any_instance_of(Chef::Recipe).to receive(:get_password)
       .with('token', 'orchestration_auth_encryption_key')
       .and_return 'auth_encryption_key_secret'
@@ -182,7 +182,7 @@ shared_examples 'expects to create heat conf' do
 
     describe 'has ec2authtoken values' do
       it 'has default ec2authtoken values' do
-        expect(chef_run).to render_config_file(file.name).with_section_content('ec2authtoken', %r{^auth_uri = http://127.0.0.1:5000/v2.0$})
+        expect(chef_run).to render_config_file(file.name).with_section_content('ec2authtoken', %r{^auth_uri = http://127.0.0.1:5000/v3$})
       end
     end
 
@@ -206,10 +206,12 @@ shared_examples 'expects to create heat conf' do
     describe 'has keystone_authtoken values' do
       it 'has default keystone_authtoken values' do
         [
-          %r{^auth_url = http://127.0.0.1:5000/v2.0$},
-          /^auth_type = v2password$/,
+          %r{^auth_url = http://127.0.0.1:5000/v3$},
+          /^auth_type = v3password$/,
           /^username = heat$/,
-          /^tenant_name = service$/,
+          /^project_name = service$/,
+          /^user_domain_name = Default/,
+          /^project_domain_name = Default/,
           /^password = heat-pass$/
         ].each do |line|
           expect(chef_run).to render_config_file(file.name).with_section_content('keystone_authtoken', line)
@@ -220,8 +222,8 @@ shared_examples 'expects to create heat conf' do
     describe 'has trustee values' do
       it 'has default trustee values' do
         [
-          %r{^auth_url = http://127.0.0.1:35357/v2.0$},
-          /^auth_plugin = v2password$/,
+          %r{^auth_url = http://127.0.0.1:35357/v3$},
+          /^auth_plugin = v3password$/,
           /^username = heat$/,
           /^password = heat-pass$/
         ].each do |line|
