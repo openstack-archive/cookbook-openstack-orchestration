@@ -29,11 +29,6 @@ end
 
 platform_options = node['openstack']['orchestration']['platform']
 
-package 'python-keystoneclient' do
-  options platform_options['package_overrides']
-  action :upgrade
-end
-
 platform_options['heat_common_packages'].each do |pkg|
   package pkg do
     options platform_options['package_overrides']

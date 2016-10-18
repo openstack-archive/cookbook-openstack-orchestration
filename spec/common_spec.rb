@@ -9,7 +9,6 @@ describe 'openstack-orchestration::common' do
 
     include_context 'orchestration_stubs'
     include_examples 'logging'
-    include_examples 'expect installs python keystoneclient'
     include_examples 'expects to create heat directories'
     include_examples 'expects to create heat conf'
     include_examples 'expects to create heat default.yaml'
