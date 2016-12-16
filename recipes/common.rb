@@ -44,14 +44,8 @@ node['openstack']['db']['python_packages'][db_type].each do |pkg|
   end
 end
 
-unless node['openstack']['orchestration']['conf']['DEFAULT']['rpc_backend'].nil? &&
-       node['openstack']['orchestration']['conf']['DEFAULT']['rpc_backend'] == 'rabbit'
-  user = node['openstack']['mq']['orchestration']['rabbit']['userid']
-  node.default['openstack']['orchestration']['conf']
-  .[]('oslo_messaging_rabbit')['rabbit_userid'] = user
-  node.default['openstack']['orchestration']['conf_secrets']
-  .[]('oslo_messaging_rabbit')['rabbit_password'] =
-    get_password 'user', user
+if node['openstack']['mq']['service_type'] == 'rabbit'
+  node.default['openstack']['orchestration']['conf_secrets']['DEFAULT']['transport_url'] = rabbit_transport_url 'orchestration'
 end
 
 db_user = node['openstack']['db']['orchestration']['username']

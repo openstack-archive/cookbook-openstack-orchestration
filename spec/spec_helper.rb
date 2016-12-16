@@ -52,6 +52,9 @@ shared_context 'orchestration_stubs' do
     allow_any_instance_of(Chef::Recipe).to receive(:get_password)
       .with('token', 'orchestration_auth_encryption_key')
       .and_return 'auth_encryption_key_secret'
+    allow_any_instance_of(Chef::Recipe).to receive(:rabbit_transport_url)
+      .with('orchestration')
+      .and_return('rabbit://guest:mypass@127.0.0.1:5672')
     allow(Chef::Application).to receive(:fatal!)
   end
 end
@@ -187,12 +190,11 @@ shared_examples 'expects to create heat conf' do
     end
 
     describe 'has oslo_messaging_rabbit values' do
-      it 'has default oslo_messaging_rabbit values' do
+      it 'has default rabbit values' do
         [
-          /^rabbit_userid = guest$/,
-          /^rabbit_password = mq-pass$/
+          %r{^transport_url = rabbit://guest:mypass@127.0.0.1:5672$}
         ].each do |line|
-          expect(chef_run).to render_config_file(file.name).with_section_content('oslo_messaging_rabbit', line)
+          expect(chef_run).to render_config_file(file.name).with_section_content('DEFAULT', line)
         end
       end
     end
