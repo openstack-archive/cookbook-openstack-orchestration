@@ -11,9 +11,7 @@ describe 'openstack-orchestration::api-cfn' do
     include_examples 'expect runs openstack orchestration common recipe'
 
     it 'installs heat cfn packages' do
-      ['openstack-heat-api-cfn', 'python-heatclient'].each do |pkg|
-        expect(chef_run).to upgrade_package pkg
-      end
+      expect(chef_run).to upgrade_package 'openstack-heat-api-cfn'
     end
 
     it 'starts heat api-cfn on boot' do

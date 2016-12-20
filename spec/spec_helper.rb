@@ -14,7 +14,7 @@ REDHAT_OPTS = {
 }.freeze
 UBUNTU_OPTS = {
   platform: 'ubuntu',
-  version: '14.04',
+  version: '16.04',
   log_level: ::LOG_LEVEL
 }.freeze
 SUSE_OPTS = {
@@ -59,12 +59,6 @@ end
 shared_examples 'expect runs openstack orchestration common recipe' do
   it 'runs orchestration common recipe' do
     expect(chef_run).to include_recipe 'openstack-orchestration::common'
-  end
-end
-
-shared_examples 'expect installs python keystoneclient' do
-  it 'installs python-keystoneclient' do
-    expect(chef_run).to upgrade_package 'python-keystoneclient'
   end
 end
 
