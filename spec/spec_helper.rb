@@ -221,7 +221,8 @@ shared_examples 'expects to create heat conf' do
           %r{^auth_url = http://127.0.0.1:35357/v3$},
           /^auth_plugin = v3password$/,
           /^username = heat$/,
-          /^password = heat-pass$/
+          /^password = heat-pass$/,
+          /^user_domain_name = Default$/
         ].each do |line|
           expect(chef_run).to render_config_file(file.name).with_section_content('trustee', line)
         end
