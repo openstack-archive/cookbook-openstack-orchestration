@@ -105,14 +105,14 @@ heat_conf_options = merge_config_options 'orchestration'
 directory '/etc/heat' do
   owner node['openstack']['orchestration']['user']
   group node['openstack']['orchestration']['group']
-  mode 00750
+  mode 0o0750
   action :create
 end
 
 directory '/etc/heat/environment.d' do
   owner node['openstack']['orchestration']['user']
   group node['openstack']['orchestration']['group']
-  mode 00750
+  mode 0o0750
   action :create
 end
 
@@ -121,7 +121,7 @@ template '/etc/heat/heat.conf' do
   cookbook 'openstack-common'
   owner node['openstack']['orchestration']['user']
   group node['openstack']['orchestration']['group']
-  mode 00640
+  mode 0o0640
   variables(
     service_config: heat_conf_options
   )
@@ -131,7 +131,7 @@ template '/etc/heat/environment.d/default.yaml' do
   source 'default.yaml.erb'
   owner node['openstack']['orchestration']['user']
   group node['openstack']['orchestration']['group']
-  mode 00644
+  mode 0o0644
 end
 
 execute 'heat-manage db_sync' do

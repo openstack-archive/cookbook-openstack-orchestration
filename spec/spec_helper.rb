@@ -94,7 +94,7 @@ shared_examples 'expects to create heat directories' do
     expect(chef_run).to create_directory('/etc/heat').with(
       owner: 'heat',
       group: 'heat',
-      mode: 0750
+      mode: 0o750
     )
   end
 
@@ -102,7 +102,7 @@ shared_examples 'expects to create heat directories' do
     expect(chef_run).to create_directory('/etc/heat/environment.d').with(
       owner: 'heat',
       group: 'heat',
-      mode: 0750
+      mode: 0o750
     )
   end
 end
@@ -115,7 +115,7 @@ shared_examples 'expects to create heat conf' do
       expect(chef_run).to create_template(file.name).with(
         owner: 'heat',
         group: 'heat',
-        mode: 0640
+        mode: 0o640
       )
     end
 
@@ -173,7 +173,8 @@ shared_examples 'expects to create heat conf' do
 
       it 'sets database connection value' do
         expect(chef_run).to render_config_file(file.name).with_section_content(
-          'database', %r{^connection = mysql://heat:heat@127.0.0.1:3306/heat\?charset=utf8$})
+          'database', %r{^connection = mysql\+pymysql://heat:heat@127.0.0.1:3306/heat\?charset=utf8$}
+        )
       end
     end
 
@@ -239,7 +240,7 @@ shared_examples 'expects to create heat default.yaml' do
       expect(chef_run).to create_template(file.name).with(
         owner: 'heat',
         group: 'heat',
-        mode: 0644
+        mode: 0o644
       )
     end
   end
