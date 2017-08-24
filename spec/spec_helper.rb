@@ -10,17 +10,17 @@ LOG_LEVEL = :fatal
 REDHAT_OPTS = {
   platform: 'redhat',
   version: '7.1',
-  log_level: ::LOG_LEVEL
+  log_level: ::LOG_LEVEL,
 }.freeze
 UBUNTU_OPTS = {
   platform: 'ubuntu',
   version: '16.04',
-  log_level: ::LOG_LEVEL
+  log_level: ::LOG_LEVEL,
 }.freeze
 SUSE_OPTS = {
   platform: 'suse',
   version: '11.3',
-  log_level: ::LOG_LEVEL
+  log_level: ::LOG_LEVEL,
 }.freeze
 
 shared_context 'orchestration_stubs' do
@@ -130,7 +130,7 @@ shared_examples 'expects to create heat conf' do
           %r{^heat_waitcondition_server_url = http://127.0.0.1:8000/v1/waitcondition$},
           %r{^heat_watch_server_url = http://127.0.0.1:8003$},
           %r{^log_dir = /var/log/heat$},
-          /^region_name_for_services = RegionOne$/
+          /^region_name_for_services = RegionOne$/,
         ].each do |line|
           expect(chef_run).to render_config_file(file.name).with_section_content('DEFAULT', line)
         end
@@ -138,7 +138,7 @@ shared_examples 'expects to create heat conf' do
 
       it 'has oslo_messaging_notifications conf values' do
         [
-          /^driver = heat.openstack.common.notifier.rpc_notifier$/
+          /^driver = heat.openstack.common.notifier.rpc_notifier$/,
         ].each do |line|
           expect(chef_run).to render_config_file(file.name).with_section_content('oslo_messaging_notifications', line)
         end
@@ -147,7 +147,7 @@ shared_examples 'expects to create heat conf' do
       it 'has heat_api binding' do
         [
           /^bind_host = 127.0.0.1$/,
-          /^bind_port = 8004$/
+          /^bind_port = 8004$/,
         ].each do |line|
           expect(chef_run).to render_config_file(file.name).with_section_content('heat_api', line)
         end
@@ -156,7 +156,7 @@ shared_examples 'expects to create heat conf' do
       it 'has heat_api_cfn binding' do
         [
           /^bind_host = 127.0.0.1$/,
-          /^bind_port = 8000$/
+          /^bind_port = 8000$/,
         ].each do |line|
           expect(chef_run).to render_config_file(file.name).with_section_content('heat_api_cfn', line)
         end
@@ -165,7 +165,7 @@ shared_examples 'expects to create heat conf' do
       it 'has heat_api_cloudwatch binding' do
         [
           /^bind_host = 127.0.0.1$/,
-          /^bind_port = 8003$/
+          /^bind_port = 8003$/,
         ].each do |line|
           expect(chef_run).to render_config_file(file.name).with_section_content('heat_api_cloudwatch', line)
         end
@@ -193,7 +193,7 @@ shared_examples 'expects to create heat conf' do
     describe 'has oslo_messaging_rabbit values' do
       it 'has default rabbit values' do
         [
-          %r{^transport_url = rabbit://guest:mypass@127.0.0.1:5672$}
+          %r{^transport_url = rabbit://guest:mypass@127.0.0.1:5672$},
         ].each do |line|
           expect(chef_run).to render_config_file(file.name).with_section_content('DEFAULT', line)
         end
@@ -209,7 +209,7 @@ shared_examples 'expects to create heat conf' do
           /^project_name = service$/,
           /^user_domain_name = Default/,
           /^project_domain_name = Default/,
-          /^password = heat-pass$/
+          /^password = heat-pass$/,
         ].each do |line|
           expect(chef_run).to render_config_file(file.name).with_section_content('keystone_authtoken', line)
         end
@@ -223,7 +223,7 @@ shared_examples 'expects to create heat conf' do
           /^auth_plugin = v3password$/,
           /^username = heat$/,
           /^password = heat-pass$/,
-          /^user_domain_name = Default$/
+          /^user_domain_name = Default$/,
         ].each do |line|
           expect(chef_run).to render_config_file(file.name).with_section_content('trustee', line)
         end

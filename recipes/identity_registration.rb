@@ -20,7 +20,7 @@
 
 require 'uri'
 
-class ::Chef::Recipe # rubocop:disable Documentation
+class ::Chef::Recipe
   include ::Openstack
 end
 
@@ -56,7 +56,7 @@ connection_params = {
   openstack_username:     admin_user,
   openstack_api_key:      admin_pass,
   openstack_project_name: admin_project,
-  openstack_domain_name:    admin_domain
+  openstack_domain_name:    admin_domain,
 }
 
 # Register Orchestration Service
