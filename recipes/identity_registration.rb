@@ -34,7 +34,8 @@ public_heat_endpoint = public_endpoint 'orchestration-api'
 admin_heat_cfn_endpoint = admin_endpoint 'orchestration-api-cfn'
 internal_heat_cfn_endpoint = internal_endpoint 'orchestration-api-cfn'
 public_heat_cfn_endpoint = public_endpoint 'orchestration-api-cfn'
-
+stack_domain_admin = node['openstack']['orchestration']['conf']['DEFAULT']['stack_domain_admin']
+stack_domain_admin_password = get_password 'user', stack_domain_admin
 service_pass = get_password 'service', 'openstack-orchestration'
 service_project_name = node['openstack']['orchestration']['conf']['keystone_authtoken']['project_name']
 service_user = node['openstack']['orchestration']['conf']['keystone_authtoken']['username']
@@ -42,6 +43,7 @@ service_role = node['openstack']['orchestration']['service_role']
 service_type = 'orchestration'
 service_name = 'heat'
 service_domain_name = node['openstack']['orchestration']['conf']['keystone_authtoken']['user_domain_name']
+heat_domain_name = node['openstack']['orchestration']['conf']['DEFAULT']['stack_user_domain_name']
 admin_user = node['openstack']['identity']['admin_user']
 admin_pass = get_password 'user', node['openstack']['identity']['admin_user']
 admin_project = node['openstack']['identity']['admin_project']
@@ -183,4 +185,31 @@ openstack_user service_user do
   user_name service_user
   connection_params connection_params
   action :grant_domain
+end
+
+openstack_domain heat_domain_name do
+  connection_params connection_params
+end
+
+openstack_user stack_domain_admin do
+  domain_name heat_domain_name
+  role_name 'admin'
+  password stack_domain_admin_password
+  connection_params connection_params
+end
+
+openstack_user stack_domain_admin do
+  domain_name heat_domain_name
+  role_name 'admin'
+  user_name stack_domain_admin
+  connection_params connection_params
+  action :grant_role
+end
+
+openstack_role 'heat_stack_owner' do
+  connection_params connection_params
+end
+
+openstack_role 'heat_stack_user' do
+  connection_params connection_params
 end

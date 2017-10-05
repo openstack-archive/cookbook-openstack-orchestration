@@ -47,6 +47,9 @@ shared_context 'orchestration_stubs' do
       .with('service', 'openstack-orchestration')
       .and_return 'heat-pass'
     allow_any_instance_of(Chef::Recipe).to receive(:get_password)
+      .with('user', 'heat_domain_admin')
+      .and_return 'heat-pass'
+    allow_any_instance_of(Chef::Recipe).to receive(:get_password)
       .with('user', 'admin')
       .and_return 'admin-pass'
     allow_any_instance_of(Chef::Recipe).to receive(:get_password)

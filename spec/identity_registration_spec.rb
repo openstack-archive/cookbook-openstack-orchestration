@@ -19,6 +19,8 @@ describe 'openstack-orchestration::identity_registration' do
     service_name = 'heat'
     service_type = 'orchestration'
     service_user = 'heat'
+    stack_domain_admin = 'heat_domain_admin'
+    stack_domain_name = 'heat'
     url = 'http://127.0.0.1:8004/v1/%(tenant_id)s'
     region = 'RegionOne'
     project_name = 'service'
@@ -81,6 +83,22 @@ describe 'openstack-orchestration::identity_registration' do
     end
 
     it do
+      expect(chef_run).to create_openstack_role(
+        'heat_stack_owner'
+      ).with(
+        connection_params: connection_params
+      )
+    end
+
+    it do
+      expect(chef_run).to create_openstack_role(
+        'heat_stack_user'
+      ).with(
+        connection_params: connection_params
+      )
+    end
+
+    it do
       expect(chef_run).to grant_role_openstack_user(
         service_user
       ).with(
@@ -91,6 +109,24 @@ describe 'openstack-orchestration::identity_registration' do
       )
     end
 
+    it do
+      expect(chef_run).to create_openstack_domain(
+        stack_domain_name
+      ).with(
+        connection_params: connection_params
+      )
+    end
+
+    it do
+      expect(chef_run).to grant_role_openstack_user(
+        stack_domain_admin
+      ).with(
+        domain_name: stack_domain_name,
+        role_name: 'admin',
+        password: password,
+        connection_params: connection_params
+      )
+    end
     it 'register heat cloudformation service' do
       expect(chef_run).to create_openstack_service(
         'heat-cfn'
