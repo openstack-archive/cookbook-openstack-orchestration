@@ -25,6 +25,8 @@ describe 'openstack-orchestration::identity_registration' do
     role_name = 'service'
     password = 'heat-pass'
     domain_name = 'Default'
+    stack_domain_admin = 'heat_domain_admin'
+    stack_domain_name = 'heat'
 
     it "registers #{project_name} Project" do
       expect(chef_run).to create_openstack_project(
@@ -81,11 +83,46 @@ describe 'openstack-orchestration::identity_registration' do
     end
 
     it do
+      expect(chef_run).to create_openstack_role(
+        'heat_stack_owner'
+      ).with(
+        connection_params: connection_params
+      )
+    end
+
+    it do
+      expect(chef_run).to create_openstack_role(
+        'heat_stack_user'
+      ).with(
+        connection_params: connection_params
+      )
+    end
+
+    it do
       expect(chef_run).to grant_role_openstack_user(
         service_user
       ).with(
         project_name: project_name,
         role_name: role_name,
+        password: password,
+        connection_params: connection_params
+      )
+    end
+
+    it do
+      expect(chef_run).to create_openstack_domain(
+        stack_domain_name
+      ).with(
+        connection_params: connection_params
+      )
+    end
+
+    it do
+      expect(chef_run).to grant_role_openstack_user(
+        stack_domain_admin
+      ).with(
+        domain_name: stack_domain_name,
+        role_name: 'admin',
         password: password,
         connection_params: connection_params
       )

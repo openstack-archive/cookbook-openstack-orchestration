@@ -51,7 +51,7 @@ GRAPH
     apache2 (~> 3.2)
     openstack-common (>= 15.0.0)
     openstackclient (>= 0.0.0)
-  openstack-orchestration (15.0.0)
+  openstack-orchestration (15.0.1)
     openstack-common (>= 15.0.0)
     openstack-identity (>= 15.0.0)
     openstackclient (>= 0.0.0)

@@ -9,7 +9,7 @@
 # Offense count: 7
 # Configuration parameters: CountComments, ExcludedMethods.
 Metrics/BlockLength:
-  Max: 109
+  Max: 132
 
 # Offense count: 2
 # Configuration parameters: EnforcedStyle, SupportedStyles.

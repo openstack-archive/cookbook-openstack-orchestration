@@ -50,6 +50,7 @@ end
 
 db_user = node['openstack']['db']['orchestration']['username']
 db_pass = get_password 'db', 'heat'
+stack_domain_admin = node['openstack']['orchestration']['conf']['DEFAULT']['stack_domain_admin']
 
 identity_endpoint = internal_endpoint 'identity'
 identity_admin_endpoint = admin_endpoint 'identity'
@@ -97,6 +98,8 @@ node.default['openstack']['orchestration']['conf_secrets'].tap do |conf_secrets|
     get_password 'service', 'openstack-orchestration'
   conf_secrets['trustee']['password'] =
     get_password 'service', 'openstack-orchestration'
+  conf_secrets['DEFAULT']['stack_domain_admin_password'] =
+    get_password 'user', stack_domain_admin
 end
 
 # merge all config options and secrets to be used in the heat.conf
