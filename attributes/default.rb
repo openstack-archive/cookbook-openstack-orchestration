@@ -63,7 +63,7 @@ default['openstack']['orchestration']['ec2authtoken']['auth']['version'] = 'v2.0
 default['openstack']['orchestration']['api']['auth']['version'] = node['openstack']['api']['auth']['version']
 
 # platform-specific settings
-case platform_family
+case node['platform_family']
 when 'rhel'
   default['openstack']['orchestration']['user'] = 'heat'
   default['openstack']['orchestration']['group'] = 'heat'
