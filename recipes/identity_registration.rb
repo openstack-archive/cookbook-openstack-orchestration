@@ -61,6 +61,9 @@ connection_params = {
   openstack_domain_name:    admin_domain,
 }
 
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+# Create Orchestration service, endpoints
+
 # Register Orchestration Service
 openstack_service service_name do
   type service_type
@@ -93,6 +96,9 @@ openstack_endpoint service_type do
   connection_params connection_params
 end
 
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+# Create heat project, heat user
+
 # Register Service Tenant
 openstack_project service_project_name do
   connection_params connection_params
@@ -117,6 +123,9 @@ end
 # TODO: (MRV) Revert this change until a better solution can be found
 # Bug: #1309123   reverts 1279577
 # if node.run_list.include?('openstack-orchestration::api-cfn')
+
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+# Create Cloudformation service, endpoints
 
 # Register Heat API Cloudformation Service
 openstack_service 'heat-cfn' do
@@ -149,24 +158,28 @@ openstack_endpoint 'cloudformation' do
   region region
   connection_params connection_params
 end
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+# Create heat domain, heat_domain_admin user
 
 openstack_domain heat_domain_name do
   connection_params connection_params
 end
 
+# Create heat_domain_admin in domain heat
 openstack_user stack_domain_admin do
   domain_name heat_domain_name
   password stack_domain_admin_password
   connection_params connection_params
 end
 
+# Grant role to heat_domain_admin in domain heat
 openstack_user stack_domain_admin do
   domain_name heat_domain_name
   role_name 'admin'
   connection_params connection_params
   action :grant_domain
 end
-
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 openstack_role 'heat_stack_owner' do
   connection_params connection_params
 end
