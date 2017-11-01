@@ -163,9 +163,8 @@ end
 openstack_user stack_domain_admin do
   domain_name heat_domain_name
   role_name 'admin'
-  user_name stack_domain_admin
   connection_params connection_params
-  action :grant_role
+  action :grant_domain
 end
 
 openstack_role 'heat_stack_owner' do

@@ -117,7 +117,7 @@ describe 'openstack-orchestration::identity_registration' do
     end
 
     it do
-      expect(chef_run).to grant_role_openstack_user(
+      expect(chef_run).to grant_domain_openstack_user(
         stack_domain_admin
       ).with(
         domain_name: stack_domain_name,
