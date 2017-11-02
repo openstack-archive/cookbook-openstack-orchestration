@@ -158,35 +158,6 @@ openstack_endpoint 'cloudformation' do
   connection_params connection_params
 end
 
-# Register Service Tenant
-openstack_project service_project_name do
-  connection_params connection_params
-end
-
-# Register Service User
-openstack_user service_user do
-  project_name service_project_name
-  role_name service_role
-  password service_pass
-  connection_params connection_params
-end
-
-## Grant Service role to Service User for Service Tenant ##
-openstack_user service_user do
-  role_name service_role
-  project_name service_project_name
-  connection_params connection_params
-  action :grant_role
-end
-
-openstack_user service_user do
-  domain_name service_domain_name
-  role_name service_role
-  user_name service_user
-  connection_params connection_params
-  action :grant_domain
-end
-
 openstack_domain heat_domain_name do
   connection_params connection_params
 end
