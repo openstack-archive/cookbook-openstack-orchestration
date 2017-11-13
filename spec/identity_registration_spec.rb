@@ -116,6 +116,15 @@ describe 'openstack-orchestration::identity_registration' do
       )
     end
 
+    it 'registers stack domain admin user' do
+      expect(chef_run).to create_openstack_user(
+        stack_domain_admin
+      ).with(
+        password: password,
+        connection_params: connection_params
+      )
+    end
+
     it do
       expect(chef_run).to grant_role_openstack_user(
         stack_domain_admin
