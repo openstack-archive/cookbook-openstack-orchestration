@@ -101,7 +101,6 @@ end
 # Register Service User
 openstack_user service_user do
   project_name service_project_name
-  role_name service_role
   password service_pass
   connection_params connection_params
 end
@@ -164,7 +163,6 @@ end
 
 openstack_user stack_domain_admin do
   domain_name heat_domain_name
-  role_name 'admin'
   password stack_domain_admin_password
   connection_params connection_params
 end
