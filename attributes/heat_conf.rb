@@ -26,6 +26,6 @@ default['openstack']['orchestration']['conf']['keystone_authtoken']['username'] 
 default['openstack']['orchestration']['conf']['keystone_authtoken']['project_name'] = 'service'
 default['openstack']['orchestration']['conf']['keystone_authtoken']['project_domain_name'] = 'Default'
 default['openstack']['orchestration']['conf']['keystone_authtoken']['user_domain_name'] = 'Default'
-default['openstack']['orchestration']['conf']['trustee']['auth_plugin'] = 'v3password'
+default['openstack']['orchestration']['conf']['trustee']['auth_type'] = 'v3password'
 default['openstack']['orchestration']['conf']['trustee']['username'] = 'heat'
 default['openstack']['orchestration']['conf']['trustee']['user_domain_name'] = node['openstack']['orchestration']['conf']['keystone_authtoken']['user_domain_name']

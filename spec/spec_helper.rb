@@ -223,7 +223,7 @@ shared_examples 'expects to create heat conf' do
       it 'has default trustee values' do
         [
           %r{^auth_url = http://127.0.0.1:35357/v3$},
-          /^auth_plugin = v3password$/,
+          /^auth_type = v3password$/,
           /^username = heat$/,
           /^password = heat-pass$/,
           /^user_domain_name = Default$/
