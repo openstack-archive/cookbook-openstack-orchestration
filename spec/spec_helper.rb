@@ -9,17 +9,12 @@ require 'chef/application'
 LOG_LEVEL = :fatal
 REDHAT_OPTS = {
   platform: 'redhat',
-  version: '7.1',
+  version: '7.3',
   log_level: ::LOG_LEVEL,
 }.freeze
 UBUNTU_OPTS = {
   platform: 'ubuntu',
   version: '16.04',
-  log_level: ::LOG_LEVEL,
-}.freeze
-SUSE_OPTS = {
-  platform: 'suse',
-  version: '11.3',
   log_level: ::LOG_LEVEL,
 }.freeze
 
@@ -48,7 +43,7 @@ shared_context 'orchestration_stubs' do
       .and_return 'heat-pass'
     allow_any_instance_of(Chef::Recipe).to receive(:get_password)
       .with('user', 'heat_domain_admin')
-      .and_return 'heat-pass'
+      .and_return 'heat_domain_pass'
     allow_any_instance_of(Chef::Recipe).to receive(:get_password)
       .with('user', 'admin')
       .and_return 'admin-pass'

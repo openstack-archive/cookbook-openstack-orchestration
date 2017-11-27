@@ -93,6 +93,6 @@ when 'debian'
     'heat_api_cloudwatch_service' => 'heat-api-cloudwatch',
     'heat_engine_packages' => ['heat-engine'],
     'heat_engine_service' => 'heat-engine',
-    'package_overrides' => "-o Dpkg::Options::='--force-confold' -o Dpkg::Options::='--force-confdef'",
+    'package_overrides' => '',
   }
 end

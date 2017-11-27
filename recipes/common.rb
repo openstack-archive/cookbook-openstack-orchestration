@@ -79,11 +79,11 @@ node.default['openstack']['orchestration']['conf'].tap do |conf|
   conf['clients_keystone']['auth_uri'] = base_auth_uri
   conf['ec2authtoken']['auth_uri'] = ec2_auth_uri
   conf['heat_api']['bind_host'] = bind_address api_bind
-  conf['heat_api']['bind_port'] = api_bind.port
+  conf['heat_api']['bind_port'] = api_bind['port']
   conf['heat_api_cfn']['bind_host'] = bind_address api_cfn_bind
-  conf['heat_api_cfn']['bind_port'] = api_cfn_bind.port
+  conf['heat_api_cfn']['bind_port'] = api_cfn_bind['port']
   conf['heat_api_cloudwatch']['bind_host'] = bind_address api_cw_bind
-  conf['heat_api_cloudwatch']['bind_port'] = api_cw_bind.port
+  conf['heat_api_cloudwatch']['bind_port'] = api_cw_bind['port']
   conf['keystone_authtoken']['auth_url'] = auth_uri
   conf['trustee']['auth_url'] = identity_admin_endpoint
 end

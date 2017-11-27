@@ -21,6 +21,7 @@ describe 'openstack-orchestration::identity_registration' do
     service_user = 'heat'
     stack_domain_admin = 'heat_domain_admin'
     stack_domain_name = 'heat'
+    stack_domain_password = 'heat_domain_pass'
     url = 'http://127.0.0.1:8004/v1/%(tenant_id)s'
     region = 'RegionOne'
     project_name = 'service'
@@ -94,7 +95,6 @@ describe 'openstack-orchestration::identity_registration' do
       ).with(
         project_name: project_name,
         role_name: role_name,
-        password: password,
         connection_params: connection_params
       )
     end
@@ -111,7 +111,7 @@ describe 'openstack-orchestration::identity_registration' do
       expect(chef_run).to create_openstack_user(
         stack_domain_admin
       ).with(
-        password: password,
+        password: stack_domain_password,
         connection_params: connection_params
       )
     end
@@ -122,7 +122,6 @@ describe 'openstack-orchestration::identity_registration' do
       ).with(
         domain_name: stack_domain_name,
         role_name: 'admin',
-        password: password,
         connection_params: connection_params
       )
     end
