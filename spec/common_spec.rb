@@ -21,14 +21,5 @@ describe 'openstack-orchestration::common' do
     it 'installs mysql python packages by default' do
       expect(chef_run).to upgrade_package 'python-mysqldb'
     end
-
-    it 'installs postgresql python packages if explicitly told' do
-      node.set['openstack']['db']['orchestration']['service_type'] = 'postgresql'
-
-      expect(chef_run).to upgrade_package 'python-psycopg2'
-      expect(chef_run).not_to upgrade_package 'MySQL-python'
-      expect(chef_run).not_to upgrade_package 'python-ibm-db'
-      expect(chef_run).not_to upgrade_package 'python-ibm-db-sa'
-    end
   end
 end
