@@ -1,10 +1,14 @@
 source 'https://supermarket.chef.io'
 
-metadata
+%w(common identity).each do |cookbook|
+  if Dir.exist?("../cookbook-openstack-#{cookbook}")
+    cookbook "openstack-#{cookbook}", path: "../cookbook-openstack-#{cookbook}"
+  else
+    cookbook "openstack-#{cookbook}", git: "https://git.openstack.org/openstack/cookbook-openstack-#{cookbook}"
+  end
+end
 
-cookbook 'openstack-identity',
-  github: 'openstack/cookbook-openstack-identity'
-cookbook 'openstack-common',
-  github: 'openstack/cookbook-openstack-common'
 cookbook 'openstackclient',
   github: 'cloudbau/cookbook-openstackclient'
+
+metadata
