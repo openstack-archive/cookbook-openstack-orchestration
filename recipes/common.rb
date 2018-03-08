@@ -59,8 +59,6 @@ bind_services = node['openstack']['bind_service']['all']
 api_bind = bind_services['orchestration-api']
 api_cfn_bind = bind_services['orchestration-api-cfn']
 api_cfn_endpoint = internal_endpoint 'orchestration-api-cfn'
-api_cw_bind = bind_services['orchestration-api-cloudwatch']
-api_cw_endpoint = internal_endpoint 'orchestration-api-cloudwatch'
 
 ec2_auth_uri = auth_uri_transform identity_endpoint.to_s, node['openstack']['orchestration']['ec2authtoken']['auth']['version']
 auth_uri = auth_uri_transform identity_endpoint.to_s, node['openstack']['orchestration']['api']['auth']['version']
@@ -68,13 +66,11 @@ base_auth_uri = identity_uri_transform auth_uri
 
 # We need these URIs without their default path
 metadata_uri = "#{api_cfn_endpoint.scheme}://#{api_cfn_endpoint.host}:#{api_cfn_endpoint.port}"
-watch_uri = "#{api_cw_endpoint.scheme}://#{api_cw_endpoint.host}:#{api_cw_endpoint.port}"
 
 # define attributes that are needed in the heat.conf
 node.default['openstack']['orchestration']['conf'].tap do |conf|
   conf['DEFAULT']['heat_metadata_server_url'] = metadata_uri
   conf['DEFAULT']['heat_waitcondition_server_url'] = "#{api_cfn_endpoint}/waitcondition"
-  conf['DEFAULT']['heat_watch_server_url'] = watch_uri
   conf['DEFAULT']['region_name_for_services'] = node['openstack']['region']
   conf['clients_keystone']['auth_uri'] = base_auth_uri
   conf['ec2authtoken']['auth_uri'] = ec2_auth_uri
@@ -82,8 +78,6 @@ node.default['openstack']['orchestration']['conf'].tap do |conf|
   conf['heat_api']['bind_port'] = api_bind['port']
   conf['heat_api_cfn']['bind_host'] = bind_address api_cfn_bind
   conf['heat_api_cfn']['bind_port'] = api_cfn_bind['port']
-  conf['heat_api_cloudwatch']['bind_host'] = bind_address api_cw_bind
-  conf['heat_api_cloudwatch']['bind_port'] = api_cw_bind['port']
   conf['keystone_authtoken']['auth_url'] = auth_uri
   conf['trustee']['auth_url'] = identity_admin_endpoint
 end

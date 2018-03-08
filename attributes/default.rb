@@ -28,18 +28,11 @@
   default['openstack']['endpoints'][ep_type]['orchestration-api-cfn']['scheme'] = 'http'
   default['openstack']['endpoints'][ep_type]['orchestration-api-cfn']['path'] = '/v1'
   default['openstack']['endpoints'][ep_type]['orchestration-api-cfn']['port'] = 8000
-  # openstack orchestration-api-cloudwatch service endpoints (used by users and services)
-  default['openstack']['endpoints'][ep_type]['orchestration-api-cloudwatch']['host'] = '127.0.0.1'
-  default['openstack']['endpoints'][ep_type]['orchestration-api-cloudwatch']['scheme'] = 'http'
-  default['openstack']['endpoints'][ep_type]['orchestration-api-cloudwatch']['path'] = '/v1'
-  default['openstack']['endpoints'][ep_type]['orchestration-api-cloudwatch']['port'] = 8003
 end
 default['openstack']['bind_service']['all']['orchestration-api']['host'] = '127.0.0.1'
 default['openstack']['bind_service']['all']['orchestration-api']['port'] = 8004
 default['openstack']['bind_service']['all']['orchestration-api-cfn']['host'] = '127.0.0.1'
 default['openstack']['bind_service']['all']['orchestration-api-cfn']['port'] = 8000
-default['openstack']['bind_service']['all']['orchestration-api-cloudwatch']['host'] = '127.0.0.1'
-default['openstack']['bind_service']['all']['orchestration-api-cloudwatch']['port'] = 8003
 
 # Set to some text value if you want templated config files
 # to contain a custom banner at the top of the written file
@@ -73,8 +66,6 @@ when 'rhel'
     'heat_api_service' => 'openstack-heat-api',
     'heat_api_cfn_packages' => ['openstack-heat-api-cfn'],
     'heat_api_cfn_service' => 'openstack-heat-api-cfn',
-    'heat_api_cloudwatch_packages' => ['openstack-heat-api-cloudwatch'],
-    'heat_api_cloudwatch_service' => 'openstack-heat-api-cloudwatch',
     'heat_engine_packages' => ['openstack-heat-engine'],
     'heat_engine_service' => 'openstack-heat-engine',
     'heat_api_process_name' => 'heat-api',
@@ -89,8 +80,6 @@ when 'debian'
     'heat_api_service' => 'heat-api',
     'heat_api_cfn_packages' => ['heat-api-cfn'],
     'heat_api_cfn_service' => 'heat-api-cfn',
-    'heat_api_cloudwatch_packages' => ['heat-api-cloudwatch'],
-    'heat_api_cloudwatch_service' => 'heat-api-cloudwatch',
     'heat_engine_packages' => ['heat-engine'],
     'heat_engine_service' => 'heat-engine',
     'package_overrides' => '',

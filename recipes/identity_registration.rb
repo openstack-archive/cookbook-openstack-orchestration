@@ -50,9 +50,6 @@ admin_project = node['openstack']['identity']['admin_project']
 admin_domain = node['openstack']['identity']['admin_domain_name']
 region = node['openstack']['region']
 
-# Do not configure a service/endpoint in keystone for heat-api-cloudwatch(Bug #1167927),
-# See discussions on https://bugs.launchpad.net/heat/+bug/1167927
-
 connection_params = {
   openstack_auth_url:     "#{auth_url}/auth/tokens",
   openstack_username:     admin_user,

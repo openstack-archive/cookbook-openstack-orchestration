@@ -52,9 +52,6 @@ openstack-common cookbook.
 Recipes
 =======
 
-## openstack-orchestration::api-cloudwatch
-- Configure and start heat-api-cloudwatch service
-
 ## openstack-orchestration::api-cfn
 - Configure and start heat-api-cfn service
 

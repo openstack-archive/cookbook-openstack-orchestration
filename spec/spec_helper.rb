@@ -126,7 +126,6 @@ shared_examples 'expects to create heat conf' do
         [
           %r{^heat_metadata_server_url = http://127.0.0.1:8000$},
           %r{^heat_waitcondition_server_url = http://127.0.0.1:8000/v1/waitcondition$},
-          %r{^heat_watch_server_url = http://127.0.0.1:8003$},
           %r{^log_dir = /var/log/heat$},
           /^region_name_for_services = RegionOne$/,
         ].each do |line|
@@ -157,15 +156,6 @@ shared_examples 'expects to create heat conf' do
           /^bind_port = 8000$/,
         ].each do |line|
           expect(chef_run).to render_config_file(file.name).with_section_content('heat_api_cfn', line)
-        end
-      end
-
-      it 'has heat_api_cloudwatch binding' do
-        [
-          /^bind_host = 127.0.0.1$/,
-          /^bind_port = 8003$/,
-        ].each do |line|
-          expect(chef_run).to render_config_file(file.name).with_section_content('heat_api_cloudwatch', line)
         end
       end
 
