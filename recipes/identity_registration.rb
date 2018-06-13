@@ -24,9 +24,9 @@ class ::Chef::Recipe
   include ::Openstack
 end
 
-identity_admin_endpoint = admin_endpoint 'identity'
+identity_endpoint = public_endpoint 'identity'
 
-auth_url = ::URI.decode identity_admin_endpoint.to_s
+auth_url = auth_uri_transform identity_endpoint.to_s, node['openstack']['api']['auth']['version']
 
 admin_heat_endpoint = admin_endpoint 'orchestration-api'
 internal_heat_endpoint = internal_endpoint 'orchestration-api'

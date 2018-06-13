@@ -6,16 +6,19 @@ ChefSpec::Coverage.start! { add_filter 'openstack-orchestration' }
 
 require 'chef/application'
 
-LOG_LEVEL = :fatal
+RSpec.configure do |config|
+  config.color = true
+  config.formatter = :documentation
+  config.log_level = :fatal
+end
+
 REDHAT_OPTS = {
   platform: 'redhat',
-  version: '7.3',
-  log_level: ::LOG_LEVEL,
+  version: '7.4',
 }.freeze
 UBUNTU_OPTS = {
   platform: 'ubuntu',
   version: '16.04',
-  log_level: ::LOG_LEVEL,
 }.freeze
 
 shared_context 'orchestration_stubs' do
@@ -207,7 +210,7 @@ shared_examples 'expects to create heat conf' do
     describe 'has trustee values' do
       it 'has default trustee values' do
         [
-          %r{^auth_url = http://127.0.0.1:35357/v3$},
+          %r{^auth_url = http://127.0.0.1:5000/v3$},
           /^auth_type = v3password$/,
           /^username = heat$/,
           /^password = heat-pass$/,

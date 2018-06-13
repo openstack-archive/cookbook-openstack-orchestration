@@ -52,16 +52,15 @@ db_user = node['openstack']['db']['orchestration']['username']
 db_pass = get_password 'db', 'heat'
 stack_domain_admin = node['openstack']['orchestration']['conf']['DEFAULT']['stack_domain_admin']
 
-identity_endpoint = internal_endpoint 'identity'
-identity_admin_endpoint = admin_endpoint 'identity'
+identity_endpoint = public_endpoint 'identity'
 
 bind_services = node['openstack']['bind_service']['all']
 api_bind = bind_services['orchestration-api']
 api_cfn_bind = bind_services['orchestration-api-cfn']
 api_cfn_endpoint = internal_endpoint 'orchestration-api-cfn'
 
-ec2_auth_uri = auth_uri_transform identity_endpoint.to_s, node['openstack']['orchestration']['ec2authtoken']['auth']['version']
-auth_uri = auth_uri_transform identity_endpoint.to_s, node['openstack']['orchestration']['api']['auth']['version']
+ec2_auth_uri = ::URI.decode identity_endpoint.to_s
+auth_uri = ::URI.decode identity_endpoint.to_s
 base_auth_uri = identity_uri_transform auth_uri
 
 # We need these URIs without their default path
@@ -79,7 +78,7 @@ node.default['openstack']['orchestration']['conf'].tap do |conf|
   conf['heat_api_cfn']['bind_host'] = bind_address api_cfn_bind
   conf['heat_api_cfn']['bind_port'] = api_cfn_bind['port']
   conf['keystone_authtoken']['auth_url'] = auth_uri
-  conf['trustee']['auth_url'] = identity_admin_endpoint
+  conf['trustee']['auth_url'] = identity_endpoint
 end
 
 # define secrets that are needed in the heat.conf
