@@ -240,7 +240,7 @@ end
 shared_examples 'logging' do
   context 'with logging enabled' do
     before do
-      node.set['openstack']['orchestration']['syslog']['use'] = true
+      node.override['openstack']['orchestration']['syslog']['use'] = true
     end
 
     it 'runs logging recipe if node attributes say to' do
@@ -250,7 +250,7 @@ shared_examples 'logging' do
 
   context 'with logging disabled' do
     before do
-      node.set['openstack']['orchestration']['syslog']['use'] = false
+      node.override['openstack']['orchestration']['syslog']['use'] = false
     end
 
     it "doesn't run logging recipe" do
