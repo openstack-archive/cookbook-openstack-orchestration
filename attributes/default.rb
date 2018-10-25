@@ -63,6 +63,7 @@ when 'rhel'
   default['openstack']['orchestration']['platform'] = {
     'heat_common_packages' => ['openstack-heat-common'],
     'heat_api_packages' => ['openstack-heat-api'],
+    'heat_dashboard_packages' => ['openstack-heat-ui'],
     'heat_api_service' => 'openstack-heat-api',
     'heat_api_cfn_packages' => ['openstack-heat-api-cfn'],
     'heat_api_cfn_service' => 'openstack-heat-api-cfn',
@@ -77,6 +78,7 @@ when 'debian'
   default['openstack']['orchestration']['platform'] = {
     'heat_common_packages' => ['heat-common'],
     'heat_api_packages' => ['heat-api'],
+    'heat_dashboard_packages' => ['python-heat-dashboard'],
     'heat_api_service' => 'heat-api',
     'heat_api_cfn_packages' => ['heat-api-cfn'],
     'heat_api_cfn_service' => 'heat-api-cfn',
