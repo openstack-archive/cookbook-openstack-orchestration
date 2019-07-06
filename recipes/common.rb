@@ -61,7 +61,8 @@ api_cfn_endpoint = internal_endpoint 'orchestration-api-cfn'
 
 ec2_auth_uri = ::URI.decode identity_endpoint.to_s
 auth_uri = ::URI.decode identity_endpoint.to_s
-base_auth_uri = identity_uri_transform auth_uri
+base_auth_uri = public_endpoint 'identity'
+base_auth_uri.path = '/'
 
 # We need these URIs without their default path
 metadata_uri = "#{api_cfn_endpoint.scheme}://#{api_cfn_endpoint.host}:#{api_cfn_endpoint.port}"
@@ -71,7 +72,7 @@ node.default['openstack']['orchestration']['conf'].tap do |conf|
   conf['DEFAULT']['heat_metadata_server_url'] = metadata_uri
   conf['DEFAULT']['heat_waitcondition_server_url'] = "#{api_cfn_endpoint}/waitcondition"
   conf['DEFAULT']['region_name_for_services'] = node['openstack']['region']
-  conf['clients_keystone']['auth_uri'] = base_auth_uri
+  conf['clients_keystone']['auth_uri'] = base_auth_uri.to_s
   conf['ec2authtoken']['auth_uri'] = ec2_auth_uri
   conf['heat_api']['bind_host'] = bind_address api_bind
   conf['heat_api']['bind_port'] = api_bind['port']

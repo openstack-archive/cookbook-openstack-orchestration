@@ -26,12 +26,10 @@ end
 
 identity_endpoint = public_endpoint 'identity'
 
-auth_url = auth_uri_transform identity_endpoint.to_s, node['openstack']['api']['auth']['version']
+auth_url = ::URI.decode identity_endpoint.to_s
 
-admin_heat_endpoint = admin_endpoint 'orchestration-api'
 internal_heat_endpoint = internal_endpoint 'orchestration-api'
 public_heat_endpoint = public_endpoint 'orchestration-api'
-admin_heat_cfn_endpoint = admin_endpoint 'orchestration-api-cfn'
 internal_heat_cfn_endpoint = internal_endpoint 'orchestration-api-cfn'
 public_heat_cfn_endpoint = public_endpoint 'orchestration-api-cfn'
 stack_domain_admin = node['openstack']['orchestration']['conf']['DEFAULT']['stack_domain_admin']
@@ -51,7 +49,7 @@ admin_domain = node['openstack']['identity']['admin_domain_name']
 region = node['openstack']['region']
 
 connection_params = {
-  openstack_auth_url:     "#{auth_url}/auth/tokens",
+  openstack_auth_url:     auth_url,
   openstack_username:     admin_user,
   openstack_api_key:      admin_pass,
   openstack_project_name: admin_project,
@@ -81,15 +79,6 @@ openstack_endpoint service_type do
   service_name service_name
   interface 'internal'
   url internal_heat_endpoint.to_s
-  region region
-  connection_params connection_params
-end
-
-# Register Orchestration Admin-Endpoint
-openstack_endpoint service_type do
-  service_name service_name
-  interface 'admin'
-  url admin_heat_endpoint.to_s
   region region
   connection_params connection_params
 end
@@ -145,15 +134,6 @@ openstack_endpoint 'cloudformation' do
   service_name 'heat-cfn'
   interface 'internal'
   url internal_heat_cfn_endpoint.to_s
-  region region
-  connection_params connection_params
-end
-
-# Register Heat API CloudFormation Admin-Endpoint
-openstack_endpoint 'cloudformation' do
-  service_name 'heat-cfn'
-  interface 'admin'
-  url admin_heat_cfn_endpoint.to_s
   region region
   connection_params connection_params
 end

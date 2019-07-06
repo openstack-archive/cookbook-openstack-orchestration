@@ -17,7 +17,7 @@
 # limitations under the License.
 #
 
-%w(public internal admin).each do |ep_type|
+%w(public internal).each do |ep_type|
   # openstack orchestration-api service endpoints (used by users and services)
   default['openstack']['endpoints'][ep_type]['orchestration-api']['host'] = '127.0.0.1'
   default['openstack']['endpoints'][ep_type]['orchestration-api']['scheme'] = 'http'
@@ -53,7 +53,6 @@ default['openstack']['orchestration']['rabbit_server_chef_role'] = 'os-ops-messa
 default['openstack']['orchestration']['service_role'] = 'service'
 
 default['openstack']['orchestration']['ec2authtoken']['auth']['version'] = 'v2.0'
-default['openstack']['orchestration']['api']['auth']['version'] = node['openstack']['api']['auth']['version']
 
 # platform-specific settings
 case node['platform_family']
@@ -76,7 +75,7 @@ when 'debian'
   default['openstack']['orchestration']['user'] = 'heat'
   default['openstack']['orchestration']['group'] = 'heat'
   default['openstack']['orchestration']['platform'] = {
-    'heat_common_packages' => ['heat-common'],
+    'heat_common_packages' => ['heat-common', 'python-heat'],
     'heat_api_packages' => ['heat-api'],
     'heat_dashboard_packages' => ['python-heat-dashboard'],
     'heat_api_service' => 'heat-api',

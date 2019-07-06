@@ -13,9 +13,10 @@ describe 'openstack-orchestration::common' do
     include_examples 'expects to create heat conf'
     include_examples 'expects to create heat default.yaml'
     include_examples 'expect runs db migrations'
-
-    it 'installs the openstack-heat package' do
-      expect(chef_run).to upgrade_package 'heat-common'
+    %w(heat-common python-heat).each do |p|
+      it "installs the #{p} package" do
+        expect(chef_run).to upgrade_package p
+      end
     end
 
     it 'installs mysql python packages by default' do

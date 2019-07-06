@@ -10,7 +10,7 @@ describe 'openstack-orchestration::identity_registration' do
     include_context 'orchestration_stubs'
 
     connection_params = {
-      openstack_auth_url: 'http://127.0.0.1:5000/v3/auth/tokens',
+      openstack_auth_url: 'http://127.0.0.1:5000/v3',
       openstack_username: 'admin',
       openstack_api_key: 'admin-pass',
       openstack_project_name: 'admin',
@@ -47,7 +47,7 @@ describe 'openstack-orchestration::identity_registration' do
     end
 
     context "registers #{service_name} endpoint" do
-      %w(admin internal public).each do |interface|
+      %w(internal public).each do |interface|
         it "#{interface} endpoint with default values" do
           expect(chef_run).to create_openstack_endpoint(
             service_type
@@ -132,7 +132,7 @@ describe 'openstack-orchestration::identity_registration' do
         connection_params: connection_params
       )
     end
-    %w(admin internal public).each do |interface|
+    %w(internal public).each do |interface|
       it "#{interface} cloudformation endpoint with default values" do
         expect(chef_run).to create_openstack_endpoint(
           'cloudformation'
