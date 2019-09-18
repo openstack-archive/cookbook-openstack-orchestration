@@ -75,9 +75,9 @@ when 'debian'
   default['openstack']['orchestration']['user'] = 'heat'
   default['openstack']['orchestration']['group'] = 'heat'
   default['openstack']['orchestration']['platform'] = {
-    'heat_common_packages' => ['heat-common', 'python-heat'],
+    'heat_common_packages' => ['heat-common', 'python3-heat'],
     'heat_api_packages' => ['heat-api'],
-    'heat_dashboard_packages' => ['python-heat-dashboard'],
+    'heat_dashboard_packages' => ['python3-heat-dashboard'],
     'heat_api_service' => 'heat-api',
     'heat_api_cfn_packages' => ['heat-api-cfn'],
     'heat_api_cfn_service' => 'heat-api-cfn',
