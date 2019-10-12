@@ -33,6 +33,6 @@ end
 service 'heat_engine' do
   service_name platform_options['heat_engine_service']
   supports status: true, restart: true
-  action :enable
+  action [:enable, :start]
   subscribes :restart, 'template[/etc/heat/heat.conf]'
 end

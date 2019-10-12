@@ -34,6 +34,6 @@ service 'heat-api' do
   service_name platform_options['heat_api_service']
   supports status: true, restart: true
 
-  action :enable
+  action [:enable, :start]
   subscribes :restart, 'template[/etc/heat/heat.conf]'
 end

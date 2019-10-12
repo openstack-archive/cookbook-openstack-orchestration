@@ -14,8 +14,12 @@ describe 'openstack-orchestration::api-cfn' do
       expect(chef_run).to upgrade_package 'openstack-heat-api-cfn'
     end
 
-    it 'starts heat api-cfn on boot' do
+    it 'enables heat api-cfn on boot' do
       expect(chef_run).to enable_service('openstack-heat-api-cfn')
+    end
+
+    it 'starts heat api-cfn on boot' do
+      expect(chef_run).to start_service('openstack-heat-api-cfn')
     end
   end
 end

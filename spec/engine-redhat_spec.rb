@@ -14,8 +14,12 @@ describe 'openstack-orchestration::engine' do
       expect(chef_run).to upgrade_package 'openstack-heat-engine'
     end
 
-    it 'starts heat engine on boot' do
+    it 'enables heat engine on boot' do
       expect(chef_run).to enable_service('openstack-heat-engine')
+    end
+
+    it 'starts heat engine on boot' do
+      expect(chef_run).to start_service('openstack-heat-engine')
     end
   end
 end
