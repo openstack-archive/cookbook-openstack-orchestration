@@ -1,24 +1,21 @@
 # encoding: UTF-8
 require 'chefspec'
 require 'chefspec/berkshelf'
-
-ChefSpec::Coverage.start! { add_filter 'openstack-orchestration' }
-
 require 'chef/application'
 
 RSpec.configure do |config|
   config.color = true
   config.formatter = :documentation
-  config.log_level = :fatal
+  config.log_level = :warn
 end
 
 REDHAT_OPTS = {
   platform: 'redhat',
-  version: '7.4',
+  version: '7',
 }.freeze
 UBUNTU_OPTS = {
   platform: 'ubuntu',
-  version: '16.04',
+  version: '18.04',
 }.freeze
 
 shared_context 'orchestration_stubs' do
@@ -121,7 +118,8 @@ shared_examples 'expects to create heat conf' do
     end
 
     it 'sets auth_encryption_key' do
-      expect(chef_run).to render_config_file(file.name).with_section_content('DEFAULT', /^auth_encryption_key = auth_encryption_key_secret$/)
+      expect(chef_run).to render_config_file(file.name)
+        .with_section_content('DEFAULT', /^auth_encryption_key = auth_encryption_key_secret$/)
     end
 
     describe 'default values' do
@@ -140,7 +138,8 @@ shared_examples 'expects to create heat conf' do
         [
           /^driver = heat.openstack.common.notifier.rpc_notifier$/,
         ].each do |line|
-          expect(chef_run).to render_config_file(file.name).with_section_content('oslo_messaging_notifications', line)
+          expect(chef_run).to render_config_file(file.name)
+            .with_section_content('oslo_messaging_notifications', line)
         end
       end
 
@@ -171,13 +170,15 @@ shared_examples 'expects to create heat conf' do
 
     describe 'has ec2authtoken values' do
       it 'has default ec2authtoken values' do
-        expect(chef_run).to render_config_file(file.name).with_section_content('ec2authtoken', %r{^auth_uri = http://127.0.0.1:5000/v3$})
+        expect(chef_run).to render_config_file(file.name)
+          .with_section_content('ec2authtoken', %r{^auth_uri = http://127.0.0.1:5000/v3$})
       end
     end
 
     describe 'has clients_keystone values' do
       it 'has default clients_keystone values' do
-        expect(chef_run).to render_config_file(file.name).with_section_content('clients_keystone', %r{^auth_uri = http://127.0.0.1:5000/$})
+        expect(chef_run).to render_config_file(file.name)
+          .with_section_content('clients_keystone', %r{^auth_uri = http://127.0.0.1:5000/$})
       end
     end
 
@@ -239,8 +240,9 @@ end
 
 shared_examples 'logging' do
   context 'with logging enabled' do
-    before do
+    cached(:chef_run) do
       node.override['openstack']['orchestration']['syslog']['use'] = true
+      runner.converge(described_recipe)
     end
 
     it 'runs logging recipe if node attributes say to' do
@@ -249,8 +251,9 @@ shared_examples 'logging' do
   end
 
   context 'with logging disabled' do
-    before do
+    cached(:chef_run) do
       node.override['openstack']['orchestration']['syslog']['use'] = false
+      runner.converge(described_recipe)
     end
 
     it "doesn't run logging recipe" do

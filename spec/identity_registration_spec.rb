@@ -5,7 +5,7 @@ describe 'openstack-orchestration::identity_registration' do
   describe 'redhat' do
     let(:runner) { ChefSpec::SoloRunner.new(REDHAT_OPTS) }
     let(:node) { runner.node }
-    let(:chef_run) { runner.converge(described_recipe) }
+    cached(:chef_run) { runner.converge(described_recipe) }
 
     include_context 'orchestration_stubs'
 
