@@ -92,7 +92,7 @@ shared_examples 'expects to create heat directories' do
     expect(chef_run).to create_directory('/etc/heat').with(
       owner: 'heat',
       group: 'heat',
-      mode: 0o750
+      mode: '750'
     )
   end
 
@@ -100,7 +100,7 @@ shared_examples 'expects to create heat directories' do
     expect(chef_run).to create_directory('/etc/heat/environment.d').with(
       owner: 'heat',
       group: 'heat',
-      mode: 0o750
+      mode: '750'
     )
   end
 end
@@ -113,7 +113,7 @@ shared_examples 'expects to create heat conf' do
       expect(chef_run).to create_template(file.name).with(
         owner: 'heat',
         group: 'heat',
-        mode: 0o640
+        mode: '640'
       )
     end
 
@@ -232,7 +232,7 @@ shared_examples 'expects to create heat default.yaml' do
       expect(chef_run).to create_template(file.name).with(
         owner: 'heat',
         group: 'heat',
-        mode: 0o644
+        mode: '644'
       )
     end
   end

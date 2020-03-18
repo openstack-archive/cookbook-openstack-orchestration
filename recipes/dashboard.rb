@@ -1,9 +1,10 @@
 # encoding: UTF-8
 #
-# Cookbook Name:: openstack-orchestration
+# Cookbook:: openstack-orchestration
 # Recipe:: dashboard
 #
-# Copyright 2018, x-ion Gmbh
+# Copyright:: 2018, x-ion Gmbh
+# Copyright:: 2020, Oregon State University
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -24,9 +25,7 @@ end
 
 platform_options = node['openstack']['orchestration']['platform']
 
-platform_options['heat_dashboard_packages'].each do |pkg|
-  package pkg do
-    options platform_options['package_overrides']
-    action :upgrade
-  end
+package platform_options['heat_dashboard_packages'] do
+  options platform_options['package_overrides']
+  action :upgrade
 end

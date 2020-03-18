@@ -1,10 +1,11 @@
 # encoding: UTF-8
 #
-# Cookbook Name:: openstack-orchestration
+# Cookbook:: openstack-orchestration
 # Recipe:: engine
 #
-# Copyright 2013, IBM Corp.
-# Copyright 2014, SUSE Linux, GmbH.
+# Copyright:: 2013, IBM Corp.
+# Copyright:: 2014, SUSE Linux, GmbH.
+# Copyright:: 2019-2020, Oregon State University
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -29,23 +30,19 @@ end
 
 platform_options = node['openstack']['orchestration']['platform']
 
-platform_options['heat_common_packages'].each do |pkg|
-  package pkg do
-    options platform_options['package_overrides']
-
-    action :upgrade
-  end
+package platform_options['heat_common_packages'] do
+  options platform_options['package_overrides']
+  action :upgrade
 end
 
 db_type = node['openstack']['db']['orchestration']['service_type']
-node['openstack']['db']['python_packages'][db_type].each do |pkg|
-  package pkg do
-    action :upgrade
-  end
+package node['openstack']['db']['python_packages'][db_type] do
+  action :upgrade
 end
 
 if node['openstack']['mq']['service_type'] == 'rabbit'
-  node.default['openstack']['orchestration']['conf_secrets']['DEFAULT']['transport_url'] = rabbit_transport_url 'orchestration'
+  node.default['openstack']['orchestration']['conf_secrets']['DEFAULT']['transport_url'] =
+    rabbit_transport_url 'orchestration'
 end
 
 db_user = node['openstack']['db']['orchestration']['username']
@@ -102,15 +99,13 @@ heat_conf_options = merge_config_options 'orchestration'
 directory '/etc/heat' do
   owner node['openstack']['orchestration']['user']
   group node['openstack']['orchestration']['group']
-  mode 0o0750
-  action :create
+  mode '750'
 end
 
 directory '/etc/heat/environment.d' do
   owner node['openstack']['orchestration']['user']
   group node['openstack']['orchestration']['group']
-  mode 0o0750
-  action :create
+  mode '750'
 end
 
 template '/etc/heat/heat.conf' do
@@ -118,7 +113,8 @@ template '/etc/heat/heat.conf' do
   cookbook 'openstack-common'
   owner node['openstack']['orchestration']['user']
   group node['openstack']['orchestration']['group']
-  mode 0o0640
+  mode '640'
+  sensitive true
   variables(
     service_config: heat_conf_options
   )
@@ -128,12 +124,10 @@ template '/etc/heat/environment.d/default.yaml' do
   source 'default.yaml.erb'
   owner node['openstack']['orchestration']['user']
   group node['openstack']['orchestration']['group']
-  mode 0o0644
+  mode '644'
 end
 
 execute 'heat-manage db_sync' do
   user node['openstack']['orchestration']['user']
   group node['openstack']['orchestration']['group']
-  command 'heat-manage db_sync'
-  action :run
 end

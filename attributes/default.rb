@@ -1,9 +1,11 @@
 # encoding: UTF-8
 #
-# Cookbook Name:: openstack-orchestration
+# Cookbook:: openstack-orchestration
 # Attributes:: default
 #
-# Copyright 2013, IBM Corp.
+# Copyright:: 2013, IBM Corp.
+# Copyright:: 2019-2020, Oregon State University
+#
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
 # You may obtain a copy of the License at
@@ -60,13 +62,13 @@ when 'rhel'
   default['openstack']['orchestration']['user'] = 'heat'
   default['openstack']['orchestration']['group'] = 'heat'
   default['openstack']['orchestration']['platform'] = {
-    'heat_common_packages' => ['openstack-heat-common'],
-    'heat_api_packages' => ['openstack-heat-api'],
-    'heat_dashboard_packages' => ['openstack-heat-ui'],
+    'heat_common_packages' => %w(openstack-heat-common),
+    'heat_api_packages' => %w(openstack-heat-api),
+    'heat_dashboard_packages' => %w(openstack-heat-ui),
     'heat_api_service' => 'openstack-heat-api',
-    'heat_api_cfn_packages' => ['openstack-heat-api-cfn'],
+    'heat_api_cfn_packages' => %w(openstack-heat-api-cfn),
     'heat_api_cfn_service' => 'openstack-heat-api-cfn',
-    'heat_engine_packages' => ['openstack-heat-engine'],
+    'heat_engine_packages' => %w(openstack-heat-engine),
     'heat_engine_service' => 'openstack-heat-engine',
     'heat_api_process_name' => 'heat-api',
     'package_overrides' => '',
@@ -75,13 +77,13 @@ when 'debian'
   default['openstack']['orchestration']['user'] = 'heat'
   default['openstack']['orchestration']['group'] = 'heat'
   default['openstack']['orchestration']['platform'] = {
-    'heat_common_packages' => ['heat-common', 'python3-heat'],
-    'heat_api_packages' => ['heat-api'],
-    'heat_dashboard_packages' => ['python3-heat-dashboard'],
+    'heat_common_packages' => %w(heat-common python3-heat),
+    'heat_api_packages' => %w(heat-api),
+    'heat_dashboard_packages' => %w(python3-heat-dashboard),
     'heat_api_service' => 'heat-api',
-    'heat_api_cfn_packages' => ['heat-api-cfn'],
+    'heat_api_cfn_packages' => %w(heat-api-cfn),
     'heat_api_cfn_service' => 'heat-api-cfn',
-    'heat_engine_packages' => ['heat-engine'],
+    'heat_engine_packages' => %w(heat-engine),
     'heat_engine_service' => 'heat-engine',
     'package_overrides' => '',
   }
