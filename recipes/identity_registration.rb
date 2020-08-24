@@ -19,15 +19,12 @@
 # limitations under the License.
 #
 
-require 'uri'
-
 class ::Chef::Recipe
   include ::Openstack
 end
 
 identity_endpoint = public_endpoint 'identity'
-
-auth_url = ::URI.decode identity_endpoint.to_s
+auth_url = identity_endpoint.to_s
 
 internal_heat_endpoint = internal_endpoint 'orchestration-api'
 public_heat_endpoint = public_endpoint 'orchestration-api'
@@ -67,7 +64,7 @@ openstack_service service_name do
 end
 
 # Register Orchestration Public-Endpoint
-openstack_endpoint service_type do # ~FC005
+openstack_endpoint service_type do
   service_name service_name
   interface 'public'
   url public_heat_endpoint.to_s
@@ -122,7 +119,7 @@ openstack_service 'heat-cfn' do
 end
 
 # Register Heat API CloudFormation Public-Endpoint
-openstack_endpoint 'cloudformation' do # ~FC005
+openstack_endpoint 'cloudformation' do
   service_name 'heat-cfn'
   interface 'public'
   url public_heat_cfn_endpoint.to_s
