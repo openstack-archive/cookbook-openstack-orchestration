@@ -56,8 +56,8 @@ api_bind = bind_services['orchestration-api']
 api_cfn_bind = bind_services['orchestration-api-cfn']
 api_cfn_endpoint = internal_endpoint 'orchestration-api-cfn'
 
-ec2_auth_uri = ::URI.decode identity_endpoint.to_s
-auth_uri = ::URI.decode identity_endpoint.to_s
+ec2_auth_uri = identity_endpoint.to_s
+auth_uri = identity_endpoint.to_s
 base_auth_uri = public_endpoint 'identity'
 base_auth_uri.path = '/'
 
