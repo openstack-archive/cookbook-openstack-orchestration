@@ -2,8 +2,8 @@
 # Cookbook:: openstack-orchestration
 # Recipe:: dashboard
 #
-# Copyright:: 2018, x-ion Gmbh
-# Copyright:: 2020, Oregon State University
+# Copyright:: 2018-2021, x-ion Gmbh
+# Copyright:: 2020-2021, Oregon State University
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
