@@ -1,7 +1,0 @@
-<%= node['openstack']['orchestration']['custom_template_banner'] %>
-
-resource_registry:
-    # allow older templates with Quantum in them.
-    "OS::Quantum*": "OS::Neutron*"
-    "OS::Metering::Alarm": "OS::Ceilometer::Alarm"
-    "AWS::RDS::DBInstance": "file:///etc/heat/templates/AWS_RDS_DBInstance.yaml"
